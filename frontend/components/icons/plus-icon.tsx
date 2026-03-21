@@ -11,6 +11,7 @@ export default function PlusIcon() {
       className="h-5 w-5 text-white"
       aria-hidden
     >
+      <title>Plus</title>
       <path d="M12 5v14" />
       <path d="M5 12h14" />
     </svg>

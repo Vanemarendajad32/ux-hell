@@ -676,13 +676,22 @@ export default function StylebookPage() {
             <div className="rounded-3xl border border-rose-200 bg-white p-6 shadow-xl">
               <p className="text-sm font-semibold text-slate-700">Buttons</p>
               <div className="mt-4 grid gap-3">
-                <button className="bg-gradient-to-r from-rose-600 to-orange-600 text-white py-3 px-6 font-bold rounded-2xl shadow-lg">
+                <button
+                  type="button"
+                  className="bg-gradient-to-r from-rose-600 to-orange-600 text-white py-3 px-6 font-bold rounded-2xl shadow-lg"
+                >
                   Primary button
                 </button>
-                <button className="rounded-xl border-2 border-slate-300 text-slate-700 py-3 px-6 font-semibold hover:border-slate-400 hover:bg-slate-50">
+                <button
+                  type="button"
+                  className="rounded-xl border-2 border-slate-300 text-slate-700 py-3 px-6 font-semibold hover:border-slate-400 hover:bg-slate-50"
+                >
                   Secondary button
                 </button>
-                <button className="text-slate-500 hover:text-slate-700 underline text-sm text-left">
+                <button
+                  type="button"
+                  className="text-slate-500 hover:text-slate-700 underline text-sm text-left"
+                >
                   Text button
                 </button>
               </div>
@@ -711,10 +720,14 @@ export default function StylebookPage() {
                 Form inputs
               </p>
               <div className="mt-4 grid gap-3">
-                <label className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                <label
+                  htmlFor="stylebook-input"
+                  className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500"
+                >
                   Input field
                 </label>
                 <input
+                  id="stylebook-input"
                   placeholder="Type something..."
                   className="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-sm text-slate-700 transition-all focus:border-rose-500 focus:ring-4 focus:ring-rose-100"
                 />
@@ -903,13 +916,22 @@ export default function StylebookPage() {
                   Hover States
                 </h3>
                 <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
-                  <button className="bg-gradient-to-r from-rose-600 to-orange-600 text-white py-3 px-6 rounded-xl hover:shadow-xl transition-shadow">
+                  <button
+                    type="button"
+                    className="bg-gradient-to-r from-rose-600 to-orange-600 text-white py-3 px-6 rounded-xl hover:shadow-xl transition-shadow"
+                  >
                     Hover for Shadow
                   </button>
-                  <button className="bg-gradient-to-r from-rose-600 to-orange-600 text-white py-3 px-6 rounded-xl hover:scale-105 transition-transform">
+                  <button
+                    type="button"
+                    className="bg-gradient-to-r from-rose-600 to-orange-600 text-white py-3 px-6 rounded-xl hover:scale-105 transition-transform"
+                  >
                     Hover to Scale
                   </button>
-                  <button className="bg-gradient-to-r from-rose-600 to-orange-600 text-white py-3 px-6 rounded-xl hover:opacity-90 transition-opacity">
+                  <button
+                    type="button"
+                    className="bg-gradient-to-r from-rose-600 to-orange-600 text-white py-3 px-6 rounded-xl hover:opacity-90 transition-opacity"
+                  >
                     Hover for Opacity
                   </button>
                 </div>
@@ -938,6 +960,7 @@ export default function StylebookPage() {
                 <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
                   <button
                     disabled
+                    type="button"
                     className="bg-slate-300 text-slate-500 py-3 px-6 rounded-xl cursor-not-allowed"
                   >
                     Disabled Button
@@ -996,7 +1019,10 @@ export default function StylebookPage() {
 
           <div className="mt-6 rounded-3xl border border-rose-200 bg-white p-6 shadow-xl sm:mt-8 sm:p-8">
             <div className="relative">
-              <button className="bg-gradient-to-r from-rose-600 to-orange-600 text-white py-4 px-8 rounded-2xl shadow-lg">
+              <button
+                type="button"
+                className="bg-gradient-to-r from-rose-600 to-orange-600 text-white py-4 px-8 rounded-2xl shadow-lg"
+              >
                 Example Button
               </button>
 

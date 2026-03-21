@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import AttentionIcon from "@/components/icons/attention-icon";
@@ -14,6 +15,22 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
+const starShowerConfig = Array.from({ length: 30 }, (_, index) => ({
+  id: `star-${index}`,
+  left: `${(index * 7) % 100}%`,
+  size: 1 + (index % 4),
+  opacity: 0.5 + (index % 5) * 0.1,
+  animationDelay: `${(index * 120) % 1200}ms`,
+  animationDuration: `${2400 + (index % 5) * 300}ms`,
+}));
+
+const fireworkConfig = Array.from({ length: 10 }, (_, index) => ({
+  id: `firework-${index}`,
+  left: `${10 + ((index * 14) % 80)}%`,
+  top: `${20 + ((index * 17) % 50)}%`,
+  animationDelay: `${index * 260}ms`,
+}));
+
 export default function Page() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [greetingPhase, setGreetingPhase] = useState<"win" | "error" | null>(
@@ -27,9 +44,9 @@ export default function Page() {
 
   useEffect(() => {
     return () => {
-      timeoutsRef.current.forEach((timeoutId) =>
-        window.clearTimeout(timeoutId),
-      );
+      timeoutsRef.current.forEach((timeoutId) => {
+        window.clearTimeout(timeoutId);
+      });
       timeoutsRef.current = [];
     };
   }, []);
@@ -60,7 +77,9 @@ export default function Page() {
   };
 
   const handleKeepPlaying = () => {
-    timeoutsRef.current.forEach((timeoutId) => window.clearTimeout(timeoutId));
+    timeoutsRef.current.forEach((timeoutId) => {
+      window.clearTimeout(timeoutId);
+    });
     timeoutsRef.current = [];
     setGreetingPhase(null);
     setDialogOpen(true);
@@ -78,30 +97,30 @@ export default function Page() {
         >
           <div className="absolute inset-0">
             {!isErrorPhase
-              ? Array.from({ length: 30 }).map((_, index) => (
+              ? starShowerConfig.map((item) => (
                   <span
-                    key={`star-${index}`}
+                    key={item.id}
                     className="star-shower"
                     style={{
-                      left: `${(index * 7) % 100}%`,
-                      width: `${1 + (index % 4)}px`,
-                      height: `${1 + (index % 4)}px`,
-                      opacity: 0.5 + (index % 5) * 0.1,
-                      animationDelay: `${(index * 120) % 1200}ms`,
-                      animationDuration: `${2400 + (index % 5) * 300}ms`,
+                      left: item.left,
+                      width: `${item.size}px`,
+                      height: `${item.size}px`,
+                      opacity: item.opacity,
+                      animationDelay: item.animationDelay,
+                      animationDuration: item.animationDuration,
                     }}
                   />
                 ))
               : null}
             {!isErrorPhase
-              ? Array.from({ length: 10 }).map((_, index) => (
+              ? fireworkConfig.map((item) => (
                   <span
-                    key={`firework-${index}`}
+                    key={item.id}
                     className="firework"
                     style={{
-                      left: `${10 + ((index * 14) % 80)}%`,
-                      top: `${20 + ((index * 17) % 50)}%`,
-                      animationDelay: `${index * 260}ms`,
+                      left: item.left,
+                      top: item.top,
+                      animationDelay: item.animationDelay,
                     }}
                   />
                 ))
@@ -150,9 +169,11 @@ export default function Page() {
       <main className="w-full max-w-2xl">
         <div className="mb-12 text-center">
           <div className="mx-auto mb-6 flex items-center justify-center">
-            <img
+            <Image
               src="/ux-hell-logo.svg"
               alt=""
+              width={96}
+              height={96}
               className="h-24 w-24"
               aria-hidden="true"
             />
@@ -173,9 +194,11 @@ export default function Page() {
             className="w-full gap-3 px-8 py-6 text-lg font-bold hover:scale-[1.02]"
             onClick={handleStartGame}
           >
-            <img
+            <Image
               src="/ux-hell-logo.svg"
               alt=""
+              width={24}
+              height={24}
               className="h-6 w-6"
               aria-hidden="true"
             />
@@ -208,9 +231,11 @@ export default function Page() {
                     className="w-full gap-3 rounded-2xl border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-900 hover:scale-[1.02] hover:shadow-xl"
                   >
                     <Link href="/auth/login">
-                      <img
+                      <Image
                         src="/ux-hell-logo.svg"
                         alt=""
+                        width={20}
+                        height={20}
                         className="h-5 w-5"
                         aria-hidden="true"
                       />
@@ -227,9 +252,11 @@ export default function Page() {
                     className="w-full gap-3 rounded-2xl border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-900 hover:scale-[1.02] hover:shadow-xl"
                   >
                     <Link href="/auth/login">
-                      <img
+                      <Image
                         src="/ux-hell-logo.svg"
                         alt=""
+                        width={20}
+                        height={20}
                         className="h-5 w-5"
                         aria-hidden="true"
                       />
