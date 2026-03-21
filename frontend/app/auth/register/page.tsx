@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
@@ -20,6 +19,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
 export default function RegisterPage() {
   const [showPasswordWarning, setShowPasswordWarning] = useState(false);
@@ -47,7 +47,11 @@ export default function RegisterPage() {
               Choose a new password. User "Alex Doe" already has that password.
             </DialogDescription>
           </DialogHeader>
-          <Button type="button" className="w-full" onClick={() => setShowPasswordWarning(false)}>
+          <Button
+            type="button"
+            className="w-full"
+            onClick={() => setShowPasswordWarning(false)}
+          >
             Got it
           </Button>
         </DialogContent>
@@ -57,13 +61,17 @@ export default function RegisterPage() {
           <CardHeader>
             <CardTitle>Create an account</CardTitle>
             <CardDescription>
-              The registration form will live here. For now, pick your next step.
+              The registration form will live here. For now, pick your next
+              step.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form className="space-y-4" onSubmit={handleSubmit}>
               <div className="space-y-2">
-                <label htmlFor="register-username" className="text-sm font-medium text-slate-700">
+                <label
+                  htmlFor="register-username"
+                  className="text-sm font-medium text-slate-700"
+                >
                   Username
                 </label>
                 <Input
@@ -76,7 +84,10 @@ export default function RegisterPage() {
                 />
               </div>
               <div className="space-y-2">
-                <label htmlFor="register-password" className="text-sm font-medium text-slate-700">
+                <label
+                  htmlFor="register-password"
+                  className="text-sm font-medium text-slate-700"
+                >
                   Password
                 </label>
                 <Input
@@ -88,13 +99,18 @@ export default function RegisterPage() {
                   required
                 />
                 <ul className="list-disc space-y-1 pl-4 text-xs text-slate-500">
-                  <li>Also include 1 uppercase letter, 1 number, and 1 symbol.</li>
+                  <li>
+                    Also include 1 uppercase letter, 1 number, and 1 symbol.
+                  </li>
                   <li>Minimum length: 10 characters.</li>
                   <li>Password must include at least one emoji.</li>
                 </ul>
               </div>
               <div className="space-y-2">
-                <label htmlFor="register-quirk" className="text-sm font-medium text-slate-700">
+                <label
+                  htmlFor="register-quirk"
+                  className="text-sm font-medium text-slate-700"
+                >
                   Most embarrassing typo
                 </label>
                 <Input

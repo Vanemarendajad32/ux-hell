@@ -2,23 +2,23 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import AttentionIcon from "@/components/icons/attention-icon";
 import PlusIcon from "@/components/icons/plus-icon";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 
 export default function Page() {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [greetingPhase, setGreetingPhase] = useState<"win" | "error" | null>(null);
+  const [greetingPhase, setGreetingPhase] = useState<"win" | "error" | null>(
+    null,
+  );
   const [swapButtons, setSwapButtons] = useState(false);
   const timeoutsRef = useRef<number[]>([]);
 
@@ -27,7 +27,9 @@ export default function Page() {
 
   useEffect(() => {
     return () => {
-      timeoutsRef.current.forEach((timeoutId) => window.clearTimeout(timeoutId));
+      timeoutsRef.current.forEach((timeoutId) =>
+        window.clearTimeout(timeoutId),
+      );
       timeoutsRef.current = [];
     };
   }, []);
@@ -97,7 +99,7 @@ export default function Page() {
                     key={`firework-${index}`}
                     className="firework"
                     style={{
-                      left: `${10 + (index * 14) % 80}%`,
+                      left: `${10 + ((index * 14) % 80)}%`,
                       top: `${20 + ((index * 17) % 50)}%`,
                       animationDelay: `${index * 260}ms`,
                     }}
@@ -119,16 +121,16 @@ export default function Page() {
                 <span />
               </div>
             ) : null}
-            <h2 className={`mt-2 text-4xl font-black ${isErrorPhase ? "error-title" : "win-title"}`}>
-              {greetingPhase === "win" ? (
-                "Congratulations, you won!"
-              ) : (
-                <>
-                  Oops, something went wrong! Victory is locked.
-                </>
-              )}
+            <h2
+              className={`mt-2 text-4xl font-black ${isErrorPhase ? "error-title" : "win-title"}`}
+            >
+              {greetingPhase === "win"
+                ? "Congratulations, you won!"
+                : "Oops, something went wrong! Victory is locked."}
             </h2>
-            <p className={`mt-3 text-sm ${isErrorPhase ? "text-slate-300" : "text-slate-600"}`}>
+            <p
+              className={`mt-3 text-sm ${isErrorPhase ? "text-slate-300" : "text-slate-600"}`}
+            >
               {greetingPhase === "win"
                 ? "Celebrate now, regret later."
                 : "You cannot win before you start playing."}
@@ -283,7 +285,7 @@ export default function Page() {
             </ul>
           </CardContent>
         </Card>
- 
+
         <p className="mt-8 text-center text-xs text-slate-400">
           Educational game about dark patterns in UX design
         </p>

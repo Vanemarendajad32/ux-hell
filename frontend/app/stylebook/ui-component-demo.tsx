@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardAction,
@@ -7,8 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -18,7 +17,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import Link from "next/link";
+import { Input } from "@/components/ui/input";
 
 export default function Page() {
   return (
@@ -32,7 +31,8 @@ export default function Page() {
             UI components demo
           </h1>
           <p className="max-w-2xl text-base text-slate-600">
-            Below are usage examples for the Button, Card, Dialog, and Input components.
+            Below are usage examples for the Button, Card, Dialog, and Input
+            components.
           </p>
         </section>
 
@@ -58,9 +58,7 @@ export default function Page() {
               <Button variant="link">Link</Button>
             </CardContent>
             <CardFooter className="justify-between">
-              <div className="text-sm text-muted-foreground">
-                Size options
-              </div>
+              <div className="text-sm text-muted-foreground">Size options</div>
               <div className="flex gap-2">
                 <Button size="xs" variant="outline">
                   XS
@@ -75,7 +73,10 @@ export default function Page() {
             </CardFooter>
           </Card>
 
-          <Card size="sm" className="justify-between border border-rose-200 bg-white/80 shadow-2xl backdrop-blur">
+          <Card
+            size="sm"
+            className="justify-between border border-rose-200 bg-white/80 shadow-2xl backdrop-blur"
+          >
             <CardHeader>
               <CardTitle>Dialog demo</CardTitle>
               <CardDescription>
@@ -94,8 +95,8 @@ export default function Page() {
                   <DialogHeader>
                     <DialogTitle>Is the project ready?</DialogTitle>
                     <DialogDescription>
-                      Confirm that you want to move on from the demo screen.
-                      You can always change this later.
+                      Confirm that you want to move on from the demo screen. You
+                      can always change this later.
                     </DialogDescription>
                   </DialogHeader>
                   <DialogFooter>

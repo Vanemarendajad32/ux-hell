@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
@@ -10,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 export default function LoginPage() {
   return (
@@ -25,7 +25,10 @@ export default function LoginPage() {
           <CardContent>
             <form className="space-y-4">
               <div className="space-y-2">
-                <label htmlFor="login-username" className="text-sm font-medium text-slate-700">
+                <label
+                  htmlFor="login-username"
+                  className="text-sm font-medium text-slate-700"
+                >
                   Username
                 </label>
                 <Input
@@ -38,7 +41,10 @@ export default function LoginPage() {
                 />
               </div>
               <div className="space-y-2">
-                <label htmlFor="login-password" className="text-sm font-medium text-slate-700">
+                <label
+                  htmlFor="login-password"
+                  className="text-sm font-medium text-slate-700"
+                >
                   Password
                 </label>
                 <Input

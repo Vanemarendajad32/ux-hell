@@ -1,8 +1,8 @@
 import Link from "next/link";
-import UiComponentDemo from "./ui-component-demo";
 import MotionIcon from "@/components/icons/motion-icon";
 import StatesIcon from "@/components/icons/states-icon";
 import SurfaceIcon from "@/components/icons/surface-icon";
+import UiComponentDemo from "./ui-component-demo";
 
 const palette = {
   primaryGradient: [
@@ -48,8 +48,16 @@ const palette = {
   ],
   border: [
     { name: "rose-200", label: "Primary border", className: "border-rose-200" },
-    { name: "rose-300", label: "Annotation border", className: "border-rose-300" },
-    { name: "slate-200", label: "Subtle border", className: "border-slate-200" },
+    {
+      name: "rose-300",
+      label: "Annotation border",
+      className: "border-rose-300",
+    },
+    {
+      name: "slate-200",
+      label: "Subtle border",
+      className: "border-slate-200",
+    },
     { name: "slate-300", label: "Input border", className: "border-slate-300" },
   ],
 };
@@ -71,29 +79,101 @@ const spacing = {
 };
 
 const typography = [
-  { name: "Heading 1", className: "text-3xl sm:text-5xl font-bold", size: "3rem / 48px" },
-  { name: "Heading 2", className: "text-2xl sm:text-4xl font-bold", size: "2.25rem / 36px" },
-  { name: "Heading 3", className: "text-xl sm:text-3xl font-bold", size: "1.875rem / 30px" },
-  { name: "Heading 4", className: "text-lg sm:text-2xl font-bold", size: "1.5rem / 24px" },
-  { name: "Heading 5", className: "text-base sm:text-xl font-semibold", size: "1.25rem / 20px" },
-  { name: "Heading 6", className: "text-sm sm:text-lg font-semibold", size: "1.125rem / 18px" },
+  {
+    name: "Heading 1",
+    className: "text-3xl sm:text-5xl font-bold",
+    size: "3rem / 48px",
+  },
+  {
+    name: "Heading 2",
+    className: "text-2xl sm:text-4xl font-bold",
+    size: "2.25rem / 36px",
+  },
+  {
+    name: "Heading 3",
+    className: "text-xl sm:text-3xl font-bold",
+    size: "1.875rem / 30px",
+  },
+  {
+    name: "Heading 4",
+    className: "text-lg sm:text-2xl font-bold",
+    size: "1.5rem / 24px",
+  },
+  {
+    name: "Heading 5",
+    className: "text-base sm:text-xl font-semibold",
+    size: "1.25rem / 20px",
+  },
+  {
+    name: "Heading 6",
+    className: "text-sm sm:text-lg font-semibold",
+    size: "1.125rem / 18px",
+  },
   { name: "Body text", className: "text-sm sm:text-base", size: "1rem / 16px" },
-  { name: "Small text", className: "text-xs sm:text-sm", size: "0.875rem / 14px" },
-  { name: "Extra small", className: "text-[11px] sm:text-xs", size: "0.75rem / 12px" },
+  {
+    name: "Small text",
+    className: "text-xs sm:text-sm",
+    size: "0.875rem / 14px",
+  },
+  {
+    name: "Extra small",
+    className: "text-[11px] sm:text-xs",
+    size: "0.75rem / 12px",
+  },
 ];
 
 const borderRadiusOptions = [
-  { label: "xl", className: "rounded-xl", token: "rounded-xl", value: "0.75rem" },
-  { label: "2xl", className: "rounded-2xl", token: "rounded-2xl", value: "1rem" },
-  { label: "3xl", className: "rounded-3xl", token: "rounded-3xl", value: "1.5rem" },
-  { label: "full", className: "rounded-full", token: "rounded-full", value: "9999px" },
+  {
+    label: "xl",
+    className: "rounded-xl",
+    token: "rounded-xl",
+    value: "0.75rem",
+  },
+  {
+    label: "2xl",
+    className: "rounded-2xl",
+    token: "rounded-2xl",
+    value: "1rem",
+  },
+  {
+    label: "3xl",
+    className: "rounded-3xl",
+    token: "rounded-3xl",
+    value: "1.5rem",
+  },
+  {
+    label: "full",
+    className: "rounded-full",
+    token: "rounded-full",
+    value: "9999px",
+  },
 ];
 
 const boxShadowOptions = [
-  { label: "lg", className: "shadow-lg", token: "shadow-lg", description: "Standard" },
-  { label: "xl", className: "shadow-xl", token: "shadow-xl", description: "Elevated" },
-  { label: "2xl", className: "shadow-2xl", token: "shadow-2xl", description: "Modal" },
-  { label: "inner", className: "shadow-inner", token: "shadow-inner", description: "Inset" },
+  {
+    label: "lg",
+    className: "shadow-lg",
+    token: "shadow-lg",
+    description: "Standard",
+  },
+  {
+    label: "xl",
+    className: "shadow-xl",
+    token: "shadow-xl",
+    description: "Elevated",
+  },
+  {
+    label: "2xl",
+    className: "shadow-2xl",
+    token: "shadow-2xl",
+    description: "Modal",
+  },
+  {
+    label: "inner",
+    className: "shadow-inner",
+    token: "shadow-inner",
+    description: "Inset",
+  },
 ];
 
 const transitions = [
@@ -134,7 +214,9 @@ export default function StylebookPage() {
             <span className="rounded-full border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-rose-700">
               UI Hell
             </span>
-            <span className="text-sm font-semibold text-slate-700">Stylebook</span>
+            <span className="text-sm font-semibold text-slate-700">
+              Stylebook
+            </span>
           </div>
           <Link
             href="/"
@@ -153,8 +235,9 @@ export default function StylebookPage() {
             Design System Visual Style Guide
           </h1>
           <p className="mt-4 max-w-2xl text-base text-slate-600">
-            A practical stylebook for colors, typography, motion, and components. Use these rules
-            consistently to build loud, readable, and intentionally dramatic interfaces.
+            A practical stylebook for colors, typography, motion, and
+            components. Use these rules consistently to build loud, readable,
+            and intentionally dramatic interfaces.
           </p>
         </header>
 
@@ -164,44 +247,56 @@ export default function StylebookPage() {
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-rose-600">
                 Foundations
               </p>
-              <h2 className="mt-2 text-3xl font-bold text-slate-900">Color system</h2>
+              <h2 className="mt-2 text-3xl font-bold text-slate-900">
+                Color system
+              </h2>
               <p className="mt-2 max-w-2xl text-sm text-slate-600">
-                Define your gradients, surfaces, and text hierarchy here. Every component should
-                borrow from these tokens.
+                Define your gradients, surfaces, and text hierarchy here. Every
+                component should borrow from these tokens.
               </p>
             </div>
           </div>
           <div className="mt-6 grid gap-8 sm:mt-8 lg:grid-cols-2">
             <div className="rounded-3xl border border-rose-200 bg-white p-6 shadow-xl sm:p-8">
-              <h3 className="text-xl font-bold text-slate-900">Color palette</h3>
+              <h3 className="text-xl font-bold text-slate-900">
+                Color palette
+              </h3>
               <div className="mt-6">
-              <p className="text-sm font-semibold text-slate-700">Primary gradient</p>
-              <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {palette.primaryGradient.map((swatch) => (
-                  <div
-                    key={swatch.name}
-                    className="rounded-2xl border border-rose-200 p-3"
-                  >
+                <p className="text-sm font-semibold text-slate-700">
+                  Primary gradient
+                </p>
+                <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  {palette.primaryGradient.map((swatch) => (
                     <div
-                      className={`mb-3 flex h-24 items-center justify-center rounded-2xl ${swatch.className} font-semibold text-white shadow-lg`}
+                      key={swatch.name}
+                      className="rounded-2xl border border-rose-200 p-3"
                     >
-                      Aa
+                      <div
+                        className={`mb-3 flex h-24 items-center justify-center rounded-2xl ${swatch.className} font-semibold text-white shadow-lg`}
+                      >
+                        Aa
+                      </div>
+                      <p className="mt-3 text-sm font-semibold text-slate-800">
+                        {swatch.name}
+                      </p>
+                      <p className="text-xs text-slate-500">{swatch.hex}</p>
                     </div>
-                    <p className="mt-3 text-sm font-semibold text-slate-800">{swatch.name}</p>
-                    <p className="text-xs text-slate-500">{swatch.hex}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-6 rounded-2xl border border-rose-200 p-4">
-                <p className="text-sm font-semibold text-slate-700">Main gradient</p>
-                <div className="mt-3 flex h-24 items-center justify-center rounded-2xl bg-gradient-to-r from-rose-600 to-orange-600 font-semibold text-white shadow-lg">
-                  Aa
+                  ))}
                 </div>
-                <p className="mt-3 text-sm text-slate-700">rose → orange</p>
+                <div className="mt-6 rounded-2xl border border-rose-200 p-4">
+                  <p className="text-sm font-semibold text-slate-700">
+                    Main gradient
+                  </p>
+                  <div className="mt-3 flex h-24 items-center justify-center rounded-2xl bg-gradient-to-r from-rose-600 to-orange-600 font-semibold text-white shadow-lg">
+                    Aa
+                  </div>
+                  <p className="mt-3 text-sm text-slate-700">rose → orange</p>
+                </div>
               </div>
-            </div>
               <div className="mt-6 sm:mt-8">
-                <p className="text-sm font-semibold text-slate-700">Background colors</p>
+                <p className="text-sm font-semibold text-slate-700">
+                  Background colors
+                </p>
                 <div className="mt-3 grid gap-3 sm:grid-cols-2">
                   {palette.background.map((swatch) => (
                     <div
@@ -213,7 +308,9 @@ export default function StylebookPage() {
                       >
                         Aa
                       </div>
-                      <p className="mt-3 text-sm font-semibold text-slate-800">{swatch.name}</p>
+                      <p className="mt-3 text-sm font-semibold text-slate-800">
+                        {swatch.name}
+                      </p>
                       <p className="text-xs text-slate-500">{swatch.hex}</p>
                     </div>
                   ))}
@@ -222,9 +319,13 @@ export default function StylebookPage() {
             </div>
 
             <div className="rounded-3xl border border-rose-200 bg-white p-6 shadow-xl sm:p-8">
-              <h3 className="text-xl font-bold text-slate-900">Text and borders</h3>
+              <h3 className="text-xl font-bold text-slate-900">
+                Text and borders
+              </h3>
               <div className="mt-6">
-                <p className="text-sm font-semibold text-slate-700">Text colors</p>
+                <p className="text-sm font-semibold text-slate-700">
+                  Text colors
+                </p>
                 <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
                   {palette.text.map((item) => (
                     <div key={item.name}>
@@ -233,7 +334,9 @@ export default function StylebookPage() {
                       >
                         Aa
                       </div>
-                      <div className="text-sm font-semibold text-slate-900">{item.name}</div>
+                      <div className="text-sm font-semibold text-slate-900">
+                        {item.name}
+                      </div>
                       <div className="text-xs text-slate-500">{item.label}</div>
                     </div>
                   ))}
@@ -246,7 +349,10 @@ export default function StylebookPage() {
                     </p>
                     <div className="mt-3 grid gap-2">
                       {palette.text.map((item) => (
-                        <p key={`white-${item.name}`} className={`text-sm font-semibold ${item.className}`}>
+                        <p
+                          key={`white-${item.name}`}
+                          className={`text-sm font-semibold ${item.className}`}
+                        >
                           Aa Example text ({item.name})
                         </p>
                       ))}
@@ -258,7 +364,10 @@ export default function StylebookPage() {
                     </p>
                     <div className="mt-3 grid gap-2">
                       {palette.text.map((item) => (
-                        <p key={`rose-${item.name}`} className={`text-sm font-semibold ${item.className}`}>
+                        <p
+                          key={`rose-${item.name}`}
+                          className={`text-sm font-semibold ${item.className}`}
+                        >
                           Aa Example text ({item.name})
                         </p>
                       ))}
@@ -267,7 +376,9 @@ export default function StylebookPage() {
                 </div>
               </div>
               <div className="mt-8">
-                <p className="text-sm font-semibold text-slate-700">Border colors</p>
+                <p className="text-sm font-semibold text-slate-700">
+                  Border colors
+                </p>
                 <div className="mt-3 grid gap-3">
                   {palette.border.map((item) => (
                     <div
@@ -279,11 +390,15 @@ export default function StylebookPage() {
                           className={`h-10 w-10 rounded-xl border-4 ${item.className} bg-rose-50`}
                         />
                         <div>
-                          <p className="text-sm font-medium text-slate-700">{item.label}</p>
+                          <p className="text-sm font-medium text-slate-700">
+                            {item.label}
+                          </p>
                           <p className="text-xs text-slate-500">{item.name}</p>
                         </div>
                       </div>
-                      <div className={`h-10 w-24 rounded-xl border-4 ${item.className} bg-white`} />
+                      <div
+                        className={`h-10 w-24 rounded-xl border-4 ${item.className} bg-white`}
+                      />
                     </div>
                   ))}
                 </div>
@@ -298,61 +413,79 @@ export default function StylebookPage() {
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-rose-600">
                 Foundations
               </p>
-              <h2 className="mt-2 text-3xl font-bold text-slate-900">Spacing and type</h2>
+              <h2 className="mt-2 text-3xl font-bold text-slate-900">
+                Spacing and type
+              </h2>
               <p className="mt-2 max-w-2xl text-sm text-slate-600">
-                Keep rhythm consistent by using a shared spacing scale and predictable type sizes.
+                Keep rhythm consistent by using a shared spacing scale and
+                predictable type sizes.
               </p>
             </div>
           </div>
           <div className="mt-6 grid gap-8 sm:mt-8 lg:grid-cols-2">
             <div className="rounded-3xl border border-rose-200 bg-white p-5 shadow-xl sm:p-8">
-              <h3 className="text-lg font-bold text-slate-900 sm:text-xl">Spacing and layout</h3>
+              <h3 className="text-lg font-bold text-slate-900 sm:text-xl">
+                Spacing and layout
+              </h3>
               <div className="mt-6 grid gap-6 sm:gap-8 lg:grid-cols-2">
-              <div>
-                <p className="text-sm font-semibold text-slate-700">Padding scale</p>
-                <div className="mt-3 space-y-2 sm:space-y-3">
-                  {spacing.padding.map((item) => (
-                    <div key={item.name} className="rounded-lg border border-rose-200 bg-rose-50">
-                      <div className={`m-1 rounded border border-rose-300 bg-white sm:m-2 ${item.name}`}>
-                        <div className="text-xs font-mono text-slate-600">
-                          {item.name} ({item.value})
+                <div>
+                  <p className="text-sm font-semibold text-slate-700">
+                    Padding scale
+                  </p>
+                  <div className="mt-3 space-y-2 sm:space-y-3">
+                    {spacing.padding.map((item) => (
+                      <div
+                        key={item.name}
+                        className="rounded-lg border border-rose-200 bg-rose-50"
+                      >
+                        <div
+                          className={`m-1 rounded border border-rose-300 bg-white sm:m-2 ${item.name}`}
+                        >
+                          <div className="text-xs font-mono text-slate-600">
+                            {item.name} ({item.value})
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              <div>
-                <p className="text-sm font-semibold text-slate-700">Gap scale</p>
-                <div className="mt-3 grid gap-3 sm:gap-4">
-                  {spacing.gap.map((item) => (
-                    <div
-                      key={item.name}
-                      className="rounded-2xl border border-rose-200 bg-white px-3 py-3 sm:px-4 sm:py-4"
-                    >
-                      <div className="flex items-center justify-between text-[10px] font-semibold uppercase tracking-[0.15em] text-slate-500 sm:text-xs sm:tracking-[0.2em]">
-                        <span>{item.name}</span>
-                        <span className="text-[11px] font-medium normal-case tracking-normal text-slate-500">
-                          {item.value}
-                        </span>
+                <div>
+                  <p className="text-sm font-semibold text-slate-700">
+                    Gap scale
+                  </p>
+                  <div className="mt-3 grid gap-3 sm:gap-4">
+                    {spacing.gap.map((item) => (
+                      <div
+                        key={item.name}
+                        className="rounded-2xl border border-rose-200 bg-white px-3 py-3 sm:px-4 sm:py-4"
+                      >
+                        <div className="flex items-center justify-between text-[10px] font-semibold uppercase tracking-[0.15em] text-slate-500 sm:text-xs sm:tracking-[0.2em]">
+                          <span>{item.name}</span>
+                          <span className="text-[11px] font-medium normal-case tracking-normal text-slate-500">
+                            {item.value}
+                          </span>
+                        </div>
+                        <div className={`mt-3 flex flex-wrap ${item.name}`}>
+                          <div className="h-10 w-10 rounded-2xl bg-rose-600 sm:h-12 sm:w-12" />
+                          <div className="h-10 w-10 rounded-2xl bg-orange-600 sm:h-12 sm:w-12" />
+                          <div className="h-10 w-10 rounded-2xl bg-amber-600 sm:h-12 sm:w-12" />
+                        </div>
                       </div>
-                      <div className={`mt-3 flex flex-wrap ${item.name}`}>
-                        <div className="h-10 w-10 rounded-2xl bg-rose-600 sm:h-12 sm:w-12" />
-                        <div className="h-10 w-10 rounded-2xl bg-orange-600 sm:h-12 sm:w-12" />
-                        <div className="h-10 w-10 rounded-2xl bg-amber-600 sm:h-12 sm:w-12" />
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
               <div className="mt-6 sm:mt-8">
-                <p className="text-sm font-semibold text-slate-700">Layout patterns</p>
+                <p className="text-sm font-semibold text-slate-700">
+                  Layout patterns
+                </p>
                 <div className="mt-4 rounded-3xl border border-rose-200 bg-white p-4 shadow-xl sm:p-6">
                   <div className="space-y-6 sm:space-y-8">
                     <div>
-                      <h4 className="mb-4 text-base font-bold text-slate-900 sm:text-lg">Flexbox Layouts</h4>
+                      <h4 className="mb-4 text-base font-bold text-slate-900 sm:text-lg">
+                        Flexbox Layouts
+                      </h4>
                       <div className="space-y-3 sm:space-y-4">
                         <div className="rounded-xl border border-rose-200 p-3 sm:p-4">
                           <div className="mb-2 text-[10px] font-mono text-slate-500 sm:text-xs">
@@ -365,7 +498,9 @@ export default function StylebookPage() {
                           </div>
                         </div>
                         <div className="rounded-xl border border-rose-200 p-3 sm:p-4">
-                          <div className="mb-2 text-[10px] font-mono text-slate-500 sm:text-xs">flex flex-col gap-3</div>
+                          <div className="mb-2 text-[10px] font-mono text-slate-500 sm:text-xs">
+                            flex flex-col gap-3
+                          </div>
                           <div className="flex flex-col gap-3 rounded-lg bg-rose-50 p-2 sm:p-3">
                             <div className="h-5 w-full rounded bg-rose-600 sm:h-6" />
                             <div className="h-5 w-full rounded bg-orange-600 sm:h-6" />
@@ -376,10 +511,14 @@ export default function StylebookPage() {
                     </div>
 
                     <div>
-                      <h4 className="mb-4 text-base font-bold text-slate-900 sm:text-lg">Grid Layouts</h4>
+                      <h4 className="mb-4 text-base font-bold text-slate-900 sm:text-lg">
+                        Grid Layouts
+                      </h4>
                       <div className="space-y-3 sm:space-y-4">
                         <div className="rounded-xl border border-rose-200 p-3 sm:p-4">
-                          <div className="mb-2 text-[10px] font-mono text-slate-500 sm:text-xs">grid grid-cols-3 gap-4</div>
+                          <div className="mb-2 text-[10px] font-mono text-slate-500 sm:text-xs">
+                            grid grid-cols-3 gap-4
+                          </div>
                           <div className="grid grid-cols-3 gap-4 rounded-lg bg-rose-50 p-2 sm:p-3">
                             <div className="h-12 rounded bg-rose-600 sm:h-16" />
                             <div className="h-12 rounded bg-orange-600 sm:h-16" />
@@ -387,7 +526,9 @@ export default function StylebookPage() {
                           </div>
                         </div>
                         <div className="rounded-xl border border-rose-200 p-3 sm:p-4">
-                          <div className="mb-2 text-[10px] font-mono text-slate-500 sm:text-xs">grid grid-cols-2 gap-6</div>
+                          <div className="mb-2 text-[10px] font-mono text-slate-500 sm:text-xs">
+                            grid grid-cols-2 gap-6
+                          </div>
                           <div className="grid grid-cols-2 gap-6 rounded-lg bg-rose-50 p-2 sm:p-3">
                             <div className="h-16 rounded bg-rose-600 sm:h-20" />
                             <div className="h-16 rounded bg-orange-600 sm:h-20" />
@@ -397,16 +538,24 @@ export default function StylebookPage() {
                     </div>
 
                     <div>
-                      <h4 className="mb-4 text-base font-bold text-slate-900 sm:text-lg">Container Widths</h4>
+                      <h4 className="mb-4 text-base font-bold text-slate-900 sm:text-lg">
+                        Container Widths
+                      </h4>
                       <div className="space-y-3">
                         <div className="mx-auto max-w-md rounded-lg bg-rose-100 p-3 text-center">
-                          <div className="text-xs font-mono text-slate-600">max-w-md (28rem / 448px)</div>
+                          <div className="text-xs font-mono text-slate-600">
+                            max-w-md (28rem / 448px)
+                          </div>
                         </div>
                         <div className="mx-auto max-w-2xl rounded-lg bg-orange-100 p-3 text-center">
-                          <div className="text-xs font-mono text-slate-600">max-w-2xl (42rem / 672px)</div>
+                          <div className="text-xs font-mono text-slate-600">
+                            max-w-2xl (42rem / 672px)
+                          </div>
                         </div>
                         <div className="mx-auto max-w-4xl rounded-lg bg-amber-100 p-3 text-center">
-                          <div className="text-xs font-mono text-slate-600">max-w-4xl (56rem / 896px)</div>
+                          <div className="text-xs font-mono text-slate-600">
+                            max-w-4xl (56rem / 896px)
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -424,7 +573,9 @@ export default function StylebookPage() {
                     className="flex flex-col items-start gap-2 rounded-2xl border border-rose-200 bg-rose-50/50 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
                   >
                     <div>
-                      <p className={`text-slate-900 ${item.className}`}>{item.name}</p>
+                      <p className={`text-slate-900 ${item.className}`}>
+                        {item.name}
+                      </p>
                       <p className="text-xs text-slate-500">{item.className}</p>
                     </div>
                     <span className="text-xs text-slate-500">{item.size}</span>
@@ -441,17 +592,24 @@ export default function StylebookPage() {
               <SurfaceIcon />
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-rose-600">Surface</p>
-              <h2 className="mt-1 text-3xl font-bold text-slate-900">Border Radius &amp; Shadows</h2>
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-rose-600">
+                Surface
+              </p>
+              <h2 className="mt-1 text-3xl font-bold text-slate-900">
+                Border Radius &amp; Shadows
+              </h2>
               <p className="mt-2 max-w-2xl text-sm text-slate-600">
-                Use a consistent rounding scale and shadow hierarchy to signal elevation.
+                Use a consistent rounding scale and shadow hierarchy to signal
+                elevation.
               </p>
             </div>
           </div>
 
           <div className="mt-6 rounded-3xl border border-rose-200 bg-white p-6 shadow-xl sm:mt-8 sm:p-8">
             <div className="mb-8">
-              <h3 className="mb-4 text-lg font-bold text-slate-900">Border Radius</h3>
+              <h3 className="mb-4 text-lg font-bold text-slate-900">
+                Border Radius
+              </h3>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                 {borderRadiusOptions.map((item) => (
                   <div key={item.token} className="text-center">
@@ -460,25 +618,37 @@ export default function StylebookPage() {
                     >
                       <span className="font-bold text-white">{item.label}</span>
                     </div>
-                    <div className="text-sm font-semibold text-slate-900">{item.token}</div>
-                    <div className="text-xs font-mono text-slate-500">{item.value}</div>
+                    <div className="text-sm font-semibold text-slate-900">
+                      {item.token}
+                    </div>
+                    <div className="text-xs font-mono text-slate-500">
+                      {item.value}
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
 
             <div>
-              <h3 className="mb-4 text-lg font-bold text-slate-900">Box Shadow</h3>
+              <h3 className="mb-4 text-lg font-bold text-slate-900">
+                Box Shadow
+              </h3>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                 {boxShadowOptions.map((item) => (
                   <div key={item.token} className="text-center">
                     <div
                       className={`mb-3 flex h-24 items-center justify-center rounded-2xl border border-slate-200 bg-white ${item.className}`}
                     >
-                      <span className="font-bold text-slate-900">{item.label}</span>
+                      <span className="font-bold text-slate-900">
+                        {item.label}
+                      </span>
                     </div>
-                    <div className="text-sm font-semibold text-slate-900">{item.token}</div>
-                    <div className="text-xs text-slate-500">{item.description}</div>
+                    <div className="text-sm font-semibold text-slate-900">
+                      {item.token}
+                    </div>
+                    <div className="text-xs text-slate-500">
+                      {item.description}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -492,9 +662,12 @@ export default function StylebookPage() {
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-rose-600">
                 Components
               </p>
-              <h2 className="mt-2 text-3xl font-bold text-slate-900">UI building blocks</h2>
+              <h2 className="mt-2 text-3xl font-bold text-slate-900">
+                UI building blocks
+              </h2>
               <p className="mt-2 max-w-2xl text-sm text-slate-600">
-                These are the reusable patterns that should inherit the foundations above.
+                These are the reusable patterns that should inherit the
+                foundations above.
               </p>
             </div>
           </div>
@@ -520,17 +693,23 @@ export default function StylebookPage() {
               <div className="mt-4 grid gap-4">
                 <div className="rounded-2xl border border-rose-200 p-5 shadow-lg">
                   <h3 className="text-lg font-semibold">Card title</h3>
-                  <p className="mt-2 text-sm text-slate-600">Card content goes here with some text.</p>
+                  <p className="mt-2 text-sm text-slate-600">
+                    Card content goes here with some text.
+                  </p>
                 </div>
                 <div className="rounded-3xl border border-rose-200 p-6 shadow-2xl">
                   <h3 className="text-lg font-semibold">Elevated card</h3>
-                  <p className="mt-2 text-sm text-slate-600">This card has more padding and shadow.</p>
+                  <p className="mt-2 text-sm text-slate-600">
+                    This card has more padding and shadow.
+                  </p>
                 </div>
               </div>
             </div>
 
             <div className="rounded-3xl border border-rose-200 bg-white p-6 shadow-xl">
-              <p className="text-sm font-semibold text-slate-700">Form inputs</p>
+              <p className="text-sm font-semibold text-slate-700">
+                Form inputs
+              </p>
               <div className="mt-4 grid gap-3">
                 <label className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
                   Input field
@@ -547,7 +726,7 @@ export default function StylebookPage() {
               </div>
             </div>
           </div>
-        </section>        
+        </section>
 
         <section className="rounded-[2.5rem] border border-rose-200/80 bg-white/70 p-6 shadow-2xl backdrop-blur sm:p-8">
           <div className="flex flex-wrap items-center gap-4">
@@ -555,10 +734,15 @@ export default function StylebookPage() {
               <MotionIcon />
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-rose-600">Motion</p>
-              <h2 className="mt-1 text-3xl font-bold text-slate-900">Transitions &amp; Motion</h2>
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-rose-600">
+                Motion
+              </p>
+              <h2 className="mt-1 text-3xl font-bold text-slate-900">
+                Transitions &amp; Motion
+              </h2>
               <p className="mt-2 max-w-2xl text-sm text-slate-600">
-                Keep motion deliberate and short, with clear affordances on hover and focus.
+                Keep motion deliberate and short, with clear affordances on
+                hover and focus.
               </p>
             </div>
           </div>
@@ -566,40 +750,66 @@ export default function StylebookPage() {
           <div className="mt-6 rounded-3xl border border-rose-200 bg-white p-6 shadow-xl sm:mt-8 sm:p-8">
             <div className="space-y-6">
               <div>
-                <h3 className="mb-4 text-lg font-bold text-slate-900">Transition Duration</h3>
+                <h3 className="mb-4 text-lg font-bold text-slate-900">
+                  Transition Duration
+                </h3>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                   {transitions.map((item) => (
                     <div key={item.label} className="text-center">
                       <div
                         className={`mb-3 flex h-20 items-center justify-center rounded-2xl bg-gradient-to-r from-rose-600 to-orange-600 ${item.swatchClassName}`}
                       >
-                        <span className="font-bold text-white">{item.label}</span>
+                        <span className="font-bold text-white">
+                          {item.label}
+                        </span>
                       </div>
-                      <div className="text-sm font-semibold text-slate-900">{item.codeClassName}</div>
-                      <div className="text-xs font-mono text-slate-500">{item.duration}</div>
+                      <div className="text-sm font-semibold text-slate-900">
+                        {item.codeClassName}
+                      </div>
+                      <div className="text-xs font-mono text-slate-500">
+                        {item.duration}
+                      </div>
                     </div>
                   ))}
                 </div>
               </div>
 
               <div>
-                <h3 className="mb-4 text-lg font-bold text-slate-900">Common Transition Effects</h3>
+                <h3 className="mb-4 text-lg font-bold text-slate-900">
+                  Common Transition Effects
+                </h3>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="cursor-pointer rounded-xl border border-rose-200 p-4 transition-shadow hover:shadow-lg">
-                    <div className="mb-1 font-semibold text-slate-900">Shadow Transition</div>
-                    <div className="text-xs font-mono text-slate-500">transition-shadow</div>
+                    <div className="mb-1 font-semibold text-slate-900">
+                      Shadow Transition
+                    </div>
+                    <div className="text-xs font-mono text-slate-500">
+                      transition-shadow
+                    </div>
                   </div>
                   <div className="cursor-pointer rounded-xl border border-rose-200 p-4 transition-colors hover:bg-rose-50">
-                    <div className="mb-1 font-semibold text-slate-900">Color Transition</div>
-                    <div className="text-xs font-mono text-slate-500">transition-colors</div>
+                    <div className="mb-1 font-semibold text-slate-900">
+                      Color Transition
+                    </div>
+                    <div className="text-xs font-mono text-slate-500">
+                      transition-colors
+                    </div>
                   </div>
                   <div className="cursor-pointer rounded-xl border border-rose-200 p-4 transition-transform hover:scale-105">
-                    <div className="mb-1 font-semibold text-slate-900">Scale Transform</div>
-                    <div className="text-xs font-mono text-slate-500">hover:scale-105</div>
+                    <div className="mb-1 font-semibold text-slate-900">
+                      Scale Transform
+                    </div>
+                    <div className="text-xs font-mono text-slate-500">
+                      hover:scale-105
+                    </div>
                   </div>
                   <div className="cursor-pointer rounded-xl border border-rose-200 p-4 transition-opacity hover:opacity-70">
-                    <div className="mb-1 font-semibold text-slate-900">Opacity Transition</div>
-                    <div className="text-xs font-mono text-slate-500">hover:opacity-70</div>
+                    <div className="mb-1 font-semibold text-slate-900">
+                      Opacity Transition
+                    </div>
+                    <div className="text-xs font-mono text-slate-500">
+                      hover:opacity-70
+                    </div>
                   </div>
                 </div>
               </div>
@@ -609,31 +819,42 @@ export default function StylebookPage() {
 
         <section className="rounded-[2.5rem] border border-rose-200/80 bg-white/70 p-6 shadow-2xl backdrop-blur sm:p-8">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-rose-600">Depth</p>
-            <h2 className="mt-2 text-3xl font-bold text-slate-900">Opacity &amp; Layering</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-rose-600">
+              Depth
+            </p>
+            <h2 className="mt-2 text-3xl font-bold text-slate-900">
+              Opacity &amp; Layering
+            </h2>
             <p className="mt-2 max-w-2xl text-sm text-slate-600">
-              Set clarity and hierarchy through opacity steps and z-index layering.
+              Set clarity and hierarchy through opacity steps and z-index
+              layering.
             </p>
           </div>
 
           <div className="mt-6 rounded-3xl border border-rose-200 bg-white p-6 shadow-xl sm:mt-8 sm:p-8">
             <div className="grid gap-8 md:grid-cols-2">
               <div>
-                <h3 className="mb-4 text-lg font-bold text-slate-900">Opacity Scale</h3>
+                <h3 className="mb-4 text-lg font-bold text-slate-900">
+                  Opacity Scale
+                </h3>
                 <div className="space-y-3">
                   {opacityScale.map((item) => (
                     <div
                       key={item.label}
                       className={`relative flex h-12 items-center justify-center rounded-lg bg-rose-600 ${item.className}`}
                     >
-                      <span className="font-semibold text-white">{item.label}</span>
+                      <span className="font-semibold text-white">
+                        {item.label}
+                      </span>
                     </div>
                   ))}
                 </div>
               </div>
 
               <div>
-                <h3 className="mb-4 text-lg font-bold text-slate-900">Z-Index Layers</h3>
+                <h3 className="mb-4 text-lg font-bold text-slate-900">
+                  Z-Index Layers
+                </h3>
                 <div className="relative h-64 rounded-xl bg-slate-100 p-4">
                   <div className="absolute left-8 top-8 z-10 flex h-32 w-32 items-center justify-center rounded-xl bg-rose-600 shadow-lg">
                     <span className="font-bold text-white">z-10</span>
@@ -662,10 +883,15 @@ export default function StylebookPage() {
               <StatesIcon />
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-rose-600">States</p>
-              <h2 className="mt-1 text-3xl font-bold text-slate-900">Interactive States</h2>
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-rose-600">
+                States
+              </p>
+              <h2 className="mt-1 text-3xl font-bold text-slate-900">
+                Interactive States
+              </h2>
               <p className="mt-2 max-w-2xl text-sm text-slate-600">
-                Consistent hover, focus, and disabled styles improve affordance and clarity.
+                Consistent hover, focus, and disabled styles improve affordance
+                and clarity.
               </p>
             </div>
           </div>
@@ -673,7 +899,9 @@ export default function StylebookPage() {
           <div className="mt-6 rounded-3xl border border-rose-200 bg-white p-6 shadow-xl sm:mt-8 sm:p-8">
             <div className="space-y-6">
               <div>
-                <h3 className="mb-4 text-lg font-bold text-slate-900">Hover States</h3>
+                <h3 className="mb-4 text-lg font-bold text-slate-900">
+                  Hover States
+                </h3>
                 <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
                   <button className="bg-gradient-to-r from-rose-600 to-orange-600 text-white py-3 px-6 rounded-xl hover:shadow-xl transition-shadow">
                     Hover for Shadow
@@ -688,7 +916,9 @@ export default function StylebookPage() {
               </div>
 
               <div>
-                <h3 className="mb-4 text-lg font-bold text-slate-900">Focus States</h3>
+                <h3 className="mb-4 text-lg font-bold text-slate-900">
+                  Focus States
+                </h3>
                 <div className="space-y-3 max-w-md">
                   <input
                     type="text"
@@ -702,7 +932,9 @@ export default function StylebookPage() {
               </div>
 
               <div>
-                <h3 className="mb-4 text-lg font-bold text-slate-900">Disabled States</h3>
+                <h3 className="mb-4 text-lg font-bold text-slate-900">
+                  Disabled States
+                </h3>
                 <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
                   <button
                     disabled
@@ -723,15 +955,21 @@ export default function StylebookPage() {
               </div>
 
               <div>
-                <h3 className="mb-4 text-lg font-bold text-slate-900">Cursor Types</h3>
+                <h3 className="mb-4 text-lg font-bold text-slate-900">
+                  Cursor Types
+                </h3>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                   <div className="border border-rose-200 rounded-xl p-4 cursor-pointer">
                     <div className="font-semibold text-slate-900">Pointer</div>
                     <div className="text-xs text-slate-500">cursor-pointer</div>
                   </div>
                   <div className="border border-rose-200 rounded-xl p-4 cursor-not-allowed opacity-60">
-                    <div className="font-semibold text-slate-900">Not Allowed</div>
-                    <div className="text-xs text-slate-500">cursor-not-allowed</div>
+                    <div className="font-semibold text-slate-900">
+                      Not Allowed
+                    </div>
+                    <div className="text-xs text-slate-500">
+                      cursor-not-allowed
+                    </div>
                   </div>
                   <div className="border border-rose-200 rounded-xl p-4 cursor-default">
                     <div className="font-semibold text-slate-900">Default</div>
@@ -745,8 +983,12 @@ export default function StylebookPage() {
 
         <section className="rounded-[2.5rem] border border-rose-200/80 bg-white/70 p-6 shadow-2xl backdrop-blur sm:p-8">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-rose-600">Annotations</p>
-            <h2 className="mt-2 text-3xl font-bold text-slate-900">Annotation Styles</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-rose-600">
+              Annotations
+            </p>
+            <h2 className="mt-2 text-3xl font-bold text-slate-900">
+              Annotation Styles
+            </h2>
             <p className="mt-2 max-w-2xl text-sm text-slate-600">
               Styles used for UX Hell callouts and teaching moments.
             </p>
@@ -765,10 +1007,12 @@ export default function StylebookPage() {
                       !
                     </div>
                     <div>
-                      <div className="mb-1 font-bold text-rose-900">Bad UX Pattern</div>
+                      <div className="mb-1 font-bold text-rose-900">
+                        Bad UX Pattern
+                      </div>
                       <div className="text-sm text-rose-800">
-                        This is an example of an annotation explaining what makes this element a
-                        bad UX pattern.
+                        This is an example of an annotation explaining what
+                        makes this element a bad UX pattern.
                       </div>
                     </div>
                   </div>
@@ -788,7 +1032,6 @@ export default function StylebookPage() {
         </section>
 
         <UiComponentDemo />
-
       </div>
     </div>
   );
