@@ -1,10 +1,23 @@
 "use client";
 
 import { XIcon } from "lucide-react";
-import { Dialog as DialogPrimitive } from "radix-ui";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import type * as React from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
+const dialogOverlayClass =
+  "fixed inset-0 isolate z-50 bg-black/20 duration-100 supports-backdrop-filter:backdrop-blur-sm data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0";
+const dialogContentClass =
+  "fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-3xl border border-rose-200 bg-white p-6 text-sm text-slate-900 shadow-2xl duration-100 outline-none sm:max-w-sm data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95";
+const dialogCloseButtonClass =
+  "absolute top-2 right-2 rounded-xl text-slate-500 hover:text-slate-700";
+const dialogHeaderClass = "flex flex-col gap-2";
+const dialogFooterClass =
+  "-mx-6 -mb-6 flex flex-col-reverse gap-2 border-t border-rose-200 px-6 pb-4 pt-4 sm:flex-row sm:justify-end sm:pb-5 sm:pr-5";
+const dialogTitleClass = "font-heading text-base leading-none font-medium";
+const dialogDescriptionClass =
+  "text-sm text-slate-600 *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-slate-900";
 
 function Dialog({
   ...props
@@ -38,7 +51,7 @@ function DialogOverlay({
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       className={cn(
-        "fixed inset-0 isolate z-50 bg-black/20 duration-100 supports-backdrop-filter:backdrop-blur-sm data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0",
+        dialogOverlayClass,
         className,
       )}
       {...props}
@@ -60,7 +73,7 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-3xl border border-rose-200 bg-white p-6 text-sm text-slate-900 shadow-2xl duration-100 outline-none sm:max-w-sm data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+          dialogContentClass,
           className,
         )}
         {...props}
@@ -70,7 +83,7 @@ function DialogContent({
           <DialogPrimitive.Close data-slot="dialog-close" asChild>
             <Button
               variant="ghost"
-              className="absolute top-2 right-2 rounded-xl text-slate-500 hover:text-slate-700"
+              className={dialogCloseButtonClass}
               size="icon-sm"
             >
               <XIcon />
@@ -87,7 +100,7 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="dialog-header"
-      className={cn("flex flex-col gap-2", className)}
+      className={cn(dialogHeaderClass, className)}
       {...props}
     />
   );
@@ -105,7 +118,7 @@ function DialogFooter({
     <div
       data-slot="dialog-footer"
       className={cn(
-        "-mx-6 -mb-6 flex flex-col-reverse gap-2 border-t border-rose-200 px-6 pb-4 pt-4 sm:flex-row sm:justify-end sm:pb-5 sm:pr-5",
+        dialogFooterClass,
         className,
       )}
       {...props}
@@ -127,10 +140,7 @@ function DialogTitle({
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={cn(
-        "font-heading text-base leading-none font-medium",
-        className,
-      )}
+      className={cn(dialogTitleClass, className)}
       {...props}
     />
   );
@@ -143,10 +153,7 @@ function DialogDescription({
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"
-      className={cn(
-        "text-sm text-slate-600 *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-slate-900",
-        className,
-      )}
+      className={cn(dialogDescriptionClass, className)}
       {...props}
     />
   );
