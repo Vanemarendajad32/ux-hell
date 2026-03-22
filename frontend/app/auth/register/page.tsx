@@ -20,13 +20,42 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { registerSchema } from "@/schemas/register-schema";
+
+type FieldErrors = {
+  username?: string;
+  password?: string;
+  quirk?: string;
+};
 
 export default function RegisterPage() {
   const [showPasswordWarning, setShowPasswordWarning] = useState(false);
   const [hasSubmittedOnce, setHasSubmittedOnce] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const values = {
+      username: String(formData.get("username") ?? ""),
+      password: String(formData.get("password") ?? ""),
+      quirk: String(formData.get("quirk") ?? ""),
+    };
+    const result = registerSchema.safeParse(values);
+
+    if (!result.success) {
+      const errors: FieldErrors = {};
+      for (const issue of result.error.issues) {
+        const key = issue.path[0];
+        if (typeof key === "string" && !errors[key as keyof FieldErrors]) {
+          errors[key as keyof FieldErrors] = issue.message;
+        }
+      }
+      setFieldErrors(errors);
+      return;
+    }
+
+    setFieldErrors({});
 
     if (!hasSubmittedOnce) {
       setShowPasswordWarning(true);
@@ -80,8 +109,20 @@ export default function RegisterPage() {
                   type="text"
                   placeholder="Pick a username"
                   autoComplete="username"
+                  aria-invalid={Boolean(fieldErrors.username)}
+                  aria-describedby={
+                    fieldErrors.username ? "register-username-error" : undefined
+                  }
                   required
                 />
+                {fieldErrors.username ? (
+                  <p
+                    id="register-username-error"
+                    className="text-xs text-rose-600"
+                  >
+                    {fieldErrors.username}
+                  </p>
+                ) : null}
               </div>
               <div className="space-y-2">
                 <label
@@ -96,8 +137,20 @@ export default function RegisterPage() {
                   type="password"
                   placeholder="Create a password"
                   autoComplete="new-password"
+                  aria-invalid={Boolean(fieldErrors.password)}
+                  aria-describedby={
+                    fieldErrors.password ? "register-password-error" : undefined
+                  }
                   required
                 />
+                {fieldErrors.password ? (
+                  <p
+                    id="register-password-error"
+                    className="text-xs text-rose-600"
+                  >
+                    {fieldErrors.password}
+                  </p>
+                ) : null}
                 <ul className="list-disc space-y-1 pl-4 text-xs text-slate-500">
                   <li>
                     Also include 1 uppercase letter, 1 number, and 1 symbol.
@@ -118,8 +171,20 @@ export default function RegisterPage() {
                   name="quirk"
                   type="text"
                   placeholder="Tell us the worst one"
+                  aria-invalid={Boolean(fieldErrors.quirk)}
+                  aria-describedby={
+                    fieldErrors.quirk ? "register-quirk-error" : undefined
+                  }
                   required
                 />
+                {fieldErrors.quirk ? (
+                  <p
+                    id="register-quirk-error"
+                    className="text-xs text-rose-600"
+                  >
+                    {fieldErrors.quirk}
+                  </p>
+                ) : null}
               </div>
               <Button type="submit" className="w-full">
                 Create account

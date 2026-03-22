@@ -1,7 +1,7 @@
 "use client";
 
-import { XIcon } from "lucide-react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { XIcon } from "lucide-react";
 import type * as React from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -50,10 +50,7 @@ function DialogOverlay({
   return (
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
-      className={cn(
-        dialogOverlayClass,
-        className,
-      )}
+      className={cn(dialogOverlayClass, className)}
       {...props}
     />
   );
@@ -72,10 +69,7 @@ function DialogContent({
       <DialogOverlay />
       <DialogPrimitive.Content
         data-slot="dialog-content"
-        className={cn(
-          dialogContentClass,
-          className,
-        )}
+        className={cn(dialogContentClass, className)}
         {...props}
       >
         {children}
@@ -117,10 +111,7 @@ function DialogFooter({
   return (
     <div
       data-slot="dialog-footer"
-      className={cn(
-        dialogFooterClass,
-        className,
-      )}
+      className={cn(dialogFooterClass, className)}
       {...props}
     >
       {children}
