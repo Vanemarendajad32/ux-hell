@@ -74,7 +74,6 @@ function DashboardContent() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  // Registration can later redirect here: /dashboard?registered=true
   const shouldShowSuccessModal = searchParams.get("registered") === "true";
   const [isModalOpen, setIsModalOpen] = useState(shouldShowSuccessModal);
 
