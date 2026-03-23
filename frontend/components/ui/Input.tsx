@@ -12,7 +12,7 @@ export default function Input({ label, error, ...props }: InputProps) {
         className="block text-sm font-semibold mb-2.5 text-slate-700"
         htmlFor={props.name}
       >
-        {label}{" "}
+        {label}
       </label>
       <input
         id={props.name}
