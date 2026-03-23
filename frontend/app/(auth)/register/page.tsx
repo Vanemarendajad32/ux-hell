@@ -7,8 +7,10 @@ import {
 } from "@/schemas/register-schema";
 import Input from "@/components/ui/Input";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/dist/client/components/navigation";
 
 export default function RegisterPage() {
+  const router = useRouter();
   const [form, setForm] = useState<RegisterFormData>({
     username: "",
     email: "",
@@ -64,7 +66,7 @@ export default function RegisterPage() {
       return;
     }
     setErrors({});
-    setSuccess("User registered successfully!");
+    router.push("/");
   }
 
   function isPasswordTaken(password: string): boolean {
@@ -122,7 +124,6 @@ export default function RegisterPage() {
           Create account
         </Button>
       </form>
-      {success && <p className="mt-4 text-green-600 font-medium">{success}</p>}
     </main>
   );
 }
