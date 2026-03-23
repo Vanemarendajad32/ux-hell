@@ -31,6 +31,8 @@ export default function RegisterPage() {
       ...form,
       [name]: value,
     });
+
+    setErrors(prev => ({ ...prev, [name]: undefined }));
   }
 
   function handleSubmit(e: React.SubmitEvent) {
