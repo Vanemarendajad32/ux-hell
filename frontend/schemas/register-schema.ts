@@ -9,12 +9,10 @@ export const registerSchema = z
         .min(3, "Username must be at least 3 characters")
         .max(20, "Username cannot exceed 20 characters"),
     ),
-
     email: z.preprocess(
       (val) => (typeof val === "string" ? val.trim() : val),
       z.email("Invalid email").max(50, "Email cannot exceed 50 characters"),
     ),
-
     password: z.preprocess(
       (val) => (typeof val === "string" ? val.trim() : val),
       z
@@ -22,7 +20,6 @@ export const registerSchema = z
         .min(8, "Minimum 8 characters")
         .max(50, "Password cannot exceed 50 characters"),
     ),
-
     confirmPassword: z.preprocess(
       (val) => (typeof val === "string" ? val.trim() : val),
       z.string(),

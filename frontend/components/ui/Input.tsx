@@ -20,7 +20,6 @@ export default function Input({ label, error, ...props }: InputProps) {
         className={`border-2 border-slate-200 rounded-xl px-4 py-3.5 focus:border-rose-500 focus:ring-4 focus:ring-rose-100 outline-none 
                     ${error ? "border-red-500" : ""}`}
       />
-
       {error && <p className="mt-1 text-red-600 text-sm">{error}</p>}
     </div>
   );

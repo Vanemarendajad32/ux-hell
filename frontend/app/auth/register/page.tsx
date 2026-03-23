@@ -82,7 +82,6 @@ export default function RegisterPage() {
         <p className="text-sm text-slate-500 mb-8">
           Join thousands of users today
         </p>
-
         <form onSubmit={handleSubmit}>
           <Input
             label="Username"
@@ -93,7 +92,6 @@ export default function RegisterPage() {
             required
             error={errors.username}
           />
-
           <Input
             label="Email"
             name="email"
@@ -103,7 +101,6 @@ export default function RegisterPage() {
             required
             error={errors.email}
           />
-
           <Input
             label="Password"
             name="password"
@@ -113,7 +110,6 @@ export default function RegisterPage() {
             required
             error={errors.password}
           />
-
           <Input
             label="Confirm Password"
             name="confirmPassword"
@@ -123,12 +119,10 @@ export default function RegisterPage() {
             required
             error={errors.confirmPassword}
           />
-
           <Button type="submit" className="w-full uppercase">
             Create account
           </Button>
         </form>
-
         {success && (
           <p className="mt-4 text-green-600 font-medium">{success}</p>
         )}
