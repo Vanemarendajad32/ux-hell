@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { requestJson } from "@/lib/api/request";
 import {
   finishSession,
   getPayload,
@@ -45,7 +46,7 @@ export default function TrackingDemoPage() {
       return;
     }
 
-    const response = await fetch("/api/tracking", {
+    const result = await requestJson("/api/tracking", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -53,8 +54,23 @@ export default function TrackingDemoPage() {
       body: JSON.stringify(currentPayload),
     });
 
-    const data = await response.json();
-    setApiResult(JSON.stringify(data, null, 2));
+    if (!result.ok) {
+      setApiResult(
+        JSON.stringify(
+          {
+            message: result.message,
+            status: result.status,
+            statusText: result.statusText,
+            response: result.data,
+          },
+          null,
+          2,
+        ),
+      );
+      return;
+    }
+
+    setApiResult(JSON.stringify(result.data, null, 2));
   };
 
   return (

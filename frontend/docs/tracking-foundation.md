@@ -15,6 +15,18 @@ Import from `@/lib/tracking`:
 
 Payload type: `TrackingPayload`.
 
+## Client-only constraint
+
+`@/lib/tracking` is client-only and must not be imported into:
+
+- Server Components
+- Route Handlers (`app/api/*`)
+- Server Actions
+- Any other server-side code
+
+Use tracking functions only in client components (`"use client"`), then send the
+payload to server endpoints as plain JSON.
+
 `trackClick()`, `trackError()`, and `trackSubmitAttempt()` require an active
 session. Always call `startSession()` first.
 After `finishSession()`, `trackClick()`, `trackError()`, and
