@@ -8,7 +8,7 @@ If `pnpm` is not available in your shell, activate it with Corepack:
 
 ```bash
 corepack enable
-corepack prepare pnpm@9.0.0 --activate
+corepack prepare pnpm@10.32.1 --activate
 hash -r
 pnpm -v
 ```
@@ -17,7 +17,7 @@ Make sure `package.json` has:
 
 ```json
 {
-  "packageManager": "pnpm@9.0.0"
+  "packageManager": "pnpm@10.32.1"
 }
 ```
 
