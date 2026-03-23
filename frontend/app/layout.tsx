@@ -12,6 +12,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const backgroundClassName = "bg-gradient-to-br from-rose-50 via-orange-50 to-amber-50";
+
 export const metadata: Metadata = {
   title: "UX-Hell",
   description: "Navigate the most frustrating UX patterns",
@@ -30,7 +32,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="bg-gradient-to-br from-rose-50 via-orange-50 to-amber-50">
+        <div className={backgroundClassName}>
           {children}
         </div>
       </body>
