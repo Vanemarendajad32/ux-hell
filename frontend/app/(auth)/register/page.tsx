@@ -74,59 +74,55 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex h-screen items-center justify-center bg-gradient-to-br from-rose-50 via-orange-50 to-amber-50 px-6 py-12 text-slate-900">
-      <div className="bg-white/85 backdrop-blur rounded-3xl shadow-2xl p-12 w-full max-w-xl relative border border-rose-200">
-        <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 bg-clip-text text-transparent">
-          Create Account
-        </h1>
-        <p className="text-sm text-slate-500 mb-8">
-          Join thousands of users today
-        </p>
-        <form onSubmit={handleSubmit}>
-          <Input
-            label="Username"
-            name="username"
-            type="text"
-            value={form.username}
-            onChange={handleChange}
-            required
-            error={errors.username}
-          />
-          <Input
-            label="Email"
-            name="email"
-            type="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-            error={errors.email}
-          />
-          <Input
-            label="Password"
-            name="password"
-            type="password"
-            value={form.password}
-            onChange={handleChange}
-            required
-            error={errors.password}
-          />
-          <Input
-            label="Confirm Password"
-            name="confirmPassword"
-            type="password"
-            value={form.confirmPassword}
-            onChange={handleChange}
-            required
-            error={errors.confirmPassword}
-          />
-          <Button type="submit" className="w-full uppercase">
-            Create account
-          </Button>
-        </form>
-        {success && (
-          <p className="mt-4 text-green-600 font-medium">{success}</p>
-        )}
-      </div>
-    </div>
+    <main>
+      <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 bg-clip-text text-transparent">
+        Create Account
+      </h1>
+      <p className="text-sm text-slate-500 mb-8">
+        Join thousands of users today
+      </p>
+      <form onSubmit={handleSubmit}>
+        <Input
+          label="Username"
+          name="username"
+          type="text"
+          value={form.username}
+          onChange={handleChange}
+          required
+          error={errors.username}
+        />
+        <Input
+          label="Email"
+          name="email"
+          type="email"
+          value={form.email}
+          onChange={handleChange}
+          required
+          error={errors.email}
+        />
+        <Input
+          label="Password"
+          name="password"
+          type="password"
+          value={form.password}
+          onChange={handleChange}
+          required
+          error={errors.password}
+        />
+        <Input
+          label="Confirm Password"
+          name="confirmPassword"
+          type="password"
+          value={form.confirmPassword}
+          onChange={handleChange}
+          required
+          error={errors.confirmPassword}
+        />
+        <Button type="submit" className="w-full uppercase">
+          Create account
+        </Button>
+      </form>
+      {success && <p className="mt-4 text-green-600 font-medium">{success}</p>}
+    </main>
   );
 }
