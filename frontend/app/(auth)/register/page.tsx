@@ -74,7 +74,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-rose-50 via-orange-50 to-amber-50 px-6 py-12 text-slate-900">
+    <div className="flex h-screen items-center justify-center bg-gradient-to-br from-rose-50 via-orange-50 to-amber-50 px-6 py-12 text-slate-900">
       <div className="bg-white/85 backdrop-blur rounded-3xl shadow-2xl p-12 w-full max-w-xl relative border border-rose-200">
         <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 bg-clip-text text-transparent">
           Create Account
