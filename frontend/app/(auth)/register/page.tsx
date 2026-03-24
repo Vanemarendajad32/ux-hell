@@ -68,7 +68,7 @@ export default function RegisterPage() {
       return;
     }
     setErrors({});
-    router.push("/");
+    router.push("/dashboard?registered=true");
   }
 
   function isPasswordTaken(password: string): boolean {
