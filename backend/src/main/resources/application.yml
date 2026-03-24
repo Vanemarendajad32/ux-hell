@@ -1,9 +1,11 @@
 spring:
   application:
     name: uihell-backend
+  flyway:
+    enabled: true
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/uihell
+    url: jdbc:postgresql://postgres:5432/uihell
     username: postgres
     password: postgres
 
@@ -11,9 +13,6 @@ spring:
     hibernate:
       ddl-auto: validate
     show-sql: true
-
-  flyway:
-    enabled: true
 
 server:
   port: 8080
