@@ -1,0 +1,78 @@
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import InfoCard from "./info-card";
+
+type RegistrationSuccessModalProps = {
+  email: string;
+  isOpen: boolean;
+  onClose: () => void;
+  username: string;
+};
+
+export default function RegistrationSuccessModal({
+  email,
+  isOpen,
+  onClose,
+  username,
+}: RegistrationSuccessModalProps) {
+  return (
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
+    >
+      <DialogContent
+        aria-labelledby="registration-success-title"
+        className="w-full max-w-2xl gap-0 overflow-hidden rounded-[2rem] border border-rose-200 bg-white p-0 shadow-2xl shadow-slate-950/25 sm:max-w-2xl"
+        showCloseButton={false}
+      >
+        <div className="h-1.5 bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600" />
+
+        <div className="space-y-6 px-6 py-6 sm:px-8 sm:py-8">
+          <div className="max-w-xl">
+            <h1
+              id="registration-success-title"
+              className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl"
+            >
+              Congratulations!
+            </h1>
+            <p className="mt-3 text-base leading-7 text-slate-600">
+              Your account has been created successfully.
+            </p>
+          </div>
+
+          <section className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2">
+              <InfoCard
+                className="p-5 shadow-lg shadow-orange-100/50"
+                label="Username"
+                tone="bg-rose-50"
+                value={username}
+                valueClassName="mt-3 text-2xl font-semibold text-slate-900"
+              />
+              <InfoCard
+                className="p-5 shadow-lg shadow-orange-100/50"
+                label="Email"
+                tone="bg-orange-50"
+                value={email}
+                valueClassName="mt-3 text-lg leading-tight font-semibold text-slate-900 [overflow-wrap:anywhere] sm:text-xl"
+              />
+            </div>
+          </section>
+
+          <div className="border-t border-slate-200 pt-6">
+            <button
+              type="button"
+              onClick={onClose}
+              className="inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-rose-600 to-orange-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-rose-200 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
