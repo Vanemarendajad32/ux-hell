@@ -86,7 +86,7 @@ export default function Page() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-rose-50 via-orange-50 to-amber-50 px-6 py-12 text-slate-900">
+    <div className="flex min-h-screen items-center justify-center px-6 py-12 text-slate-900">
       {showGreeting ? (
         <div
           className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden ${
