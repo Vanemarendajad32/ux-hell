@@ -1,8 +1,10 @@
 "use client";
 
+import { Bot } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import ChallengeCard from "./challenge-card";
 import IntroStage from "./checkbox-hell/intro-stage";
 import PlayingStage from "./checkbox-hell/playing-stage";
 import SuccessStage from "./checkbox-hell/success-stage";
@@ -13,20 +15,12 @@ export default function CheckboxHellMenu() {
   const game = useCheckboxHellGame(isOpen);
 
   return (
-    <section className="rounded-[1.6rem] border border-orange-200 bg-gradient-to-r from-rose-50 via-orange-50 to-amber-50 px-5 py-4 shadow-lg shadow-orange-100/70 sm:px-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-1">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-600">
-            Mini game
-          </p>
-          <p className="text-sm text-slate-700">
-            Ready for the next challenge?
-          </p>
-        </div>
+    <ChallengeCard
+      action={
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
-            <Button className="w-full sm:w-auto">
-              Find out if you&apos;re a robot
+            <Button className="ml-auto flex h-11 w-28 rounded-full text-xl font-bold">
+              Play
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-[calc(100%-2rem)] sm:max-w-2xl">
@@ -52,7 +46,12 @@ export default function CheckboxHellMenu() {
             )}
           </DialogContent>
         </Dialog>
-      </div>
-    </section>
+      }
+      className="bg-gradient-to-br from-orange-50/80 via-rose-50/70 to-white shadow-orange-100/60"
+      description="Find out if you're a robot"
+      difficulty="Difficulty: Easy 🤪"
+      icon={<Bot className="size-7 text-slate-400" />}
+      title="Robot Test"
+    />
   );
 }
