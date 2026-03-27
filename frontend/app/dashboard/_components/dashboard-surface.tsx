@@ -1,4 +1,6 @@
 import { accountCards, statCards, timeCards } from "../_lib/dashboard-cards";
+import AccountVerificationMenu from "./account-verification-menu";
+import CheckboxHellMenu from "./checkbox-hell-menu";
 import InfoCard from "./info-card";
 import StatCard from "./stat-card";
 
@@ -22,6 +24,9 @@ export default function DashboardSurface() {
             </p>
           </div>
         </section>
+
+        <CheckboxHellMenu />
+        <AccountVerificationMenu />
 
         <section className="space-y-4">
           <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
