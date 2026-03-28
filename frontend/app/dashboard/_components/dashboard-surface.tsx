@@ -4,7 +4,7 @@ import StatCard from "./stat-card";
 
 export default function DashboardSurface() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-rose-50 px-6 py-8 text-slate-900">
+    <div className="min-h-screen px-6 py-8 text-slate-900">
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-6">
         <section className="overflow-hidden rounded-[2rem] border border-rose-200 bg-white px-6 py-8 shadow-xl shadow-orange-100/70 sm:px-8 sm:py-10">
           <div className="h-1.5 w-full rounded-full bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600" />

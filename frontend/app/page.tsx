@@ -230,7 +230,7 @@ export default function Page() {
                     size="lg"
                     className="w-full gap-3 rounded-2xl border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-900 hover:scale-[1.02] hover:shadow-xl"
                   >
-                    <Link href="/auth/login">
+                    <Link href="/login">
                       <Image
                         src="/ux-hell-logo.svg"
                         alt=""
@@ -251,7 +251,7 @@ export default function Page() {
                     size="lg"
                     className="w-full gap-3 rounded-2xl border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-900 hover:scale-[1.02] hover:shadow-xl"
                   >
-                    <Link href="/auth/login">
+                    <Link href="/login">
                       <Image
                         src="/ux-hell-logo.svg"
                         alt=""
