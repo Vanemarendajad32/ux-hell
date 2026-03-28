@@ -1,8 +1,25 @@
-import { accountCards, statCards, timeCards } from "../_lib/dashboard-cards";
+import type { DashboardData } from "@/lib/dashboard/dashboard-view-model";
+import {
+  getAccountCards,
+  getStatCards,
+  getTimeCards,
+} from "../_lib/dashboard-cards";
 import InfoCard from "./info-card";
 import StatCard from "./stat-card";
 
-export default function DashboardSurface() {
+type DashboardSurfaceProps = {
+  data: DashboardData;
+  errorMessage?: string;
+};
+
+export default function DashboardSurface({
+  data,
+  errorMessage,
+}: DashboardSurfaceProps) {
+  const accountCards = getAccountCards(data);
+  const statCards = getStatCards(data);
+  const timeCards = getTimeCards(data);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-rose-50 px-6 py-8 text-slate-900">
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-6">
@@ -20,6 +37,11 @@ export default function DashboardSurface() {
               Your account is in, the mock workspace is alive, and the worst of
               the registration drama is hopefully behind you.
             </p>
+            {errorMessage ? (
+              <p className="max-w-2xl rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+                {errorMessage}
+              </p>
+            ) : null}
           </div>
         </section>
 
