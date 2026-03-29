@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - 12-ci-cd-pipeline
   pull_request:
     branches:
       - main
@@ -33,10 +34,10 @@ jobs:
           java-version: '21'
           distribution: temurin
       
-      - name: Build backend without tests
+      - name: Build backend
         run: |
           chmod +x mvnw
-          ./mvnw install -B -DskipTests
+          ./mvnw clean package -B
 
       - name: Build Docker image
         run: |
