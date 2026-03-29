@@ -3,6 +3,8 @@ package com.uihell.backend.exception;
 import java.time.Instant;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 @RestControllerAdvice
@@ -22,6 +24,30 @@ public class GlobalExceptionHandler {
                 ex.getCode(),
                 "message",
                 ex.getMessage()
+            )
+        );
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, Object>> handleValidationException(
+        MethodArgumentNotValidException ex
+    ) {
+        String message = ex
+            .getBindingResult()
+            .getFieldErrors()
+            .stream()
+            .findFirst()
+            .map(err -> err.getDefaultMessage())
+            .orElse("Validation error");
+
+        return ResponseEntity.badRequest().body(
+            Map.of(
+                "status",
+                400,
+                "code",
+                "VALIDATION_ERROR",
+                "message",
+                message
             )
         );
     }

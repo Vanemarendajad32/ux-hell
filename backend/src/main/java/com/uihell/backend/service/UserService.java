@@ -1,5 +1,7 @@
 package com.uihell.backend.service;
 
+import static com.uihell.backend.exception.ErrorCodes.*;
+
 import com.uihell.backend.entity.User;
 import com.uihell.backend.exception.ApiException;
 import com.uihell.backend.repository.UserRepository;
@@ -22,15 +24,16 @@ public class UserService {
     public User register(String username, String password) {
         if (userRepository.findByUsername(username).isPresent()) {
             throw new ApiException(
-                "USERNAME_TAKEN",
+                USERNAME_TAKEN,
                 "Username already exists",
                 HttpStatus.CONFLICT
             );
         }
 
+        // TODO: legacy check, replaced by RegisterRequest validation
         if (password.length() < 6) {
             throw new ApiException(
-                "WEAK_PASSWORD",
+                WEAK_PASSWORD,
                 "Password must be at least 6 characters",
                 HttpStatus.BAD_REQUEST
             );
@@ -50,7 +53,7 @@ public class UserService {
             .findByUsername(username)
             .orElseThrow(() ->
                 new ApiException(
-                    "INVALID_CREDENTIALS",
+                    INVALID_CREDENTIALS,
                     "Invalid username or password",
                     HttpStatus.UNAUTHORIZED
                 )
