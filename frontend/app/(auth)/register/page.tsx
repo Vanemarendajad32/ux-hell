@@ -1,9 +1,12 @@
 "use client";
 
-import Input from "@/components/ui/Input";
 import { Button } from "@/components/ui/button";
+import Input from "@/components/ui/Input";
 import { cn } from "@/lib/utils";
-import { registerSchema, type RegisterFormData } from "@/schemas/register-schema";
+import {
+  type RegisterFormData,
+  registerSchema,
+} from "@/schemas/register-schema";
 import { useRouter } from "next/dist/client/components/navigation";
 import { useRef, useState } from "react";
 
@@ -15,15 +18,16 @@ export default function RegisterPage() {
     password: "",
     confirmPassword: "",
   });
-  const [errors, setErrors] = useState<Partial<Record<keyof RegisterFormData, string>>>({});
-  const [success, setSuccess] = useState("");
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof RegisterFormData, string>>
+  >({});
 
   const blockedPasswordRef = useRef<string | null>(null);
   const [clearing, setClearing] = useState(false);
   const [notification, setNotification] = useState("");
 
-  const notificationClassName= "fixed top-4 right-4 z-50 max-w-sm bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-lg shadow-lg animate-in slide-in-from-top-2 duration-300 border-2 border-white/20";
-
+  const notificationClassName =
+    "fixed top-4 right-4 z-50 max-w-sm bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-lg shadow-lg animate-in slide-in-from-top-2 duration-300 border-2 border-white/20";
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -58,13 +62,13 @@ export default function RegisterPage() {
     }
 
     if (!newErrors.password && isPasswordTaken(form.password)) {
-      newErrors.password = "Password already used by user AwesomeUser123. Choose a different one.";
+      newErrors.password =
+        "Password already used by user AwesomeUser123. Choose a different one.";
       blockedPasswordRef.current = form.password;
     }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      setSuccess("");
       return;
     }
     setErrors({});
@@ -86,7 +90,6 @@ export default function RegisterPage() {
       confirmPassword: "",
     });
     setErrors({});
-    setSuccess("");
     blockedPasswordRef.current = null;
     setClearing(true);
     setTimeout(() => {
@@ -104,7 +107,9 @@ export default function RegisterPage() {
       <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 bg-clip-text text-transparent">
         Create Account
       </h1>
-      <p className="text-sm text-slate-500 mb-8">Join thousands of users today</p>
+      <p className="text-sm text-slate-500 mb-8">
+        Join thousands of users today
+      </p>
       <form onSubmit={handleSubmit}>
         <Input
           label="Username"
@@ -114,7 +119,10 @@ export default function RegisterPage() {
           onChange={handleChange}
           required
           error={errors.username}
-          className={cn("transition-colors duration-500", clearing && "text-transparent")}
+          className={cn(
+            "transition-colors duration-500",
+            clearing && "text-transparent",
+          )}
         />
         <Input
           label="Email"
@@ -124,7 +132,10 @@ export default function RegisterPage() {
           onChange={handleChange}
           required
           error={errors.email}
-          className={cn("transition-colors duration-500", clearing && "text-transparent")}
+          className={cn(
+            "transition-colors duration-500",
+            clearing && "text-transparent",
+          )}
         />
         <Input
           label="Password"
@@ -134,7 +145,10 @@ export default function RegisterPage() {
           onChange={handleChange}
           required
           error={errors.password}
-          className={cn("transition-colors duration-500", clearing && "text-transparent")}
+          className={cn(
+            "transition-colors duration-500",
+            clearing && "text-transparent",
+          )}
         />
         <Input
           label="Confirm Password"
@@ -144,9 +158,16 @@ export default function RegisterPage() {
           onChange={handleChange}
           required
           error={errors.confirmPassword}
-          className={cn("transition-colors duration-500", clearing && "text-transparent")}
+          className={cn(
+            "transition-colors duration-500",
+            clearing && "text-transparent",
+          )}
         />
-        <Button type="submit" variant="destructive" className="w-full uppercase">
+        <Button
+          type="submit"
+          variant="destructive"
+          className="w-full uppercase"
+        >
           Create account
         </Button>
         <Button
