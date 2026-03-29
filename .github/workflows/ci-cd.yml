@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - 12-ci-cd-pipeline
   pull_request:
     branches:
       - main
