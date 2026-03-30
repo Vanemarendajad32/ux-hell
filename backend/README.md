@@ -4,7 +4,10 @@ This is the backend for the UX Hell application. Instructions on how to run the 
 
 ## Setup and Run
 
-Navigate to the [backend](./) directory and run the following command:
+1. Navigate to the [backend](./) directory
+2. Create a file ```.env```
+3. Copy the contents from [.example_env](./.example_env) into ```.env``` and follow the instructions in that file
+4. Run the following command:
 
 ```bash
 docker-compose up --build
