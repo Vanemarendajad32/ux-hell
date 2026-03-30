@@ -1,5 +1,7 @@
 import type { DashboardData } from "@/lib/dashboard/dashboard-view-model";
 
+const UNKNOWN_EMAIL = "Unknown email";
+
 type AccountCard = {
   label: string;
   value: string;
@@ -23,8 +25,11 @@ export function getAccountCards(
       value: registrationResult.email,
       description: "Where the victory receipt was sent.",
       tone: "bg-orange-50",
-      valueClassName:
-        "mt-4 text-xl font-bold tracking-tight text-slate-900 [overflow-wrap:anywhere]",
+      valueClassName: `mt-4 text-xl font-bold tracking-tight [overflow-wrap:anywhere] ${
+        registrationResult.email === UNKNOWN_EMAIL
+          ? "text-red-600"
+          : "text-slate-900"
+      }`,
     },
   ];
 }

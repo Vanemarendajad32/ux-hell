@@ -14,7 +14,7 @@ import RegistrationSuccessModal from "./registration-success-modal";
 
 const fallbackDashboardData: DashboardData = {
   username: "Unknown survivor",
-  email: "No registration email stored",
+  email: "Unknown email",
   totalTimePlayed: "--:--",
   totalClicks: 0,
   totalAttempts: 0,

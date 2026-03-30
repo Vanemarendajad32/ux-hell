@@ -17,7 +17,6 @@ export default function RegisterPage() {
   const router = useRouter();
   const [form, setForm] = useState<RegisterFormData>({
     username: "",
-    email: "",
     password: "",
     confirmPassword: "",
   });
@@ -62,7 +61,6 @@ export default function RegisterPage() {
       }
       newErrors = {
         username: fieldErrors.username?.[0],
-        email: fieldErrors.email?.[0],
         password: fieldErrors.password?.[0],
         confirmPassword: fieldErrors.confirmPassword?.[0],
       };
@@ -87,14 +85,24 @@ export default function RegisterPage() {
     try {
       const registrationSnapshot = await registerUser({
         username: form.username,
-        email: form.email,
         password: form.password,
       });
 
       saveRegistrationSession(registrationSnapshot);
       router.push("/dashboard?registered=true");
     } catch (error) {
-      setSubmitError(getApiErrorMessage(error));
+      const errorMessage = getApiErrorMessage(error);
+
+      if (errorMessage === "Username already exists") {
+        setErrors((prev) => ({
+          ...prev,
+          username: errorMessage,
+        }));
+        setSubmitError("");
+        return;
+      }
+
+      setSubmitError(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -110,7 +118,6 @@ export default function RegisterPage() {
     const originalForm = { ...form };
     setForm({
       username: "",
-      email: "",
       password: "",
       confirmPassword: "",
     });
@@ -135,7 +142,7 @@ export default function RegisterPage() {
       <p className="text-sm text-slate-500 mb-8">
         Join thousands of users today
       </p>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} aria-busy={isSubmitting}>
         <Input
           label="Username"
           name="username"
@@ -144,19 +151,7 @@ export default function RegisterPage() {
           required
           type="text"
           value={form.username}
-          className={cn(
-            "transition-colors duration-500",
-            clearing && "text-transparent",
-          )}
-        />
-        <Input
-          label="Email"
-          name="email"
-          error={errors.email}
-          onChange={handleChange}
-          required
-          type="email"
-          value={form.email}
+          disabled={isSubmitting}
           className={cn(
             "transition-colors duration-500",
             clearing && "text-transparent",
@@ -170,6 +165,7 @@ export default function RegisterPage() {
           required
           type="password"
           value={form.password}
+          disabled={isSubmitting}
           className={cn(
             "transition-colors duration-500",
             clearing && "text-transparent",
@@ -183,6 +179,7 @@ export default function RegisterPage() {
           required
           type="password"
           value={form.confirmPassword}
+          disabled={isSubmitting}
           className={cn(
             "transition-colors duration-500",
             clearing && "text-transparent",
@@ -192,17 +189,25 @@ export default function RegisterPage() {
           type="submit"
           variant="destructive"
           className="w-full uppercase"
+          disabled={isSubmitting}
+          aria-busy={isSubmitting}
         >
-          Create account
+          {isSubmitting ? "Creating..." : "Create account"}
         </Button>
         <Button
           type="button"
           variant="default"
           className="w-full uppercase mt-2"
           onClick={clearForm}
+          disabled={isSubmitting}
         >
           Clear form
         </Button>
+        {submitError ? (
+          <p className="mt-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {submitError}
+          </p>
+        ) : null}
       </form>
       {notification && (
         <div className={notificationClassName}>

@@ -2,13 +2,11 @@ import { apiClient } from "../client";
 
 export type RegisterUserInput = {
   username: string;
-  email: string;
   password: string;
 };
 
 export type RegisteredUserSnapshot = {
   username: string;
-  email: string;
 };
 
 export async function registerUser(input: RegisterUserInput) {
@@ -19,6 +17,5 @@ export async function registerUser(input: RegisterUserInput) {
 
   return {
     username: input.username,
-    email: input.email,
   } satisfies RegisteredUserSnapshot;
 }

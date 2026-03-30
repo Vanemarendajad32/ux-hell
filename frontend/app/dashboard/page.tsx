@@ -9,7 +9,7 @@ export default function DashboardPage() {
         <DashboardSurface
           data={{
             username: "Loading...",
-            email: "Loading...",
+            email: "Unknown email",
             totalTimePlayed: "--:--",
             totalClicks: 0,
             totalAttempts: 0,

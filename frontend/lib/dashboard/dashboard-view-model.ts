@@ -13,6 +13,7 @@ export type DashboardData = {
 };
 
 const EMPTY_TIME = "--:--";
+const UNKNOWN_EMAIL = "Unknown email";
 
 export function createDashboardData(args: {
   leaderboard: LeaderboardAttempt[];
@@ -33,7 +34,6 @@ export function createDashboardData(args: {
   const fastestAttempt = completedAttempts[0] ?? null;
   const lastAttempt = completedAttempts.at(-1) ?? null;
   const registrationUsername = registration?.username?.trim();
-  const registrationEmail = registration?.email?.trim();
   const leaderboardIndex = registrationUsername
     ? leaderboard.findIndex(
         (attempt) => attempt.user?.username === registrationUsername,
@@ -42,7 +42,7 @@ export function createDashboardData(args: {
 
   return {
     username: registrationUsername || "Unknown survivor",
-    email: registrationEmail || "No registration email stored",
+    email: UNKNOWN_EMAIL,
     totalTimePlayed: formatDuration(totalTimePlayedMs),
     totalClicks,
     totalAttempts: completedAttempts.length,
