@@ -1,14 +1,17 @@
 "use client";
 
+import { useRouter } from "next/dist/client/components/navigation";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
+import { getApiErrorMessage } from "@/lib/api/error";
+import { registerUser } from "@/lib/api/services/auth-service";
+import { saveRegistrationSession } from "@/lib/dashboard/registration-session";
 import { cn } from "@/lib/utils";
 import {
   type RegisterFormData,
   registerSchema,
 } from "@/schemas/register-schema";
-import { useRouter } from "next/dist/client/components/navigation";
-import { useRef, useState } from "react";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -21,7 +24,8 @@ export default function RegisterPage() {
   const [errors, setErrors] = useState<
     Partial<Record<keyof RegisterFormData, string>>
   >({});
-
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const blockedPasswordRef = useRef<string | null>(null);
   const [clearing, setClearing] = useState(false);
   const [notification, setNotification] = useState("");
@@ -38,14 +42,17 @@ export default function RegisterPage() {
     });
 
     setErrors((prev) => ({ ...prev, [name]: undefined }));
+    setSubmitError("");
   }
 
-  function handleSubmit(e: React.SubmitEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const result = registerSchema.safeParse(form);
     let newErrors: Partial<Record<keyof RegisterFormData, string>> = {};
+
     if (!result.success) {
       const fieldErrors: Record<string, string[]> = {};
+
       for (const issue of result.error.issues) {
         if (issue.path.length > 0) {
           const field = issue.path[0] as string;
@@ -69,10 +76,28 @@ export default function RegisterPage() {
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      setSubmitError("");
       return;
     }
+
     setErrors({});
-    router.push("/dashboard?registered=true");
+    setSubmitError("");
+    setIsSubmitting(true);
+
+    try {
+      const registrationSnapshot = await registerUser({
+        username: form.username,
+        email: form.email,
+        password: form.password,
+      });
+
+      saveRegistrationSession(registrationSnapshot);
+      router.push("/dashboard?registered=true");
+    } catch (error) {
+      setSubmitError(getApiErrorMessage(error));
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   function isPasswordTaken(password: string): boolean {
@@ -114,11 +139,11 @@ export default function RegisterPage() {
         <Input
           label="Username"
           name="username"
-          type="text"
-          value={form.username}
+          error={errors.username}
           onChange={handleChange}
           required
-          error={errors.username}
+          type="text"
+          value={form.username}
           className={cn(
             "transition-colors duration-500",
             clearing && "text-transparent",
@@ -127,11 +152,11 @@ export default function RegisterPage() {
         <Input
           label="Email"
           name="email"
-          type="email"
-          value={form.email}
+          error={errors.email}
           onChange={handleChange}
           required
-          error={errors.email}
+          type="email"
+          value={form.email}
           className={cn(
             "transition-colors duration-500",
             clearing && "text-transparent",
@@ -140,11 +165,11 @@ export default function RegisterPage() {
         <Input
           label="Password"
           name="password"
-          type="password"
-          value={form.password}
+          error={errors.password}
           onChange={handleChange}
           required
-          error={errors.password}
+          type="password"
+          value={form.password}
           className={cn(
             "transition-colors duration-500",
             clearing && "text-transparent",
@@ -153,11 +178,11 @@ export default function RegisterPage() {
         <Input
           label="Confirm Password"
           name="confirmPassword"
-          type="password"
-          value={form.confirmPassword}
+          error={errors.confirmPassword}
           onChange={handleChange}
           required
-          error={errors.confirmPassword}
+          type="password"
+          value={form.confirmPassword}
           className={cn(
             "transition-colors duration-500",
             clearing && "text-transparent",

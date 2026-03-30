@@ -1,6 +1,7 @@
 package com.uihell.backend.service;
 
 import com.uihell.backend.entity.User;
+import com.uihell.backend.exception.UsernameAlreadyExistsException;
 import com.uihell.backend.repository.UserRepository;
 import java.time.Instant;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ public class UserService {
 
     public User register(String username, String password) {
         if (userRepository.findByUsername(username).isPresent()) {
-            throw new RuntimeException("Username already exists");
+            throw new UsernameAlreadyExistsException();
         }
 
         User user = User.builder()
