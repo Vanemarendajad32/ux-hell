@@ -34,7 +34,7 @@ export default function RegistrationSuccessModal({
           <div className="max-w-xl">
             <h1
               id="registration-success-title"
-              className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl"
+              className="text-3xl font-bold tracking-tight text-slate-900"
             >
               Congratulations!
             </h1>
