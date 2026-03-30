@@ -96,9 +96,9 @@ export default function RegisterPage() {
       setForm(originalForm);
       setClearing(false);
       setNotification(
-        "😱 Oops! Your form got cleared... temporarily! 🎭 This is a UX dark pattern demo - the primary button tricked you!Remember: always read button text, not just colors. If you actually wanted to clear your form, you'll have to do it manually now. Sorry! 😅",
+        "😱 Oops! Your form was cleared... temporarily! This is a UX dark pattern demo 🎭 The primary button tricked you—always read the text, not just the color. If you meant to clear it, you’ll have to do it manually now. Sorry! 😅",
       );
-      setTimeout(() => setNotification(""), 10000);
+      setTimeout(() => setNotification(""), 15000);
     }, 2000);
   }
 
