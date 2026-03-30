@@ -4,6 +4,17 @@
 Operational instructions for coding agents working in this repository.
 The goal is to make safe, focused changes in a split frontend/backend codebase.
 
+## Product Context (UX Hell)
+- This repository powers **UX Hell**, an application built as a series of intentional UX-challenge games.
+- Users move through playful but difficult interaction flows where some UI behaviors (including certain forms) may be intentionally confusing, broken, or non-standard.
+- The product goal is to let users complete tasks through this game-like journey while measuring completion and interaction time.
+
+### Important Development Rule
+- If you notice unusual behavior in forms or user flows, do not immediately fix it.
+- Many odd patterns are intentional and part of the experience design.
+- You should flag the behavior, explain why it appears non-standard, and ask whether it should be fixed or kept as intentional behavior.
+- Only implement a fix after confirmation that the behavior is not intentional.
+
 ## Repo Layout
 - `frontend/`: Next.js 16 + React 19 + TypeScript + Biome.
 - `backend/`: Spring Boot 4 (Java 21) + PostgreSQL + Flyway.
@@ -33,7 +44,7 @@ The goal is to make safe, focused changes in a split frontend/backend codebase.
   - Lint/check: `cd frontend && pnpm lint`
   - Format: `cd frontend && pnpm format`
 - Backend:
-  - Run backend + postgres with Docker: `cd backend && docker-compose up --build`
+  - Run backend + postgres with Docker: `cd backend && docker compose up --build` (or `cd backend && docker-compose up --build`)
   - Run tests locally: `cd backend && ./mvnw test`
   - Package locally: `cd backend && ./mvnw clean package`
 
