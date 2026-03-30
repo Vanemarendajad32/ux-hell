@@ -7,7 +7,6 @@ import {
   Trophy,
   Zap,
 } from "lucide-react";
-import { registrationResult } from "../_data/registration-result";
 
 export type UserStats = {
   clicks: number;
@@ -29,12 +28,12 @@ export type StatsTileConfig = {
 };
 
 export const defaultUserStats: UserStats = {
-  clicks: registrationResult.totalClicks,
-  fastestTime: registrationResult.fastestTime,
-  lastTime: registrationResult.lastTime,
-  leaderboardPlace: registrationResult.leaderboardPlace,
-  totalAttempts: registrationResult.totalAttempts,
-  totalTimePlayed: registrationResult.totalTimePlayed,
+  clicks: 0,
+  fastestTime: "--:--",
+  lastTime: "--:--",
+  leaderboardPlace: "Unranked",
+  totalAttempts: 0,
+  totalTimePlayed: "--:--",
 };
 
 export const statsTileConfig: StatsTileConfig[] = [
