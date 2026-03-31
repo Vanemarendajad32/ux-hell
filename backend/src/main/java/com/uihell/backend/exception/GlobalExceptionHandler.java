@@ -1,11 +1,13 @@
 package com.uihell.backend.exception;
 
+import com.uihell.backend.dto.ApiErrorResponse;
 import java.time.Instant;
 import java.util.Map;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -50,6 +52,23 @@ public class GlobalExceptionHandler {
                 message
             )
         );
+    }
+
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    public ResponseEntity<ApiErrorResponse> handleUsernameAlreadyExists(
+        UsernameAlreadyExistsException exception
+    ) {
+        HttpStatus status = HttpStatus.CONFLICT;
+
+        return ResponseEntity
+            .status(status)
+            .body(
+                new ApiErrorResponse(
+                    status.value(),
+                    status.getReasonPhrase(),
+                    exception.getMessage()
+                )
+            );
     }
 
     @ExceptionHandler(Exception.class)

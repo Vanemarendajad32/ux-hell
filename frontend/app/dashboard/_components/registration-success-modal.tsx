@@ -1,15 +1,18 @@
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import InfoCard from "./info-card";
 
 type RegistrationSuccessModalProps = {
-  email: string;
   isOpen: boolean;
   onClose: () => void;
   username: string;
 };
 
 export default function RegistrationSuccessModal({
-  email,
   isOpen,
   onClose,
   username,
@@ -24,7 +27,6 @@ export default function RegistrationSuccessModal({
       }}
     >
       <DialogContent
-        aria-labelledby="registration-success-title"
         className="w-full max-w-2xl gap-0 overflow-hidden rounded-[2rem] border border-rose-200 bg-white p-0 shadow-2xl shadow-slate-950/25 sm:max-w-2xl"
         showCloseButton={false}
       >
@@ -32,15 +34,12 @@ export default function RegistrationSuccessModal({
 
         <div className="space-y-6 px-6 py-6 sm:px-8 sm:py-8">
           <div className="max-w-xl">
-            <h1
-              id="registration-success-title"
-              className="text-3xl font-bold tracking-tight text-slate-900"
-            >
+            <DialogTitle className="text-3xl font-bold tracking-tight text-slate-900">
               Congratulations!
-            </h1>
-            <p className="mt-3 text-base leading-7 text-slate-600">
+            </DialogTitle>
+            <DialogDescription className="mt-3 text-base leading-7 text-slate-600">
               Your account has been created successfully.
-            </p>
+            </DialogDescription>
           </div>
 
           <section className="space-y-4">
@@ -51,13 +50,6 @@ export default function RegistrationSuccessModal({
                 tone="bg-rose-50"
                 value={username}
                 valueClassName="mt-3 text-2xl font-semibold text-slate-900"
-              />
-              <InfoCard
-                className="p-5 shadow-lg shadow-orange-100/50"
-                label="Email"
-                tone="bg-orange-50"
-                value={email}
-                valueClassName="mt-3 text-lg leading-tight font-semibold text-slate-900 [overflow-wrap:anywhere] sm:text-xl"
               />
             </div>
           </section>

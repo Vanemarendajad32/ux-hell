@@ -2,8 +2,6 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getApiErrorMessage } from "@/lib/api/error";
-import { getLeaderboard } from "@/lib/api/services/attempt-service";
 import {
   createDashboardData,
   type DashboardData,
@@ -13,8 +11,6 @@ import DashboardSurface from "./dashboard-surface";
 import RegistrationSuccessModal from "./registration-success-modal";
 
 const fallbackDashboardData: DashboardData = {
-  username: "Unknown survivor",
-  email: "No registration email stored",
   totalTimePlayed: "--:--",
   totalClicks: 0,
   totalAttempts: 0,
@@ -32,54 +28,19 @@ export default function DashboardContent() {
   const [dashboardData, setDashboardData] = useState<DashboardData>(
     fallbackDashboardData,
   );
-  const [errorMessage, setErrorMessage] = useState("");
+  const [username, setUsername] = useState("Survivor");
 
   useEffect(() => {
     setIsModalOpen(shouldShowSuccessModal);
   }, [shouldShowSuccessModal]);
 
   useEffect(() => {
-    let isActive = true;
-
-    async function loadDashboard() {
-      const registration = readRegistrationSession();
-
-      try {
-        const leaderboard = await getLeaderboard();
-
-        if (!isActive) {
-          return;
-        }
-
-        setDashboardData(
-          createDashboardData({
-            leaderboard,
-            registration,
-          }),
-        );
-        setErrorMessage("");
-      } catch (error) {
-        if (!isActive) {
-          return;
-        }
-
-        setDashboardData(
-          createDashboardData({
-            leaderboard: [],
-            registration,
-          }),
-        );
-        setErrorMessage(
-          `${getApiErrorMessage(error)} Showing locally available registration info only.`,
-        );
-      }
+    setDashboardData(createDashboardData());
+    const registration = readRegistrationSession();
+    const registrationUsername = registration?.username?.trim();
+    if (registrationUsername) {
+      setUsername(registrationUsername);
     }
-
-    loadDashboard();
-
-    return () => {
-      isActive = false;
-    };
   }, []);
 
   function handleCloseModal() {
@@ -89,12 +50,11 @@ export default function DashboardContent() {
 
   return (
     <div className="relative">
-      <DashboardSurface data={dashboardData} errorMessage={errorMessage} />
+      <DashboardSurface data={dashboardData} username={username} />
       <RegistrationSuccessModal
-        email={dashboardData.email}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        username={dashboardData.username}
+        username={username}
       />
     </div>
   );

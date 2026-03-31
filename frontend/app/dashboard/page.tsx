@@ -8,8 +8,6 @@ export default function DashboardPage() {
       fallback={
         <DashboardSurface
           data={{
-            username: "Loading...",
-            email: "Loading...",
             totalTimePlayed: "--:--",
             totalClicks: 0,
             totalAttempts: 0,
@@ -17,6 +15,7 @@ export default function DashboardPage() {
             lastTime: "--:--",
             leaderboardPlace: "Loading...",
           }}
+          username="Loading..."
         />
       }
     >
