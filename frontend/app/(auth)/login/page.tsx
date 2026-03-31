@@ -23,14 +23,14 @@ export default function LoginPage() {
           Return to UX Hell and pick up where your survival run left off.
         </p>
         <p className="text-sm text-slate-500">
-          Existing users can sign in with their email or username.
+          Existing users can sign in with their username.
         </p>
       </div>
 
       <form>
         <Input
           autoComplete="username"
-          label="Email or username"
+          label="username"
           name="identifier"
           required
           type="text"

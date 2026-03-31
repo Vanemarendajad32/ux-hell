@@ -219,7 +219,7 @@ export default function Page() {
                     size="lg"
                     className="w-full gap-3 rounded-2xl px-6 py-4 text-base font-semibold hover:scale-[1.02]"
                   >
-                    <Link href="/auth/register">
+                    <Link href="/register">
                       <PlusIcon />
                       Register
                     </Link>
