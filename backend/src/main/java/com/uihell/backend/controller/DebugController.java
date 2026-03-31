@@ -7,6 +7,7 @@ import com.uihell.backend.repository.UserRepository;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -35,5 +36,13 @@ public class DebugController {
             "attemptCount",
             attemptRepository.count()
         );
+    }
+
+    @GetMapping("/api/test")
+    public String test(Authentication authentication) {
+        if (authentication == null) {
+            return "No authentication found";
+        }
+        return "Hello " + authentication.getName();
     }
 }

@@ -1,0 +1,4 @@
+# Generate a string with 'openssl rand -base64 48'
+
+JWT_SECRET=<Paste generated string here>
+JWT_EXPIRATION_MS=3600000
