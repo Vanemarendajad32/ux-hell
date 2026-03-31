@@ -23,15 +23,12 @@ export default function LoginPage() {
         <p className="mt-4 text-base text-slate-600">
           Return to UX Hell and pick up where your survival run left off.
         </p>
-        <p className="text-sm text-slate-500">
-          Existing users can sign in with their username.
-        </p>
       </div>
 
       <form>
         <Input
           autoComplete="username"
-          label="username"
+          label="Username"
           name="identifier"
           required
           type="text"
