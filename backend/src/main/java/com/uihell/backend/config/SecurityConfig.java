@@ -1,11 +1,19 @@
 package com.uihell.backend.config;
 
+import com.uihell.backend.security.JwtAuthenticationFilter;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,8 +23,10 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final JwtAuthenticationFilter jwtAuthFilter;
     @Value("${app.cors.allowed-origins:http://localhost:3000}")
     private List<String> allowedOrigins;
 
@@ -26,6 +36,10 @@ public class SecurityConfig {
         http
             .cors(Customizer.withDefaults())
             .csrf(csrf -> csrf.disable())
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            // Public vs protected routes
             .authorizeHttpRequests(auth ->
                 auth
                     .requestMatchers(
@@ -36,7 +50,8 @@ public class SecurityConfig {
                     .requestMatchers(
                         "/health",
                         "/api/auth/**",
-                        "/api/attempts/**",
+                        "/auth/**",
+                        // "/api/attempts/**",
                         "/debug/**",
                         "/swagger-ui/**",
                         "/swagger-ui.html",
@@ -45,6 +60,30 @@ public class SecurityConfig {
                     .permitAll()
                     .anyRequest()
                     .authenticated()
+            )
+            //  Handle unauthorized access (no/invalid token)
+            .exceptionHandling(ex ->
+                ex.authenticationEntryPoint(
+                    (request, response, authException) -> {
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        response.setContentType("application/json");
+                        response
+                            .getWriter()
+                            .write(
+                                """
+                                    {
+                                      "status": 401,
+                                      "error": "Unauthorized",
+                                      "message": "Authentication required"
+                                    }
+                                """
+                            );
+                    }
+                )
+            )
+            .addFilterBefore(
+                jwtAuthFilter,
+                UsernamePasswordAuthenticationFilter.class
             );
 
         return http.build();

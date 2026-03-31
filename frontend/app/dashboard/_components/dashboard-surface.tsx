@@ -17,7 +17,7 @@ export default function DashboardSurface({
   const accountCards = getAccountCards(data);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-rose-50 px-6 py-8 text-slate-900">
+    <div className="min-h-screen px-6 py-8 text-slate-900">
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-6">
         <DashboardHeader />
 
