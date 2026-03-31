@@ -6,17 +6,13 @@ import {
 } from "@/components/ui/dialog";
 import InfoCard from "./info-card";
 
-const UNKNOWN_EMAIL = "Unknown email";
-
 type RegistrationSuccessModalProps = {
-  email: string;
   isOpen: boolean;
   onClose: () => void;
   username: string;
 };
 
 export default function RegistrationSuccessModal({
-  email,
   isOpen,
   onClose,
   username,
@@ -54,15 +50,6 @@ export default function RegistrationSuccessModal({
                 tone="bg-rose-50"
                 value={username}
                 valueClassName="mt-3 text-2xl font-semibold text-slate-900"
-              />
-              <InfoCard
-                className="p-5 shadow-lg shadow-orange-100/50"
-                label="Email"
-                tone="bg-orange-50"
-                value={email}
-                valueClassName={`mt-3 text-lg leading-tight font-semibold [overflow-wrap:anywhere] sm:text-xl ${
-                  email === UNKNOWN_EMAIL ? "text-red-600" : "text-slate-900"
-                }`}
               />
             </div>
           </section>
