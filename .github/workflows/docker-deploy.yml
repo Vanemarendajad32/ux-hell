@@ -9,8 +9,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_FRONTEND: ${{ github.repository }}/frontend
-  IMAGE_BACKEND: ${{ github.repository }}/backend
+  IMAGE_FRONTEND: vanemarendajad32/ux-hell/frontend
+  IMAGE_BACKEND: vanemarendajad32/ux-hell/backend
 
 jobs:
   build-and-deploy:
@@ -35,7 +35,7 @@ jobs:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_FRONTEND }}:${{ github.sha }}
+          tags: ghcr.io/vanemarendajad32/ux-hell/frontend:${{ github.sha }}
 
       - name: Build and push backend image
         uses: docker/build-push-action@v5
@@ -43,7 +43,7 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_BACKEND }}:${{ github.sha }}
+          tags: ghcr.io/vanemarendajad32/ux-hell/backend:${{ github.sha }}
 
       # - name: Deploy to server via SSH
       #   uses: appleboy/ssh-action@v1.0.3
