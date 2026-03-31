@@ -1,13 +1,17 @@
 "use client";
 
-import { useRef, useState } from "react";
-import {
-  registerSchema,
-  type RegisterFormData,
-} from "@/schemas/register-schema";
-import Input from "@/components/ui/Input";
-import { Button } from "@/components/ui/button";
 import { useRouter } from "next/dist/client/components/navigation";
+import { useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import Input from "@/components/ui/Input";
+import { getApiErrorMessage } from "@/lib/api/error";
+import { registerUser } from "@/lib/api/services/auth-service";
+import { saveRegistrationSession } from "@/lib/dashboard/registration-session";
+import { cn } from "@/lib/utils";
+import {
+  type RegisterFormData,
+  registerSchema,
+} from "@/schemas/register-schema";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -20,9 +24,14 @@ export default function RegisterPage() {
   const [errors, setErrors] = useState<
     Partial<Record<keyof RegisterFormData, string>>
   >({});
-  const [success, setSuccess] = useState("");
-
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const blockedPasswordRef = useRef<string | null>(null);
+  const [clearing, setClearing] = useState(false);
+  const [notification, setNotification] = useState("");
+
+  const notificationClassName =
+    "fixed top-4 right-4 z-50 max-w-sm bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-lg shadow-lg animate-in slide-in-from-top-2 duration-300 border-2 border-white/20";
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -32,15 +41,18 @@ export default function RegisterPage() {
       [name]: value,
     });
 
-    setErrors(prev => ({ ...prev, [name]: undefined }));
+    setErrors((prev) => ({ ...prev, [name]: undefined }));
+    setSubmitError("");
   }
 
-  function handleSubmit(e: React.SubmitEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const result = registerSchema.safeParse(form);
     let newErrors: Partial<Record<keyof RegisterFormData, string>> = {};
+
     if (!result.success) {
       const fieldErrors: Record<string, string[]> = {};
+
       for (const issue of result.error.issues) {
         if (issue.path.length > 0) {
           const field = issue.path[0] as string;
@@ -64,17 +76,55 @@ export default function RegisterPage() {
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      setSuccess("");
+      setSubmitError("");
       return;
     }
+
     setErrors({});
-    router.push("/dashboard?registered=true");
+    setSubmitError("");
+    setIsSubmitting(true);
+
+    try {
+      const registrationSnapshot = await registerUser({
+        username: form.username,
+        email: form.email,
+        password: form.password,
+      });
+
+      saveRegistrationSession(registrationSnapshot);
+      router.push("/dashboard?registered=true");
+    } catch (error) {
+      setSubmitError(getApiErrorMessage(error));
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   function isPasswordTaken(password: string): boolean {
     if (!password) return false;
     if (blockedPasswordRef.current === password) return true;
     return blockedPasswordRef.current === null;
+  }
+
+  function clearForm() {
+    const originalForm = { ...form };
+    setForm({
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
+    setErrors({});
+    blockedPasswordRef.current = null;
+    setClearing(true);
+    setTimeout(() => {
+      setForm(originalForm);
+      setClearing(false);
+      setNotification(
+        "😱 Oops! Your form was cleared... temporarily! This is a UX dark pattern demo 🎭 The primary button tricked you—always read the text, not just the color. If you meant to clear it, you’ll have to do it manually now. Sorry! 😅",
+      );
+      setTimeout(() => setNotification(""), 15000);
+    }, 2000);
   }
 
   return (
@@ -89,43 +139,79 @@ export default function RegisterPage() {
         <Input
           label="Username"
           name="username"
-          type="text"
-          value={form.username}
+          error={errors.username}
           onChange={handleChange}
           required
-          error={errors.username}
+          type="text"
+          value={form.username}
+          className={cn(
+            "transition-colors duration-500",
+            clearing && "text-transparent",
+          )}
         />
         <Input
           label="Email"
           name="email"
-          type="email"
-          value={form.email}
+          error={errors.email}
           onChange={handleChange}
           required
-          error={errors.email}
+          type="email"
+          value={form.email}
+          className={cn(
+            "transition-colors duration-500",
+            clearing && "text-transparent",
+          )}
         />
         <Input
           label="Password"
           name="password"
-          type="password"
-          value={form.password}
+          error={errors.password}
           onChange={handleChange}
           required
-          error={errors.password}
+          type="password"
+          value={form.password}
+          className={cn(
+            "transition-colors duration-500",
+            clearing && "text-transparent",
+          )}
         />
         <Input
           label="Confirm Password"
           name="confirmPassword"
-          type="password"
-          value={form.confirmPassword}
+          error={errors.confirmPassword}
           onChange={handleChange}
           required
-          error={errors.confirmPassword}
+          type="password"
+          value={form.confirmPassword}
+          className={cn(
+            "transition-colors duration-500",
+            clearing && "text-transparent",
+          )}
         />
-        <Button type="submit" className="w-full uppercase">
+        <Button
+          type="submit"
+          variant="destructive"
+          className="w-full uppercase"
+        >
           Create account
         </Button>
+        <Button
+          type="button"
+          variant="default"
+          className="w-full uppercase mt-2"
+          onClick={clearForm}
+        >
+          Clear form
+        </Button>
       </form>
+      {notification && (
+        <div className={notificationClassName}>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+            <p className="text-sm font-medium">{notification}</p>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

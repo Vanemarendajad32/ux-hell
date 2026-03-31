@@ -3,7 +3,10 @@ package com.uihell.backend.service;
 import static com.uihell.backend.exception.ErrorCodes.*;
 
 import com.uihell.backend.entity.User;
+
 import com.uihell.backend.exception.ApiException;
+import com.uihell.backend.exception.UsernameAlreadyExistsException;
+
 import com.uihell.backend.repository.UserRepository;
 import com.uihell.backend.security.JwtService;
 import java.time.Instant;
@@ -23,6 +26,7 @@ public class UserService {
 
     public User register(String username, String password) {
         if (userRepository.findByUsername(username).isPresent()) {
+  /**
             throw new ApiException(
                 USERNAME_TAKEN,
                 "Username already exists",
@@ -37,6 +41,8 @@ public class UserService {
                 "Password must be at least 6 characters",
                 HttpStatus.BAD_REQUEST
             );
+  **/
+            throw new UsernameAlreadyExistsException();
         }
 
         User user = User.builder()

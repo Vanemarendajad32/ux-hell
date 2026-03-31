@@ -4,7 +4,22 @@ import DashboardSurface from "./_components/dashboard-surface";
 
 export default function DashboardPage() {
   return (
-    <Suspense fallback={<DashboardSurface />}>
+    <Suspense
+      fallback={
+        <DashboardSurface
+          data={{
+            username: "Loading...",
+            email: "Loading...",
+            totalTimePlayed: "--:--",
+            totalClicks: 0,
+            totalAttempts: 0,
+            fastestTime: "--:--",
+            lastTime: "--:--",
+            leaderboardPlace: "Loading...",
+          }}
+        />
+      }
+    >
       <DashboardContent />
     </Suspense>
   );
