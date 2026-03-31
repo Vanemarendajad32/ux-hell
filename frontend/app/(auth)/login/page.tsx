@@ -1,6 +1,7 @@
 import Image from "next/image";
-import Input from "@/components/ui/Input";
+
 import { Button } from "@/components/ui/button";
+import Input from "@/components/ui/Input";
 
 export default function LoginPage() {
   return (
