@@ -13,7 +13,7 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   backend:
-    build: ./backend
+    image: ghcr.io/vanemarendajad32/ux-hell/backend:latest
     depends_on:
       - postgres
     ports:
@@ -29,7 +29,7 @@ services:
     restart: unless-stopped
 
   frontend:
-    build: ./frontend
+    image: ghcr.io/vanemarendajad32/ux-hell/frontend:latest
     depends_on:
       - backend
     ports:
