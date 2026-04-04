@@ -1,8 +1,8 @@
-import type { RegisteredUserSnapshot } from "@/lib/api/services/auth-service";
+import type { AuthSession } from "@/lib/api/services/auth-service";
 
 const REGISTRATION_SESSION_KEY = "ux-hell.registration";
 
-export function saveRegistrationSession(snapshot: RegisteredUserSnapshot) {
+export function saveRegistrationSession(snapshot: AuthSession) {
   if (typeof window === "undefined") {
     return;
   }
@@ -13,7 +13,7 @@ export function saveRegistrationSession(snapshot: RegisteredUserSnapshot) {
   );
 }
 
-export function readRegistrationSession(): RegisteredUserSnapshot | null {
+export function readRegistrationSession(): AuthSession | null {
   if (typeof window === "undefined") {
     return null;
   }
@@ -25,7 +25,7 @@ export function readRegistrationSession(): RegisteredUserSnapshot | null {
   }
 
   try {
-    return JSON.parse(rawValue) as RegisteredUserSnapshot;
+    return JSON.parse(rawValue) as AuthSession;
   } catch {
     return null;
   }

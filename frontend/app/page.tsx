@@ -14,6 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { startSession, trackClick } from "@/lib/tracking";
 
 export default function Page() {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -37,6 +38,12 @@ export default function Page() {
       return;
     }
 
+    try {
+      startSession();
+      trackClick();
+    } catch {
+      // Tracking is best-effort on the landing page.
+    }
     setDialogOpen(true);
   };
 

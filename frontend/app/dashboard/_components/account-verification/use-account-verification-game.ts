@@ -9,6 +9,8 @@ import {
   trackError,
   trackSubmitAttempt,
 } from "@/lib/tracking";
+import { savePendingAttempt } from "@/lib/tracking/pending-attempt";
+import { submitPendingAttempt } from "@/lib/tracking/submit-pending-attempt";
 import {
   EXPIRATION_MAX_MS,
   EXPIRATION_MIN_MS,
@@ -29,7 +31,10 @@ import {
 } from "./helpers";
 import type { VerificationStage } from "./types";
 
-export function useAccountVerificationGame(isOpen: boolean) {
+export function useAccountVerificationGame(
+  isOpen: boolean,
+  onAttemptRecorded?: () => void,
+) {
   const [stage, setStage] = useState<VerificationStage>("playing");
   const [activeCode, setActiveCode] = useState<string>(createOtpCode());
   const [digits, setDigits] = useState<string[]>(emptyOtpDigits());
@@ -249,6 +254,10 @@ export function useAccountVerificationGame(isOpen: boolean) {
       setApiFeedback("Session finished locally, but no payload was available.");
       return;
     }
+
+    savePendingAttempt("account-verification", payload);
+    await submitPendingAttempt("account-verification");
+    onAttemptRecorded?.();
 
     const result = await requestJson("/api/tracking", {
       method: "POST",

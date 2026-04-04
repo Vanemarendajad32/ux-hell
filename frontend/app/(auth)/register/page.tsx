@@ -5,8 +5,18 @@ import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
 import { getApiErrorMessage } from "@/lib/api/error";
-import { registerUser } from "@/lib/api/services/auth-service";
+import { loginUser, registerUser } from "@/lib/api/services/auth-service";
 import { saveRegistrationSession } from "@/lib/dashboard/registration-session";
+import {
+  finishSession,
+  getPayload,
+  startSession,
+  trackClick,
+  trackError,
+  trackSubmitAttempt,
+} from "@/lib/tracking";
+import { savePendingAttempt } from "@/lib/tracking/pending-attempt";
+import { submitPendingAttempt } from "@/lib/tracking/submit-pending-attempt";
 import { cn } from "@/lib/utils";
 import {
   type RegisterFormData,
@@ -28,11 +38,36 @@ export default function RegisterPage() {
   const blockedPasswordRef = useRef<string | null>(null);
   const [clearing, setClearing] = useState(false);
   const [notification, setNotification] = useState("");
+  const hasSessionStartedRef = useRef(false);
 
   const notificationClassName =
     "fixed top-4 right-4 z-50 max-w-sm bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-lg shadow-lg animate-in slide-in-from-top-2 duration-300 border-2 border-white/20";
 
+  function ensureSessionStarted() {
+    if (hasSessionStartedRef.current) {
+      return;
+    }
+
+    if (getPayload()) {
+      hasSessionStartedRef.current = true;
+      return;
+    }
+
+    try {
+      startSession();
+      hasSessionStartedRef.current = true;
+    } catch {
+      // Tracking is best-effort and should not block registration.
+    }
+  }
+
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    ensureSessionStarted();
+    try {
+      trackClick();
+    } catch {
+      // Tracking is best-effort and should not block registration.
+    }
     const { name, value } = e.target;
 
     setForm({
@@ -46,6 +81,13 @@ export default function RegisterPage() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    ensureSessionStarted();
+    try {
+      trackSubmitAttempt();
+    } catch {
+      // Tracking is best-effort and should not block registration.
+    }
+
     const result = registerSchema.safeParse(form);
     let newErrors: Partial<Record<keyof RegisterFormData, string>> = {};
 
@@ -73,6 +115,11 @@ export default function RegisterPage() {
     }
 
     if (Object.keys(newErrors).length > 0) {
+      try {
+        trackError();
+      } catch {
+        // Tracking is best-effort and should not block registration.
+      }
       setErrors(newErrors);
       setSubmitError("");
       return;
@@ -88,9 +135,29 @@ export default function RegisterPage() {
         password: form.password,
       });
 
-      saveRegistrationSession(registrationSnapshot);
+      const loginSnapshot = await loginUser({
+        username: form.username,
+        password: form.password,
+      });
+
+      saveRegistrationSession({
+        ...registrationSnapshot,
+        token: loginSnapshot.token,
+      });
+
+      const payload = finishSession();
+      if (payload) {
+        savePendingAttempt("registration", payload);
+      }
+
+      await submitPendingAttempt("registration");
       router.push("/dashboard?registered=true");
     } catch (error) {
+      try {
+        trackError();
+      } catch {
+        // Tracking is best-effort and should not block registration.
+      }
       const errorMessage = getApiErrorMessage(error);
 
       if (errorMessage === "Username already exists") {
@@ -115,6 +182,12 @@ export default function RegisterPage() {
   }
 
   function clearForm() {
+    ensureSessionStarted();
+    try {
+      trackClick();
+    } catch {
+      // Tracking is best-effort and should not block registration.
+    }
     const originalForm = { ...form };
     setForm({
       username: "",

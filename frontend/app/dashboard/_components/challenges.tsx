@@ -5,7 +5,11 @@ import AccountVerificationMenu from "./account-verification-menu";
 import ChallengeCard from "./challenge-card";
 import CheckboxHellMenu from "./checkbox-hell-menu";
 
-export default function Challenges() {
+type ChallengesProps = {
+  onAttemptRecorded?: () => void;
+};
+
+export default function Challenges({ onAttemptRecorded }: ChallengesProps) {
   return (
     <section className="rounded-[2rem] border border-rose-200 bg-gradient-to-br from-white via-rose-50/40 to-orange-50/30 p-4 shadow-xl shadow-rose-100/50 sm:p-6">
       <div className="space-y-1">
@@ -18,8 +22,8 @@ export default function Challenges() {
       </div>
 
       <div className="mt-4 grid gap-3 md:grid-cols-2">
-        <CheckboxHellMenu />
-        <AccountVerificationMenu />
+        <CheckboxHellMenu onAttemptRecorded={onAttemptRecorded} />
+        <AccountVerificationMenu onAttemptRecorded={onAttemptRecorded} />
 
         {extraChallenges.map((challenge) => {
           const Icon = challenge.icon;
@@ -30,7 +34,7 @@ export default function Challenges() {
               action={
                 <Button
                   className={cn(
-                    "ml-auto flex h-11 w-28 rounded-full text-xl font-bold",
+                    "ml-auto flex h-10 w-24 rounded-full text-lg font-bold sm:h-11 sm:w-28 sm:text-xl",
                     challenge.buttonVariant === "secondary" &&
                       "border border-slate-200 bg-slate-100 text-slate-500 shadow-none",
                   )}

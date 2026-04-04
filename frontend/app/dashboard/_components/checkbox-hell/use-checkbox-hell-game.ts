@@ -10,6 +10,8 @@ import {
   trackError,
   trackSubmitAttempt,
 } from "@/lib/tracking";
+import { savePendingAttempt } from "@/lib/tracking/pending-attempt";
+import { submitPendingAttempt } from "@/lib/tracking/submit-pending-attempt";
 import {
   CHAOS_POOL,
   INITIAL_OPTIONS,
@@ -22,7 +24,10 @@ import {
 import { formatMs, isSolved, resetCheckboxStates } from "./helpers";
 import type { CheckboxOption, GameStage } from "./types";
 
-export function useCheckboxHellGame(isOpen: boolean) {
+export function useCheckboxHellGame(
+  isOpen: boolean,
+  onAttemptRecorded?: () => void,
+) {
   const [stage, setStage] = useState<GameStage>("intro");
   const [options, setOptions] = useState<CheckboxOption[]>(INITIAL_OPTIONS);
   const [winnerTrapTriggered, setWinnerTrapTriggered] = useState(false);
@@ -221,6 +226,10 @@ export function useCheckboxHellGame(isOpen: boolean) {
       setApiFeedback("Session finished locally, but no payload was available.");
       return;
     }
+
+    savePendingAttempt("checkbox-hell", payload);
+    await submitPendingAttempt("checkbox-hell");
+    onAttemptRecorded?.();
 
     const result = await requestJson("/api/tracking", {
       method: "POST",
