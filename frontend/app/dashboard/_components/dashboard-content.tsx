@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { getSession } from "@/lib/api/services/auth-service";
 import {
   createDashboardData,
   type DashboardData,
@@ -41,6 +42,26 @@ export default function DashboardContent() {
     if (registrationUsername) {
       setUsername(registrationUsername);
     }
+  }, []);
+
+  useEffect(() => {
+    let isActive = true;
+
+    (async () => {
+      try {
+        const session = await getSession();
+        if (!isActive) return;
+        if (session.authenticated) {
+          setUsername(session.username);
+        }
+      } catch {
+        // ignore: dashboard should still render even if session check fails
+      }
+    })();
+
+    return () => {
+      isActive = false;
+    };
   }, []);
 
   function handleCloseModal() {

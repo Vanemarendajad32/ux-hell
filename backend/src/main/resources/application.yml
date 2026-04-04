@@ -27,3 +27,6 @@ app:
   cors:
     allowed-origins:
       - http://localhost:3000
+  auth:
+    cookie-name: ${AUTH_COOKIE_NAME:UIHELL_SESSION}
+    cookie-secure: ${AUTH_COOKIE_SECURE:false}

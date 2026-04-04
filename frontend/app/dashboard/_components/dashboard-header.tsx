@@ -1,6 +1,24 @@
-import { ChevronDown, UserRound } from "lucide-react";
+"use client";
 
-export default function DashboardHeader() {
+import { ChevronDown, UserRound } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { logoutUser } from "@/lib/api/services/auth-service";
+
+type DashboardHeaderProps = {
+  username: string;
+};
+
+export default function DashboardHeader({ username }: DashboardHeaderProps) {
+  const router = useRouter();
+
+  async function handleLogout() {
+    try {
+      await logoutUser();
+    } finally {
+      router.push("/login");
+    }
+  }
+
   return (
     <header className="px-4 py-3 sm:px-5">
       <div className="flex items-center justify-between gap-4">
@@ -12,7 +30,7 @@ export default function DashboardHeader() {
           <summary className="list-none">
             <span className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-rose-100 bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-md shadow-orange-100/60 transition-colors hover:bg-rose-50/40 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-100">
               <UserRound className="size-4 text-rose-400" />
-              Pixelpunisher
+              {username}
               <ChevronDown className="size-4 text-slate-500 transition-transform group-open:rotate-180" />
             </span>
           </summary>
@@ -33,6 +51,7 @@ export default function DashboardHeader() {
             <button
               className="w-full cursor-pointer px-4 py-2 text-left text-sm text-rose-600 transition-colors hover:bg-rose-50"
               type="button"
+              onClick={handleLogout}
             >
               Log out
             </button>
