@@ -1,4 +1,7 @@
+import { Trophy } from "lucide-react";
+import Link from "next/link";
 import type { ReactNode } from "react";
+import { Button } from "@/components/ui/button";
 import {
   defaultUserStats,
   type StatsTileConfig,
@@ -63,11 +66,19 @@ function getTileSubtitle(stats: UserStats, tile: StatsTileConfig): string {
 export default function Stats({ stats = defaultUserStats }: StatsProps) {
   return (
     <section className="rounded-[2rem] border border-rose-200 bg-gradient-to-br from-white via-rose-50/40 to-orange-50/30 p-4 shadow-xl shadow-rose-100/50 sm:p-6">
-      <div className="space-y-1">
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-rose-600">
-          Your Stats
-        </p>
-        <h2 className="text-2xl text-slate-700">Your suffering so far</h2>
+      <div className="space-y-1 flex items-center justify-between">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-rose-600">
+            Your Stats
+          </p>
+          <h2 className="text-2xl text-slate-700">Your suffering so far</h2>
+        </div>
+        <Button asChild className="w-full sm:w-auto">
+          <Link href="/leaderboard?from=dashboard">
+            <Trophy className="size-4" />
+            View Global Leaderboard
+          </Link>
+        </Button>
       </div>
 
       <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
