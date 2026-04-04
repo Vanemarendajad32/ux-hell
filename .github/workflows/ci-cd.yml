@@ -39,6 +39,11 @@ jobs:
           chmod +x mvnw
           ./mvnw clean package -DskipTests -B
 
+      - name: Create backend .env
+        run: |
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" > .env
+          echo "JWT_EXPIRATION_MS=3600000" >> .env
+
       - name: Build Docker image
         run: |
           docker build -t ux-hell-backend:latest .
