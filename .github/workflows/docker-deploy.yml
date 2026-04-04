@@ -54,10 +54,7 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           envs: REGISTRY,IMAGE_FRONTEND,IMAGE_BACKEND
           script: |
-            echo "Logging in to container registry..."
             docker login $REGISTRY -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
-            cd /var/www/ux-hell
-            echo "Pulling latest images..."
+            cd /home/ubuntu/ux-hell
             docker compose pull
-            echo "Starting containers..."
             docker compose up -d
