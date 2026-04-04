@@ -15,7 +15,7 @@ export default function DashboardHeader({ username }: DashboardHeaderProps) {
     try {
       await logoutUser();
     } finally {
-      router.push("/login");
+      router.push("/");
     }
   }
 
