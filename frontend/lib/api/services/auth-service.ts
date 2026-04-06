@@ -18,10 +18,6 @@ export type SessionSnapshot =
   | { authenticated: true; username: string }
   | { authenticated: false; username: null };
 
-type AuthResponse = {
-  token: string;
-};
-
 export async function registerUser(input: RegisterUserInput) {
   await apiClient.post<void>("/api/auth/register", {
     username: input.username,
@@ -34,7 +30,7 @@ export async function registerUser(input: RegisterUserInput) {
 }
 
 export async function loginUser(input: LoginUserInput) {
-  await apiClient.post<AuthResponse>("/api/auth/login", {
+  await apiClient.post<void>("/api/auth/login", {
     username: input.username,
     password: input.password,
   });

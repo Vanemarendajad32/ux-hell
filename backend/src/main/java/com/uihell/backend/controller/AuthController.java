@@ -1,6 +1,5 @@
 package com.uihell.backend.controller;
 
-import com.uihell.backend.dto.AuthResponse;
 import com.uihell.backend.dto.LoginRequest;
 import com.uihell.backend.dto.RegisterRequest;
 import com.uihell.backend.dto.SessionResponse;
@@ -27,6 +26,9 @@ public class AuthController {
     @Value("${app.auth.cookie-secure:false}")
     private boolean authCookieSecure;
 
+    @Value("${jwt.expiration-ms:3600000}")
+    private long jwtExpirationMs;
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest req) {
         userService.register(req.username(), req.password());
@@ -34,7 +36,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public AuthResponse login(
+    public ResponseEntity<Void> login(
         @Valid @RequestBody LoginRequest request,
         HttpServletResponse response
     ) {
@@ -43,18 +45,19 @@ public class AuthController {
             request.password()
         );
 
+        long maxAgeSeconds = (jwtExpirationMs + 999) / 1000;
         ResponseCookie cookie = ResponseCookie
             .from(authCookieName, token)
             .httpOnly(true)
             .secure(authCookieSecure)
             .sameSite("Lax")
             .path("/")
-            .maxAge(60 * 60)
+            .maxAge(maxAgeSeconds)
             .build();
 
         response.addHeader("Set-Cookie", cookie.toString());
 
-        return new AuthResponse(token);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/logout")
