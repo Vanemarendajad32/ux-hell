@@ -2,12 +2,9 @@ package com.uihell.backend.controller;
 
 import com.uihell.backend.dto.LoginRequest;
 import com.uihell.backend.dto.RegisterRequest;
-<<<<<<< ux-hell-24-login-session-logout
 import com.uihell.backend.dto.SessionResponse;
-=======
 import com.uihell.backend.dto.RegisterResponse;
 import com.uihell.backend.entity.User;
->>>>>>> main
 import com.uihell.backend.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

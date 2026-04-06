@@ -15,13 +15,8 @@ export default function DashboardSurface({
   username,
 }: DashboardSurfaceProps) {
   return (
-<<<<<<< ux-hell-24-login-session-logout
-    <div className="min-h-screen px-6 py-8 text-slate-900">
-      <main className="mx-auto flex w-full max-w-6xl flex-col gap-6">
-=======
     <div className="min-h-screen px-3 py-5 text-slate-900 sm:px-6 sm:py-8">
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-4 sm:gap-6">
->>>>>>> main
         <DashboardHeader username={username} />
 
         <section className="overflow-hidden rounded-[2rem] border border-rose-200 bg-white px-3 py-5 shadow-xl shadow-orange-100/70 sm:px-8 sm:py-10">

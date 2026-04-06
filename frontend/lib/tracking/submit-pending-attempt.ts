@@ -18,7 +18,7 @@ export async function submitPendingAttempt(
 ): Promise<PendingAttemptResult> {
   const registration = readRegistrationSession();
 
-  if (!registration?.token || !registration.id) {
+  if (!registration?.id) {
     return { ok: false, reason: "no-session" };
   }
 
@@ -45,7 +45,6 @@ export async function submitPendingAttempt(
         submitAttempts: pendingAttempt.payload.submitAttempts,
         completed: pendingAttempt.payload.completed,
       },
-      registration.token,
     );
     clearPendingAttempt();
     return { ok: true };

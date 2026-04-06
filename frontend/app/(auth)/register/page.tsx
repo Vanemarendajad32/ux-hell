@@ -137,14 +137,13 @@ export default function RegisterPage() {
         password: form.password,
       });
 
-      const loginSnapshot = await loginUser({
+      await loginUser({
         username: form.username,
         password: form.password,
       });
 
       saveRegistrationSession({
         ...registrationSnapshot,
-        token: loginSnapshot.token,
       });
 
       const payload = finishSession();

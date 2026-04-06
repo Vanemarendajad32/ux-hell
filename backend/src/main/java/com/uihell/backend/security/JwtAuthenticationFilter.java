@@ -34,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = extractBearerToken(request);
+        String token = extractCookieToken(request);
 
         // No token → continue
         if (token == null || token.isBlank()) {
@@ -61,21 +61,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String extractBearerToken(HttpServletRequest request) {
-        final String authHeader = request.getHeader("Authorization");
-        if (authHeader != null) {
-            String header = authHeader.trim();
-            if (
-                header.length() >= 7 &&
-                header.regionMatches(true, 0, "Bearer ", 0, 7)
-            ) {
-                String token = header.substring(7).trim();
-                if (!token.isBlank()) {
-                    return token;
-                }
-            }
-        }
-
+    private String extractCookieToken(HttpServletRequest request) {
         var cookies = request.getCookies();
         if (cookies == null || authCookieName == null || authCookieName.isBlank()) {
             return null;

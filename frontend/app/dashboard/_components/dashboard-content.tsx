@@ -1,13 +1,9 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-<<<<<<< ux-hell-24-login-session-logout
-import { useEffect, useState } from "react";
 import { getSession } from "@/lib/api/services/auth-service";
-=======
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getLeaderboard } from "@/lib/api/services/attempt-service";
->>>>>>> main
 import {
   createDashboardData,
   type DashboardData,
@@ -41,12 +37,21 @@ export default function DashboardContent() {
     const registrationUsername = registration?.username?.trim();
     if (registrationUsername && isActiveRef.current) {
       setUsername(registrationUsername);
+    } else {
+      try {
+        const session = await getSession();
+        if (isActiveRef.current && session.authenticated) {
+          setUsername(session.username);
+        }
+      } catch {
+        // ignore: dashboard should still render even if session check fails
+      }
     }
 
     await submitPendingAttempt();
 
     try {
-      const leaderboard = await getLeaderboard(registration?.token);
+      const leaderboard = await getLeaderboard();
 
       if (!isActiveRef.current) {
         return;
@@ -73,26 +78,6 @@ export default function DashboardContent() {
   }, []);
 
   useEffect(() => {
-<<<<<<< ux-hell-24-login-session-logout
-    let isActive = true;
-
-    (async () => {
-      try {
-        const session = await getSession();
-        if (!isActive) return;
-        if (session.authenticated) {
-          setUsername(session.username);
-        }
-      } catch {
-        // ignore: dashboard should still render even if session check fails
-      }
-    })();
-
-    return () => {
-      isActive = false;
-    };
-  }, []);
-=======
     setIsModalOpen(shouldShowSuccessModal);
   }, [shouldShowSuccessModal]);
 
@@ -104,7 +89,6 @@ export default function DashboardContent() {
       isActiveRef.current = false;
     };
   }, [loadDashboard]);
->>>>>>> main
 
   function handleCloseModal() {
     setIsModalOpen(false);
