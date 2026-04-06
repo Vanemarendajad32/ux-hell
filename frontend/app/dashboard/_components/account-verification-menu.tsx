@@ -9,9 +9,15 @@ import VerificationPlayingStage from "./account-verification/verification-playin
 import VerificationSuccessStage from "./account-verification/verification-success-stage";
 import ChallengeCard from "./challenge-card";
 
-export default function AccountVerificationMenu() {
+type AccountVerificationMenuProps = {
+  onAttemptRecorded?: () => void;
+};
+
+export default function AccountVerificationMenu({
+  onAttemptRecorded,
+}: AccountVerificationMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const game = useAccountVerificationGame(isOpen);
+  const game = useAccountVerificationGame(isOpen, onAttemptRecorded);
 
   return (
     <ChallengeCard

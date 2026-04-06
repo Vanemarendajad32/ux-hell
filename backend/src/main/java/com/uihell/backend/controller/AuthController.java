@@ -3,6 +3,8 @@ package com.uihell.backend.controller;
 import com.uihell.backend.dto.AuthResponse;
 import com.uihell.backend.dto.LoginRequest;
 import com.uihell.backend.dto.RegisterRequest;
+import com.uihell.backend.dto.RegisterResponse;
+import com.uihell.backend.entity.User;
 import com.uihell.backend.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +19,11 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest req) {
-        userService.register(req.username(), req.password());
-        return ResponseEntity.ok().build();
+    public ResponseEntity<RegisterResponse> register(
+        @Valid @RequestBody RegisterRequest req
+    ) {
+        User user = userService.register(req.username(), req.password());
+        return ResponseEntity.ok(new RegisterResponse(user.getId(), user.getUsername()));
     }
 
     @PostMapping("/login")
