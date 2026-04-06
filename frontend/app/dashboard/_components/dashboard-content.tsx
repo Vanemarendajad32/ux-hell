@@ -1,9 +1,9 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { getSession } from "@/lib/api/services/auth-service";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getLeaderboard } from "@/lib/api/services/attempt-service";
+import { getSession } from "@/lib/api/services/auth-service";
 import {
   createDashboardData,
   type DashboardData,

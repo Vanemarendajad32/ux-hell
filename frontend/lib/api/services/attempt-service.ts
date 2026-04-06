@@ -26,10 +26,7 @@ export type LeaderboardAttempt = {
   };
 };
 
-export function submitAttempt(
-  userId: number,
-  payload: AttemptPayload,
-) {
+export function submitAttempt(userId: number, payload: AttemptPayload) {
   return apiClient.post<void>(`/api/attempts/${userId}`, payload);
 }
 

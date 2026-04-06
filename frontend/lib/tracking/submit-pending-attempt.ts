@@ -34,18 +34,15 @@ export async function submitPendingAttempt(
         ? fallbackGameType
         : pendingAttempt.gameType;
 
-    await submitAttempt(
-      registration.id,
-      {
-        gameType,
-        completionTimeMs: pendingAttempt.payload.completionTimeMs,
-        clickCount: pendingAttempt.payload.clickCount,
-        frustrationLevel: computeFrustrationLevel(pendingAttempt.payload),
-        errorCount: pendingAttempt.payload.errorCount,
-        submitAttempts: pendingAttempt.payload.submitAttempts,
-        completed: pendingAttempt.payload.completed,
-      },
-    );
+    await submitAttempt(registration.id, {
+      gameType,
+      completionTimeMs: pendingAttempt.payload.completionTimeMs,
+      clickCount: pendingAttempt.payload.clickCount,
+      frustrationLevel: computeFrustrationLevel(pendingAttempt.payload),
+      errorCount: pendingAttempt.payload.errorCount,
+      submitAttempts: pendingAttempt.payload.submitAttempts,
+      completed: pendingAttempt.payload.completed,
+    });
     clearPendingAttempt();
     return { ok: true };
   } catch {
