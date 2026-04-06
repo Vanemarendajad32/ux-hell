@@ -6,27 +6,53 @@ export type RegisterUserInput = {
 };
 
 export type RegisteredUserSnapshot = {
+  id: number;
   username: string;
 };
 
+<<<<<<< ux-hell-24-login-session-logout
+=======
+export type AuthSession = {
+  id: number;
+  username: string;
+  token: string;
+};
+
+>>>>>>> main
 export type LoginUserInput = {
   username: string;
   password: string;
 };
 
+<<<<<<< ux-hell-24-login-session-logout
 export type SessionSnapshot =
   | { authenticated: true; username: string }
   | { authenticated: false; username: null };
+=======
+export type LoginResponse = {
+  token: string;
+};
+>>>>>>> main
 
 export async function registerUser(input: RegisterUserInput) {
-  await apiClient.post<void>("/api/auth/register", {
+  const response = await apiClient.post<RegisteredUserSnapshot>(
+    "/api/auth/register",
+    {
+      username: input.username,
+      password: input.password,
+    },
+  );
+
+  return response;
+}
+
+export async function loginUser(input: LoginUserInput) {
+  const response = await apiClient.post<LoginResponse>("/api/auth/login", {
     username: input.username,
     password: input.password,
   });
 
-  return {
-    username: input.username,
-  } satisfies RegisteredUserSnapshot;
+  return response;
 }
 
 export async function loginUser(input: LoginUserInput) {

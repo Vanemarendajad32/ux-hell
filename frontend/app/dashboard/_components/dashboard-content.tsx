@@ -1,24 +1,23 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+<<<<<<< ux-hell-24-login-session-logout
 import { useEffect, useState } from "react";
 import { getSession } from "@/lib/api/services/auth-service";
+=======
+import { useCallback, useEffect, useRef, useState } from "react";
+import { getLeaderboard } from "@/lib/api/services/attempt-service";
+>>>>>>> main
 import {
   createDashboardData,
   type DashboardData,
 } from "@/lib/dashboard/dashboard-view-model";
 import { readRegistrationSession } from "@/lib/dashboard/registration-session";
+import { submitPendingAttempt } from "@/lib/tracking/submit-pending-attempt";
 import DashboardSurface from "./dashboard-surface";
 import RegistrationSuccessModal from "./registration-success-modal";
 
-const fallbackDashboardData: DashboardData = {
-  totalTimePlayed: "--:--",
-  totalClicks: 0,
-  totalAttempts: 0,
-  fastestTime: "--:--",
-  lastTime: "--:--",
-  leaderboardPlace: "Unranked",
-};
+const fallbackDashboardData: DashboardData = createDashboardData();
 
 export default function DashboardContent() {
   const pathname = usePathname();
@@ -30,21 +29,51 @@ export default function DashboardContent() {
     fallbackDashboardData,
   );
   const [username, setUsername] = useState("Survivor");
+  const isActiveRef = useRef(true);
 
-  useEffect(() => {
-    setIsModalOpen(shouldShowSuccessModal);
-  }, [shouldShowSuccessModal]);
+  const loadDashboard = useCallback(async () => {
+    if (!isActiveRef.current) {
+      return;
+    }
 
-  useEffect(() => {
     setDashboardData(createDashboardData());
     const registration = readRegistrationSession();
     const registrationUsername = registration?.username?.trim();
-    if (registrationUsername) {
+    if (registrationUsername && isActiveRef.current) {
       setUsername(registrationUsername);
+    }
+
+    await submitPendingAttempt();
+
+    try {
+      const leaderboard = await getLeaderboard(registration?.token);
+
+      if (!isActiveRef.current) {
+        return;
+      }
+
+      setDashboardData(
+        createDashboardData({
+          leaderboard,
+          registration,
+        }),
+      );
+    } catch {
+      if (!isActiveRef.current) {
+        return;
+      }
+
+      setDashboardData(
+        createDashboardData({
+          leaderboard: [],
+          registration,
+        }),
+      );
     }
   }, []);
 
   useEffect(() => {
+<<<<<<< ux-hell-24-login-session-logout
     let isActive = true;
 
     (async () => {
@@ -63,6 +92,19 @@ export default function DashboardContent() {
       isActive = false;
     };
   }, []);
+=======
+    setIsModalOpen(shouldShowSuccessModal);
+  }, [shouldShowSuccessModal]);
+
+  useEffect(() => {
+    isActiveRef.current = true;
+    loadDashboard();
+
+    return () => {
+      isActiveRef.current = false;
+    };
+  }, [loadDashboard]);
+>>>>>>> main
 
   function handleCloseModal() {
     setIsModalOpen(false);
@@ -71,7 +113,11 @@ export default function DashboardContent() {
 
   return (
     <div className="relative">
-      <DashboardSurface data={dashboardData} username={username} />
+      <DashboardSurface
+        data={dashboardData}
+        onAttemptRecorded={loadDashboard}
+        username={username}
+      />
       <RegistrationSuccessModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}

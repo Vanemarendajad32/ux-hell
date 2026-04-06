@@ -42,6 +42,7 @@ public class AttemptService {
 
         Attempt attempt = Attempt.builder()
             .user(user)
+            .gameType(req.gameType())
             .completionTimeMs(req.completionTimeMs())
             .clickCount(req.clickCount())
             .frustrationLevel(req.frustrationLevel())

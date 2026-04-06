@@ -2,7 +2,12 @@ package com.uihell.backend.controller;
 
 import com.uihell.backend.dto.LoginRequest;
 import com.uihell.backend.dto.RegisterRequest;
+<<<<<<< ux-hell-24-login-session-logout
 import com.uihell.backend.dto.SessionResponse;
+=======
+import com.uihell.backend.dto.RegisterResponse;
+import com.uihell.backend.entity.User;
+>>>>>>> main
 import com.uihell.backend.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -30,9 +35,11 @@ public class AuthController {
     private long jwtExpirationMs;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest req) {
-        userService.register(req.username(), req.password());
-        return ResponseEntity.ok().build();
+    public ResponseEntity<RegisterResponse> register(
+        @Valid @RequestBody RegisterRequest req
+    ) {
+        User user = userService.register(req.username(), req.password());
+        return ResponseEntity.ok(new RegisterResponse(user.getId(), user.getUsername()));
     }
 
     @PostMapping("/login")

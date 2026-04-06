@@ -10,9 +10,15 @@ import PlayingStage from "./checkbox-hell/playing-stage";
 import SuccessStage from "./checkbox-hell/success-stage";
 import { useCheckboxHellGame } from "./checkbox-hell/use-checkbox-hell-game";
 
-export default function CheckboxHellMenu() {
+type CheckboxHellMenuProps = {
+  onAttemptRecorded?: () => void;
+};
+
+export default function CheckboxHellMenu({
+  onAttemptRecorded,
+}: CheckboxHellMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const game = useCheckboxHellGame(isOpen);
+  const game = useCheckboxHellGame(isOpen, onAttemptRecorded);
 
   return (
     <ChallengeCard

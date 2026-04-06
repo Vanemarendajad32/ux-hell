@@ -1,6 +1,7 @@
 import { apiClient } from "../client";
 
 export type AttemptPayload = {
+  gameType: string;
   completionTimeMs: number;
   clickCount: number;
   frustrationLevel: number;
@@ -11,6 +12,7 @@ export type AttemptPayload = {
 
 export type LeaderboardAttempt = {
   id: number;
+  gameType: string;
   completionTimeMs: number;
   clickCount: number;
   frustrationLevel: number;
@@ -24,10 +26,22 @@ export type LeaderboardAttempt = {
   };
 };
 
-export function submitAttempt(userId: number, payload: AttemptPayload) {
-  return apiClient.post<void>(`/api/attempts/${userId}`, payload);
+export function submitAttempt(
+  userId: number,
+  payload: AttemptPayload,
+  token?: string,
+) {
+  const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
+
+  return apiClient.post<void>(`/api/attempts/${userId}`, payload, {
+    headers,
+  });
 }
 
-export function getLeaderboard() {
-  return apiClient.get<LeaderboardAttempt[]>("/api/attempts/leaderboard");
+export function getLeaderboard(token?: string) {
+  const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
+
+  return apiClient.get<LeaderboardAttempt[]>("/api/attempts/leaderboard", {
+    headers,
+  });
 }

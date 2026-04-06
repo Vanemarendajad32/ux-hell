@@ -21,6 +21,9 @@ public class Attempt {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(nullable = false)
+    private String gameType;
+
     private Long completionTimeMs;
     private Integer clickCount;
     private Integer frustrationLevel;
