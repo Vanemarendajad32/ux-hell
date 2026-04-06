@@ -44,20 +44,22 @@ export default function RegisterPage() {
     "fixed top-4 right-4 z-50 max-w-sm bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-lg shadow-lg animate-in slide-in-from-top-2 duration-300 border-2 border-white/20";
 
   function ensureSessionStarted() {
-    if (hasSessionStartedRef.current) {
-      return;
-    }
-
-    if (getPayload()) {
-      hasSessionStartedRef.current = true;
-      return;
-    }
+    if (hasSessionStartedRef.current) return;
 
     try {
+      const existing = getPayload();
+
+      // Kasuta ainult pooleliolevat sessionit
+      if (existing && !existing.completed) {
+        hasSessionStartedRef.current = true;
+        return;
+      }
+
+      // Kui puudub või on juba lõpetatud -> alusta uus
       startSession();
       hasSessionStartedRef.current = true;
     } catch {
-      // Tracking is best-effort and should not block registration.
+      // best-effort
     }
   }
 

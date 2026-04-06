@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { requestJson } from "@/lib/api/request";
 import {
   finishSession,
   startSession,
@@ -256,25 +255,17 @@ export function useAccountVerificationGame(
     }
 
     savePendingAttempt("account-verification", payload);
-    await submitPendingAttempt("account-verification");
+    const result = await submitPendingAttempt("account-verification");
     onAttemptRecorded?.();
-
-    const result = await requestJson("/api/tracking", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
 
     if (!result.ok) {
       setApiFeedback(
-        "Success saved locally, but sending tracking payload failed.",
+        "Success saved locally, but submitting the attempt failed.",
       );
       return;
     }
 
-    setApiFeedback("Run recorded. Tracking payload accepted by /api/tracking.");
+    setApiFeedback("Run recorded.");
   };
 
   return {
