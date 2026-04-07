@@ -8,4 +8,5 @@ public final class ErrorCodes {
     public static final String USERNAME_TAKEN = "USERNAME_TAKEN";
     public static final String WEAK_PASSWORD = "WEAK_PASSWORD";
     public static final String FORBIDDEN = "FORBIDDEN";
+    public static final String VALIDATION_ERROR = "VALIDATION_ERROR";
 }

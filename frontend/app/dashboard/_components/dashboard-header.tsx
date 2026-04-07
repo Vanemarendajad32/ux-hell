@@ -1,8 +1,11 @@
 "use client";
 
 import { ChevronDown, UserRound } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { logoutUser } from "@/lib/api/services/auth-service";
+import { clearRegistrationSession } from "@/lib/dashboard/registration-session";
+import { clearPendingAttempt } from "@/lib/tracking/pending-attempt";
 
 type DashboardHeaderProps = {
   username: string;
@@ -15,6 +18,8 @@ export default function DashboardHeader({ username }: DashboardHeaderProps) {
     try {
       await logoutUser();
     } finally {
+      clearRegistrationSession();
+      clearPendingAttempt();
       router.push("/");
     }
   }
@@ -22,8 +27,16 @@ export default function DashboardHeader({ username }: DashboardHeaderProps) {
   return (
     <header className="px-2.5 py-2 sm:px-5 sm:py-3">
       <div className="flex items-center justify-between gap-4">
-        <p className="text-[1.4rem] leading-none font-bold tracking-tight text-slate-900 sm:text-[2.2rem]">
-          UX HELL
+        <p className="inline-flex items-center gap-2 text-[2rem] leading-none font-bold tracking-tight text-slate-900 sm:text-[2.2rem]">
+          <Image
+            src="/ux-hell-logo.svg"
+            alt=""
+            width={40}
+            height={40}
+            className="h-8 w-8 sm:h-9 sm:w-9"
+            aria-hidden="true"
+          />
+          <span>UX HELL</span>
         </p>
 
         <details className="group relative">

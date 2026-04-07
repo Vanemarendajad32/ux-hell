@@ -10,7 +10,5 @@ export function computeFrustrationLevel(payload: TrackingPayload): number {
     : 0;
 
   const rawScore = errorScore + retryScore + timeScore;
-  const clamped = Math.min(MAX_FRUSTRATION_LEVEL, Math.max(0, rawScore));
-
-  return clamped;
+  return Math.min(MAX_FRUSTRATION_LEVEL, Math.max(0, rawScore));
 }

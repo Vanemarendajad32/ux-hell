@@ -30,6 +30,6 @@ export function submitAttempt(userId: number, payload: AttemptPayload) {
   return apiClient.post<void>(`/api/attempts/${userId}`, payload);
 }
 
-export function getLeaderboard() {
-  return apiClient.get<LeaderboardAttempt[]>("/api/attempts/leaderboard");
+export function getMyAttempts() {
+  return apiClient.get<LeaderboardAttempt[]>("/api/attempts/me");
 }

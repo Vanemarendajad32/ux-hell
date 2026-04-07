@@ -9,6 +9,7 @@ import {
 export type GameStats = {
   gameType: GameType;
   label: string;
+  globalRank: number | null;
   lastRunTime: string;
   fastestTime: string;
   averageTime: string;
@@ -57,6 +58,7 @@ export type DashboardData = {
 
 export type CreateDashboardDataInput = {
   leaderboard?: LeaderboardAttempt[];
+  globalRanks?: Partial<Record<GameType, number | null>>;
   registration?: AuthSession | null;
 };
 
@@ -97,10 +99,14 @@ function matchesRegistration(
   return false;
 }
 
-function createEmptyGameStats(gameType: GameType): GameStats {
+function createEmptyGameStats(
+  gameType: GameType,
+  globalRank: number | null,
+): GameStats {
   return {
     gameType,
     label: gameTypeLabels[gameType],
+    globalRank,
     lastRunTime: EMPTY_TIME,
     fastestTime: EMPTY_TIME,
     averageTime: EMPTY_TIME,
@@ -134,9 +140,12 @@ export function createDashboardData(
   input: CreateDashboardDataInput = {},
 ): DashboardData {
   const leaderboard = input.leaderboard ?? [];
-  const userAttempts = leaderboard.filter((attempt) =>
-    matchesRegistration(attempt, input.registration),
-  );
+  const userAttempts =
+    input.registration == null
+      ? leaderboard
+      : leaderboard.filter((attempt) =>
+          matchesRegistration(attempt, input.registration),
+        );
 
   const lastOverallAttempt = userAttempts.reduce<LeaderboardAttempt | null>(
     (latest, attempt) => {
@@ -161,10 +170,11 @@ export function createDashboardData(
   }
 
   const games = gameTypeOrder.map((gameType) => {
+    const globalRank = input.globalRanks?.[gameType] ?? null;
     const attempts = attemptsByGame.get(gameType) ?? [];
 
     if (attempts.length === 0) {
-      return createEmptyGameStats(gameType);
+      return createEmptyGameStats(gameType, globalRank);
     }
 
     const sortedAttempts = [...attempts].sort(
@@ -211,6 +221,7 @@ export function createDashboardData(
     return {
       gameType,
       label: gameTypeLabels[gameType],
+      globalRank,
       lastRunTime: formatDuration(lastAttempt.completionTimeMs),
       fastestTime: formatDuration(fastestAttempt.completionTimeMs),
       averageTime: formatDuration(averageMs),

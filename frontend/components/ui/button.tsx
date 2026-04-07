@@ -1,6 +1,13 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import type { ComponentProps } from "react";
+import {
+  Children,
+  type ComponentProps,
+  cloneElement,
+  isValidElement,
+  type ReactElement,
+  type ReactNode,
+} from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -46,6 +53,7 @@ const buttonVariants = cva(buttonBase, {
 type ButtonProps = ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
+    prefixIcon?: ReactNode;
   };
 
 function Button({
@@ -53,18 +61,73 @@ function Button({
   variant = "default",
   size = "default",
   asChild = false,
+  prefixIcon,
+  children,
   ...props
 }: ButtonProps) {
-  const Comp = asChild ? Slot : "button";
+  const content = prefixIcon ? (
+    <span data-icon="inline-start">{prefixIcon}</span>
+  ) : null;
+  if (asChild) {
+    const elementChildren = Children.toArray(children).filter(
+      isValidElement,
+    ) as ReactElement<{
+      children?: ReactNode;
+    }>[];
+
+    if (elementChildren.length !== 1) {
+      // Graceful fallback when asChild contract is violated.
+      // This avoids runtime crashes from Radix Slot's Children.only.
+      return (
+        <button
+          data-slot="button"
+          data-variant={variant}
+          data-size={size}
+          className={cn(buttonVariants({ variant, size, className }))}
+          {...props}
+        >
+          {content}
+          {children}
+        </button>
+      );
+    }
+
+    const child = elementChildren[0];
+    const childWithIcon = content
+      ? cloneElement(
+          child,
+          undefined,
+          <>
+            {content}
+            {child.props.children}
+          </>,
+        )
+      : child;
+
+    return (
+      <Slot
+        data-slot="button"
+        data-variant={variant}
+        data-size={size}
+        className={cn(buttonVariants({ variant, size, className }))}
+        {...props}
+      >
+        {childWithIcon}
+      </Slot>
+    );
+  }
 
   return (
-    <Comp
+    <button
       data-slot="button"
       data-variant={variant}
       data-size={size}
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
-    />
+    >
+      {content}
+      {children}
+    </button>
   );
 }
 

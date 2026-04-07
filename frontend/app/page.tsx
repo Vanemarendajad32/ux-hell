@@ -1,5 +1,6 @@
 "use client";
 
+import { Trophy } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -61,8 +62,16 @@ export default function Page() {
               aria-hidden="true"
             />
           </div>
-          <h1 className="bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 bg-clip-text text-5xl font-bold text-transparent sm:text-7xl">
-            UX HELL
+          <h1 className="inline-flex items-center gap-3 bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 bg-clip-text text-5xl font-bold text-transparent sm:text-7xl">
+            <Image
+              src="/ux-hell-logo.svg"
+              alt=""
+              width={48}
+              height={48}
+              className="h-10 w-10 sm:h-12 sm:w-12"
+              aria-hidden="true"
+            />
+            <span>UX HELL</span>
           </h1>
           <p className="mt-4 text-lg text-slate-600">
             Navigate through the most frustrating UX patterns
@@ -86,6 +95,15 @@ export default function Page() {
               aria-hidden="true"
             />
             START GAME
+          </Button>
+          <Button
+            asChild
+            variant="outline"
+            size="lg"
+            prefixIcon={<Trophy className="h-5 w-5 text-orange-500" />}
+            className="mt-3 w-full rounded-2xl border-slate-200 bg-white px-8 py-6 text-lg font-bold text-slate-900 hover:scale-[1.02] hover:shadow-xl"
+          >
+            <Link href="/leaderboard?from=home">View Leaderboard</Link>
           </Button>
           <DialogContent>
             <DialogHeader>
@@ -130,7 +148,7 @@ export default function Page() {
                 <>
                   <Button
                     asChild
-                    variant="outline"
+                    variant="secondary"
                     size="lg"
                     className="w-full gap-3 rounded-2xl border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-900 hover:scale-[1.02] hover:shadow-xl"
                   >

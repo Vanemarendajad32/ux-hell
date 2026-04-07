@@ -24,15 +24,10 @@ export type SessionSnapshot =
   | { authenticated: false; username: null };
 
 export async function registerUser(input: RegisterUserInput) {
-  const response = await apiClient.post<RegisteredUserSnapshot>(
-    "/api/auth/register",
-    {
-      username: input.username,
-      password: input.password,
-    },
-  );
-
-  return response;
+  return await apiClient.post<RegisteredUserSnapshot>("/api/auth/register", {
+    username: input.username,
+    password: input.password,
+  });
 }
 
 export async function loginUser(input: LoginUserInput) {

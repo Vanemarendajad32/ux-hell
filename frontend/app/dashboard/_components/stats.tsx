@@ -1,3 +1,6 @@
+import { ChevronDown, Trophy } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import type {
   GameStats,
   LastOverview,
@@ -39,6 +42,14 @@ function getFrustrationTone(value: number): string {
   }
 
   return "text-emerald-600";
+}
+
+function formatGlobalRank(rank: number | null): string {
+  if (rank === null) {
+    return "Complete this game to claim a global leaderboard rank.";
+  }
+
+  return `Your rank in the global leaderboard is #${rank}.`;
 }
 
 function buildSparklinePath(values: number[]): string {
@@ -145,13 +156,19 @@ function MetricStack({
 export default function Stats({ games, summary, lastOverview }: StatsProps) {
   return (
     <section className="rounded-[2rem] border border-rose-200 bg-gradient-to-br from-white via-rose-50/40 to-orange-50/30 p-3 shadow-xl shadow-rose-100/50 sm:p-6">
-      <div className="space-y-1">
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-rose-600">
-          Your Stats
-        </p>
-        <h2 className="text-lg text-slate-700 sm:text-2xl">
-          Your suffering so far
-        </h2>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-rose-600">
+            Your Stats
+          </p>
+          <h2 className="text-2xl text-slate-700">Your suffering so far</h2>
+        </div>
+        <Button asChild className="w-auto self-start">
+          <Link href="/leaderboard?from=dashboard">
+            <Trophy className="size-4" />
+            View Global Leaderboard
+          </Link>
+        </Button>
       </div>
 
       <div className="mt-3 grid gap-3 rounded-2xl border border-rose-200 bg-white/90 p-2.5 shadow-inner sm:mt-5 sm:gap-4 sm:p-4 lg:grid-cols-2">
@@ -254,91 +271,26 @@ export default function Stats({ games, summary, lastOverview }: StatsProps) {
         </div>
       </div>
 
-      <div className="mt-6 space-y-4 md:hidden">
-        {games.map((game) => {
-          const timeTone = getTimeTone(game.lastRunMs, game.fastestMs);
-          const frustrationTone = getFrustrationTone(game.averageFrustration);
+      <details className="group mt-6 overflow-hidden rounded-2xl border border-rose-200 bg-white/90">
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-left">
+          <div className="space-y-1">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-600">
+              Detailed Game Stats
+            </p>
+            <p className="text-sm text-slate-500">
+              Expand to view per-game performance breakdown.
+            </p>
+          </div>
+          <div className="inline-flex items-center gap-2">
+            <span className="rounded-full border border-rose-200 bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-700">
+              {games.length} games
+            </span>
+            <ChevronDown className="size-4 text-slate-500 transition-transform duration-200 group-open:rotate-180" />
+          </div>
+        </summary>
 
-          return (
-            <article
-              key={game.gameType}
-              className="rounded-2xl border border-rose-200 bg-white/90 p-4 shadow-lg"
-            >
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
-                    {game.label}
-                  </p>
-                  <p className="text-lg font-semibold text-slate-900">
-                    Last {game.lastRunTime}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="text-xs text-slate-400">Fastest</p>
-                  <p className={`text-base font-semibold ${timeTone}`}>
-                    {game.fastestTime}
-                  </p>
-                  <p className="text-xs text-slate-400">
-                    Avg {game.averageTime}
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-4 grid grid-cols-2 gap-3">
-                <div className="rounded-xl border border-rose-100 bg-rose-50/40 p-3">
-                  <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
-                    attempts
-                  </p>
-                  <p className="text-lg font-semibold text-slate-900">
-                    {game.totalAttempts}
-                  </p>
-                </div>
-                <div className="rounded-xl border border-rose-100 bg-white p-3">
-                  <MetricStack
-                    total={game.totalClicks}
-                    average={game.averageClicks}
-                    tone="text-slate-700"
-                    values={game.series.clicks}
-                    title={`Total clicks ${game.totalClicks}, avg ${game.averageClicks}`}
-                  />
-                </div>
-                <div className="rounded-xl border border-rose-100 bg-white p-3">
-                  <MetricStack
-                    total={game.totalErrors}
-                    average={game.averageErrors}
-                    tone="text-amber-600"
-                    values={game.series.errors}
-                    title={`Total errors ${game.totalErrors}, avg ${game.averageErrors}`}
-                  />
-                </div>
-                <div className="rounded-xl border border-rose-100 bg-white p-3">
-                  <MetricStack
-                    total={game.totalFrustration}
-                    average={game.averageFrustration}
-                    tone={frustrationTone}
-                    values={game.series.frustration}
-                    title={`Total frustration ${game.totalFrustration}, avg ${game.averageFrustration}`}
-                  />
-                </div>
-              </div>
-            </article>
-          );
-        })}
-      </div>
-
-      <div className="mt-6 hidden overflow-x-auto rounded-2xl border border-rose-200 bg-white/90 md:block">
-        <table className="w-full border-collapse text-left text-sm">
-          <thead className="bg-rose-50 text-xs uppercase tracking-[0.2em] text-rose-600">
-            <tr>
-              <th className="px-4 py-3 font-semibold">Game</th>
-              <th className="px-4 py-3 font-semibold">Time</th>
-              <th className="px-4 py-3 font-semibold">Attempts</th>
-              <th className="px-4 py-3 font-semibold">Clicks</th>
-              <th className="px-4 py-3 font-semibold">Errors</th>
-              <th className="px-4 py-3 font-semibold">Frustration</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-rose-100 text-slate-700">
+        <div className="border-t border-rose-100 px-3 pb-3 sm:px-4 sm:pb-4">
+          <div className="mt-4 space-y-4 md:hidden">
             {games.map((game) => {
               const timeTone = getTimeTone(game.lastRunMs, game.fastestMs);
               const frustrationTone = getFrustrationTone(
@@ -346,65 +298,164 @@ export default function Stats({ games, summary, lastOverview }: StatsProps) {
               );
 
               return (
-                <tr key={game.gameType} className="bg-white/70">
-                  <td className="px-4 py-4">
-                    <div className="font-semibold text-slate-900">
-                      {game.label}
+                <article
+                  key={game.gameType}
+                  className="rounded-2xl border border-rose-200 bg-white/90 p-4 shadow-lg"
+                >
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
+                        {game.label}
+                      </p>
+                      <p className="text-lg font-semibold text-slate-900">
+                        Last {game.lastRunTime}
+                      </p>
+                      <p className="mt-1 text-xs text-rose-700">
+                        {formatGlobalRank(game.globalRank)}
+                      </p>
                     </div>
-                    <div className="text-xs text-slate-400">
-                      {game.totalAttempts} runs
+                    <div className="text-right">
+                      <p className="text-xs text-slate-400">Fastest</p>
+                      <p className={`text-base font-semibold ${timeTone}`}>
+                        {game.fastestTime}
+                      </p>
+                      <p className="text-xs text-slate-400">
+                        Avg {game.averageTime}
+                      </p>
                     </div>
-                  </td>
-                  <td className="px-4 py-4">
-                    <div className="flex flex-col gap-1">
-                      <span className={`text-base font-semibold ${timeTone}`}>
-                        {game.lastRunTime}
-                      </span>
-                      <span className="text-xs text-slate-500">
-                        Fastest {game.fastestTime} · Avg {game.averageTime}
-                      </span>
-                      <Sparkline values={game.series.timeMs} tone={timeTone} />
+                  </div>
+
+                  <div className="mt-4 grid grid-cols-2 gap-3">
+                    <div className="rounded-xl border border-rose-100 bg-rose-50/40 p-3">
+                      <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
+                        attempts
+                      </p>
+                      <p className="text-lg font-semibold text-slate-900">
+                        {game.totalAttempts}
+                      </p>
                     </div>
-                  </td>
-                  <td className="px-4 py-4">
-                    <div className="text-lg font-semibold text-slate-900">
-                      {game.totalAttempts}
+                    <div className="rounded-xl border border-rose-100 bg-white p-3">
+                      <MetricStack
+                        total={game.totalClicks}
+                        average={game.averageClicks}
+                        tone="text-slate-700"
+                        values={game.series.clicks}
+                        title={`Total clicks ${game.totalClicks}, avg ${game.averageClicks}`}
+                      />
                     </div>
-                    <div className="text-xs text-slate-400">attempts</div>
-                  </td>
-                  <td className="px-4 py-4">
-                    <MetricStack
-                      total={game.totalClicks}
-                      average={game.averageClicks}
-                      tone="text-slate-700"
-                      values={game.series.clicks}
-                      title={`Total clicks ${game.totalClicks}, avg ${game.averageClicks}`}
-                    />
-                  </td>
-                  <td className="px-4 py-4">
-                    <MetricStack
-                      total={game.totalErrors}
-                      average={game.averageErrors}
-                      tone="text-amber-600"
-                      values={game.series.errors}
-                      title={`Total errors ${game.totalErrors}, avg ${game.averageErrors}`}
-                    />
-                  </td>
-                  <td className="px-4 py-4">
-                    <MetricStack
-                      total={game.totalFrustration}
-                      average={game.averageFrustration}
-                      tone={frustrationTone}
-                      values={game.series.frustration}
-                      title={`Total frustration ${game.totalFrustration}, avg ${game.averageFrustration}`}
-                    />
-                  </td>
-                </tr>
+                    <div className="rounded-xl border border-rose-100 bg-white p-3">
+                      <MetricStack
+                        total={game.totalErrors}
+                        average={game.averageErrors}
+                        tone="text-amber-600"
+                        values={game.series.errors}
+                        title={`Total errors ${game.totalErrors}, avg ${game.averageErrors}`}
+                      />
+                    </div>
+                    <div className="rounded-xl border border-rose-100 bg-white p-3">
+                      <MetricStack
+                        total={game.totalFrustration}
+                        average={game.averageFrustration}
+                        tone={frustrationTone}
+                        values={game.series.frustration}
+                        title={`Total frustration ${game.totalFrustration}, avg ${game.averageFrustration}`}
+                      />
+                    </div>
+                  </div>
+                </article>
               );
             })}
-          </tbody>
-        </table>
-      </div>
+          </div>
+
+          <div className="mt-4 hidden overflow-x-auto rounded-2xl border border-rose-200 bg-white/90 md:block">
+            <table className="w-full border-collapse text-left text-sm">
+              <thead className="bg-rose-50 text-xs uppercase tracking-[0.2em] text-rose-600">
+                <tr>
+                  <th className="px-4 py-3 font-semibold">Game</th>
+                  <th className="px-4 py-3 font-semibold">Time</th>
+                  <th className="px-4 py-3 font-semibold">Attempts</th>
+                  <th className="px-4 py-3 font-semibold">Clicks</th>
+                  <th className="px-4 py-3 font-semibold">Errors</th>
+                  <th className="px-4 py-3 font-semibold">Frustration</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-rose-100 text-slate-700">
+                {games.map((game) => {
+                  const timeTone = getTimeTone(game.lastRunMs, game.fastestMs);
+                  const frustrationTone = getFrustrationTone(
+                    game.averageFrustration,
+                  );
+
+                  return (
+                    <tr key={game.gameType} className="bg-white/70">
+                      <td className="px-4 py-4">
+                        <div className="font-semibold text-slate-900">
+                          {game.label}
+                        </div>
+                        <div className="text-xs text-slate-400">
+                          {game.totalAttempts} runs
+                        </div>
+                        <div className="mt-1 inline-flex rounded-full border border-rose-200 bg-rose-50 px-2 py-1 text-xs font-medium text-rose-700">
+                          {formatGlobalRank(game.globalRank)}
+                        </div>
+                      </td>
+                      <td className="px-4 py-4">
+                        <div className="flex flex-col gap-1">
+                          <span
+                            className={`text-base font-semibold ${timeTone}`}
+                          >
+                            {game.lastRunTime}
+                          </span>
+                          <span className="text-xs text-slate-500">
+                            Fastest {game.fastestTime} · Avg {game.averageTime}
+                          </span>
+                          <Sparkline
+                            values={game.series.timeMs}
+                            tone={timeTone}
+                          />
+                        </div>
+                      </td>
+                      <td className="px-4 py-4">
+                        <div className="text-lg font-semibold text-slate-900">
+                          {game.totalAttempts}
+                        </div>
+                        <div className="text-xs text-slate-400">attempts</div>
+                      </td>
+                      <td className="px-4 py-4">
+                        <MetricStack
+                          total={game.totalClicks}
+                          average={game.averageClicks}
+                          tone="text-slate-700"
+                          values={game.series.clicks}
+                          title={`Total clicks ${game.totalClicks}, avg ${game.averageClicks}`}
+                        />
+                      </td>
+                      <td className="px-4 py-4">
+                        <MetricStack
+                          total={game.totalErrors}
+                          average={game.averageErrors}
+                          tone="text-amber-600"
+                          values={game.series.errors}
+                          title={`Total errors ${game.totalErrors}, avg ${game.averageErrors}`}
+                        />
+                      </td>
+                      <td className="px-4 py-4">
+                        <MetricStack
+                          total={game.totalFrustration}
+                          average={game.averageFrustration}
+                          tone={frustrationTone}
+                          values={game.series.frustration}
+                          title={`Total frustration ${game.totalFrustration}, avg ${game.averageFrustration}`}
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </details>
     </section>
   );
 }
