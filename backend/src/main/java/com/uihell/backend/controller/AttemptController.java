@@ -34,8 +34,16 @@ public class AttemptController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/leaderboard")
-    public ResponseEntity<?> leaderboard() {
-        return ResponseEntity.ok(attemptService.leaderboard());
+    @GetMapping("/me")
+    public ResponseEntity<?> myAttempts(Authentication authentication) {
+        if (authentication == null) {
+            throw new ApiException(
+                "UNAUTHORIZED",
+                "Authentication required",
+                HttpStatus.UNAUTHORIZED
+            );
+        }
+
+        return ResponseEntity.ok(attemptService.myAttempts(authentication.getName()));
     }
 }

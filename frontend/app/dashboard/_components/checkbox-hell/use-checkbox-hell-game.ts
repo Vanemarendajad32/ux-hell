@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { requestJson } from "@/lib/api/request";
 import {
   finishSession,
   startSession,
@@ -10,6 +9,8 @@ import {
   trackError,
   trackSubmitAttempt,
 } from "@/lib/tracking";
+import { savePendingAttempt } from "@/lib/tracking/pending-attempt";
+import { submitPendingAttempt } from "@/lib/tracking/submit-pending-attempt";
 import {
   CHAOS_POOL,
   INITIAL_OPTIONS,
@@ -22,7 +23,10 @@ import {
 import { formatMs, isSolved, resetCheckboxStates } from "./helpers";
 import type { CheckboxOption, GameStage } from "./types";
 
-export function useCheckboxHellGame(isOpen: boolean) {
+export function useCheckboxHellGame(
+  isOpen: boolean,
+  onAttemptRecorded?: () => void,
+) {
   const [stage, setStage] = useState<GameStage>("intro");
   const [options, setOptions] = useState<CheckboxOption[]>(INITIAL_OPTIONS);
   const [winnerTrapTriggered, setWinnerTrapTriggered] = useState(false);
@@ -222,22 +226,18 @@ export function useCheckboxHellGame(isOpen: boolean) {
       return;
     }
 
-    const result = await requestJson("/api/tracking", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
+    savePendingAttempt("checkbox-hell", payload);
+    const result = await submitPendingAttempt("checkbox-hell");
+    onAttemptRecorded?.();
 
     if (!result.ok) {
       setApiFeedback(
-        "Success saved locally, but sending tracking payload failed.",
+        "Success saved locally, but submitting the attempt failed.",
       );
       return;
     }
 
-    setApiFeedback("Run recorded. Tracking payload accepted by /api/tracking.");
+    setApiFeedback("Run recorded.");
   };
 
   return {
