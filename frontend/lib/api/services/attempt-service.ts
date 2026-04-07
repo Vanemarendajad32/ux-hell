@@ -1,6 +1,7 @@
 import { apiClient } from "../client";
 
 export type AttemptPayload = {
+  gameType: string;
   completionTimeMs: number;
   clickCount: number;
   frustrationLevel: number;
@@ -11,6 +12,7 @@ export type AttemptPayload = {
 
 export type LeaderboardAttempt = {
   id: number;
+  gameType: string;
   completionTimeMs: number;
   clickCount: number;
   frustrationLevel: number;
