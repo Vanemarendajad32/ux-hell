@@ -4,86 +4,76 @@ import static com.uihell.backend.dto.LeaderboardGameType.ACCOUNT_VERIFICATION;
 import static com.uihell.backend.dto.LeaderboardGameType.REGISTRATION;
 import static com.uihell.backend.dto.LeaderboardGameType.ROBOT_TEST;
 
+import com.uihell.backend.entity.Attempt;
 import com.uihell.backend.dto.LeaderboardEntryResponse;
 import com.uihell.backend.dto.LeaderboardGameType;
 import com.uihell.backend.dto.LeaderboardResponse;
+import com.uihell.backend.repository.AttemptRepository;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.stream.IntStream;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class LeaderboardService {
 
-    private static final Map<LeaderboardGameType, LeaderboardGameData> MOCK_DATA = Map.of(
-        REGISTRATION,
-        new LeaderboardGameData(
-            "0:42",
-            "9,850",
-            List.of(
-                new LeaderboardEntryResponse(1, "SpeedRunner", "0:42", "15%", "9,850", "2026-03-14"),
-                new LeaderboardEntryResponse(2, "UX_Master", "0:58", "20%", "9,620", "2026-03-13"),
-                new LeaderboardEntryResponse(3, "PatternHunter", "1:05", "25%", "9,380", "2026-03-14"),
-                new LeaderboardEntryResponse(4, "ClickWizard", "1:11", "30%", "9,150", "2026-03-12"),
-                new LeaderboardEntryResponse(5, "DarkSlayer", "1:29", "35%", "8,820", "2026-03-14"),
-                new LeaderboardEntryResponse(6, "CookieCrusher", "1:35", "42%", "8,550", "2026-03-13"),
-                new LeaderboardEntryResponse(7, "FormNinja", "1:43", "48%", "8,280", "2026-03-11"),
-                new LeaderboardEntryResponse(8, "PopupHater", "1:58", "55%", "7,890", "2026-03-14"),
-                new LeaderboardEntryResponse(9, "CloseButton", "2:07", "63%", "7,540", "2026-03-10"),
-                new LeaderboardEntryResponse(10, "AntiPattern", "2:25", "72%", "7,120", "2026-03-14")
-            )
-        ),
-        ROBOT_TEST,
-        new LeaderboardGameData(
-            "0:31",
-            "9,920",
-            List.of(
-                new LeaderboardEntryResponse(1, "BotBreaker", "0:31", "8%", "9,920", "2026-03-15"),
-                new LeaderboardEntryResponse(2, "CaptchaQueen", "0:37", "10%", "9,770", "2026-03-14"),
-                new LeaderboardEntryResponse(3, "ScrollSamurai", "0:45", "18%", "9,540", "2026-03-13"),
-                new LeaderboardEntryResponse(4, "HoverGhost", "0:56", "21%", "9,300", "2026-03-12"),
-                new LeaderboardEntryResponse(5, "JitterClick", "1:04", "28%", "9,060", "2026-03-14"),
-                new LeaderboardEntryResponse(6, "LoopDodger", "1:13", "34%", "8,830", "2026-03-11"),
-                new LeaderboardEntryResponse(7, "FocusTrap", "1:22", "40%", "8,610", "2026-03-10"),
-                new LeaderboardEntryResponse(8, "UndoHero", "1:39", "52%", "8,130", "2026-03-09")
-            )
-        ),
-        ACCOUNT_VERIFICATION,
-        new LeaderboardGameData(
-            "1:12",
-            "9,430",
-            List.of(
-                new LeaderboardEntryResponse(1, "TokenTamer", "1:12", "19%", "9,430", "2026-03-15"),
-                new LeaderboardEntryResponse(2, "VerifierPro", "1:20", "22%", "9,280", "2026-03-14"),
-                new LeaderboardEntryResponse(3, "MultiTabber", "1:27", "26%", "9,140", "2026-03-13"),
-                new LeaderboardEntryResponse(4, "OTPHunter", "1:34", "29%", "9,010", "2026-03-12"),
-                new LeaderboardEntryResponse(5, "LinkChaser", "1:45", "33%", "8,820", "2026-03-13"),
-                new LeaderboardEntryResponse(6, "ModalRunner", "1:53", "38%", "8,670", "2026-03-11"),
-                new LeaderboardEntryResponse(7, "CodeShifter", "2:02", "45%", "8,410", "2026-03-10"),
-                new LeaderboardEntryResponse(8, "TimeoutMage", "2:16", "53%", "8,120", "2026-03-09"),
-                new LeaderboardEntryResponse(9, "ResendLoop", "2:32", "61%", "7,760", "2026-03-08")
-            )
-        )
-    );
+    private static final DateTimeFormatter COMPLETED_AT_FORMATTER = DateTimeFormatter
+        .ofPattern("yyyy-MM-dd")
+        .withLocale(Locale.ROOT)
+        .withZone(ZoneOffset.UTC);
 
-    public LeaderboardResponse getLeaderboardByGame(LeaderboardGameType gameType, int page, int size) {
-        LeaderboardGameData gameData = MOCK_DATA.get(gameType);
-        List<LeaderboardEntryResponse> allEntries = gameData.entries();
-        int totalPlayers = allEntries.size();
+    private final AttemptRepository attemptRepository;
 
-        int fromIndex = page * size;
-        int toIndex = Math.min(fromIndex + size, totalPlayers);
-        List<LeaderboardEntryResponse> paginatedEntries = fromIndex >= totalPlayers
+    public LeaderboardResponse getLeaderboardByGame(
+        LeaderboardGameType gameType,
+        int page,
+        int size,
+        String username
+    ) {
+        List<String> gameTypes = resolveAttemptGameTypes(gameType);
+        Sort sort = Sort
+            .by(Sort.Order.asc("completionTimeMs"), Sort.Order.asc("createdAt"), Sort.Order.asc("id"));
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+        Page<Attempt> attemptsPage = attemptRepository.findByCompletedTrueAndGameTypeIn(
+            gameTypes,
+            pageRequest
+        );
+        List<LeaderboardEntryResponse> paginatedEntries = attemptsPage.isEmpty()
             ? Collections.emptyList()
-            : allEntries.subList(fromIndex, toIndex);
+            : mapEntries(attemptsPage.getContent(), (page * size) + 1);
 
-        int totalPages = totalPlayers == 0 ? 0 : (int) Math.ceil((double) totalPlayers / size);
+        List<Attempt> sortedAttempts = attemptRepository.findByCompletedTrueAndGameTypeInOrderByCompletionTimeMsAscCreatedAtAscIdAsc(
+            gameTypes
+        );
+        int totalPages = attemptsPage.getTotalPages();
+        String bestTime = attemptRepository
+            .findFirstByCompletedTrueAndGameTypeInOrderByCompletionTimeMsAscCreatedAtAsc(gameTypes)
+            .map(attempt -> formatDuration(attempt.getCompletionTimeMs()))
+            .orElse("--:--");
+        String topScore = formatScore(
+            sortedAttempts
+                .stream()
+                .mapToInt(this::computeScore)
+                .max()
+                .orElse(0)
+        );
+        Integer currentUserRank = resolveCurrentUserRank(sortedAttempts, username);
 
         return new LeaderboardResponse(
             gameType.apiValue(),
-            gameData.bestTime(),
-            gameData.topScore(),
-            totalPlayers,
+            bestTime,
+            topScore,
+            currentUserRank,
+            (int) attemptsPage.getTotalElements(),
             page,
             size,
             totalPages,
@@ -91,9 +81,83 @@ public class LeaderboardService {
         );
     }
 
-    private record LeaderboardGameData(
-        String bestTime,
-        String topScore,
-        List<LeaderboardEntryResponse> entries
-    ) {}
+    private List<LeaderboardEntryResponse> mapEntries(List<Attempt> attempts, int firstRank) {
+        return IntStream
+            .range(0, attempts.size())
+            .mapToObj(index -> {
+                Attempt attempt = attempts.get(index);
+                String username = attempt.getUser() == null ? "Unknown" : attempt.getUser().getUsername();
+                int frustrationValue = Math.max(0, attempt.getFrustrationLevel() == null ? 0 : attempt.getFrustrationLevel());
+
+                return new LeaderboardEntryResponse(
+                    firstRank + index,
+                    username,
+                    formatDuration(attempt.getCompletionTimeMs()),
+                    formatFrustration(frustrationValue),
+                    formatScore(computeScore(attempt)),
+                    attempt.getCreatedAt() == null
+                        ? "-"
+                        : COMPLETED_AT_FORMATTER.format(attempt.getCreatedAt())
+                );
+            })
+            .toList();
+    }
+
+    private List<String> resolveAttemptGameTypes(LeaderboardGameType gameType) {
+        return switch (gameType) {
+            case REGISTRATION -> List.of(REGISTRATION.apiValue());
+            case ROBOT_TEST -> List.of(ROBOT_TEST.apiValue(), "checkbox-hell");
+            case ACCOUNT_VERIFICATION -> List.of(ACCOUNT_VERIFICATION.apiValue());
+        };
+    }
+
+    private String formatDuration(Long completionTimeMs) {
+        if (completionTimeMs == null || completionTimeMs < 0) {
+            return "--:--";
+        }
+
+        long totalSeconds = completionTimeMs / 1000;
+        long minutes = totalSeconds / 60;
+        long seconds = totalSeconds % 60;
+        return String.format(Locale.ROOT, "%d:%02d", minutes, seconds);
+    }
+
+    private String formatFrustration(int frustrationLevel) {
+        int percent = Math.min(100, Math.max(0, frustrationLevel * 10));
+        return percent + "%";
+    }
+
+    private String formatScore(int score) {
+        return String.format(Locale.ROOT, "%,d", score);
+    }
+
+    private int computeScore(Attempt attempt) {
+        long completionPenalty = (attempt.getCompletionTimeMs() == null ? 0L : attempt.getCompletionTimeMs()) / 100;
+        int clickPenalty = (attempt.getClickCount() == null ? 0 : attempt.getClickCount()) * 4;
+        int errorPenalty = (attempt.getErrorCount() == null ? 0 : attempt.getErrorCount()) * 180;
+        int retryPenalty = Math.max(0, (attempt.getSubmitAttempts() == null ? 1 : attempt.getSubmitAttempts()) - 1) * 120;
+        int frustrationPenalty = (attempt.getFrustrationLevel() == null ? 0 : attempt.getFrustrationLevel()) * 80;
+
+        long rawScore =
+            10_000L - completionPenalty - clickPenalty - errorPenalty - retryPenalty - frustrationPenalty;
+        return (int) Math.max(0, rawScore);
+    }
+
+    private Integer resolveCurrentUserRank(List<Attempt> sortedAttempts, String username) {
+        if (username == null || username.isBlank()) {
+            return null;
+        }
+
+        return IntStream
+            .range(0, sortedAttempts.size())
+            .filter(index -> {
+                Attempt attempt = sortedAttempts.get(index);
+                return attempt.getUser() != null &&
+                Objects.equals(attempt.getUser().getUsername(), username);
+            })
+            .map(index -> index + 1)
+            .boxed()
+            .findFirst()
+            .orElse(null);
+    }
 }

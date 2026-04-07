@@ -32,6 +32,7 @@ export type LeaderboardGameOption = {
 };
 
 export type LeaderboardViewData = {
+  currentUserRank: number | null;
   page: number;
   players: LeaderboardPlayer[];
   size: number;
@@ -49,6 +50,7 @@ export const defaultLeaderboardGame: LeaderboardGame = "registration";
 export const defaultLeaderboardSource: LeaderboardSource = "dashboard";
 
 export const emptyLeaderboardData: LeaderboardViewData = {
+  currentUserRank: null,
   page: 0,
   stats: [
     {
@@ -97,6 +99,7 @@ export function mapLeaderboardResponseToView(
   response: LeaderboardResponse,
 ): LeaderboardViewData {
   return {
+    currentUserRank: response.currentUserRank,
     page: response.page,
     stats: [
       {

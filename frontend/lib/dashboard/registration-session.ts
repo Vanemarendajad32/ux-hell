@@ -30,3 +30,11 @@ export function readRegistrationSession(): AuthSession | null {
     return null;
   }
 }
+
+export function clearRegistrationSession() {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  window.sessionStorage.removeItem(REGISTRATION_SESSION_KEY);
+}

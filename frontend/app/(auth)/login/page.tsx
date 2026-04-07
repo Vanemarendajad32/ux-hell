@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import PlusIcon from "@/components/icons/plus-icon";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
 import { getApiErrorMessage } from "@/lib/api/error";
@@ -14,6 +16,15 @@ export default function LoginPage() {
   const [form, setForm] = useState({ username: "", password: "" });
   const [submitError, setSubmitError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [swapButtons, setSwapButtons] = useState(false);
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setSwapButtons((prev) => !prev);
+    }, 1000);
+
+    return () => window.clearInterval(intervalId);
+  }, []);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -82,23 +93,70 @@ export default function LoginPage() {
           onChange={handleChange}
           disabled={isSubmitting}
         />
-        <Button
-          className="mt-3 w-full gap-3 text-base font-bold hover:scale-[1.02]"
-          size="lg"
-          type="submit"
-          disabled={isSubmitting}
-          aria-busy={isSubmitting}
-        >
-          <Image
-            src="/ux-hell-logo.svg"
-            alt=""
-            width={20}
-            height={20}
-            className="h-5 w-5"
-            aria-hidden="true"
-          />
-          {isSubmitting ? "Signing in..." : "Sign in"}
-        </Button>
+        <div className="mt-3 grid gap-2">
+          {swapButtons ? (
+            <>
+              <Button
+                asChild
+                size="lg"
+                className="w-full gap-3 text-base font-bold hover:scale-[1.02]"
+              >
+                <Link href="/register">
+                  <PlusIcon />
+                  Register
+                </Link>
+              </Button>
+              <Button
+                className="w-full gap-3 text-base font-bold hover:scale-[1.02]"
+                size="lg"
+                type="submit"
+                disabled={isSubmitting}
+                aria-busy={isSubmitting}
+              >
+                <Image
+                  src="/ux-hell-logo.svg"
+                  alt=""
+                  width={20}
+                  height={20}
+                  className="h-5 w-5"
+                  aria-hidden="true"
+                />
+                {isSubmitting ? "Signing in..." : "Sign in"}
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                className="w-full gap-3 text-base font-bold hover:scale-[1.02]"
+                size="lg"
+                type="submit"
+                disabled={isSubmitting}
+                aria-busy={isSubmitting}
+              >
+                <Image
+                  src="/ux-hell-logo.svg"
+                  alt=""
+                  width={20}
+                  height={20}
+                  className="h-5 w-5"
+                  aria-hidden="true"
+                />
+                {isSubmitting ? "Signing in..." : "Sign in"}
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="w-full gap-3 text-base font-bold hover:scale-[1.02]"
+              >
+                <Link href="/register">
+                  <PlusIcon />
+                  Register
+                </Link>
+              </Button>
+            </>
+          )}
+        </div>
         {submitError ? (
           <p className="mt-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
             {submitError}

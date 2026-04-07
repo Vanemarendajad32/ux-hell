@@ -4,6 +4,8 @@ import { ChevronDown, UserRound } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { logoutUser } from "@/lib/api/services/auth-service";
+import { clearRegistrationSession } from "@/lib/dashboard/registration-session";
+import { clearPendingAttempt } from "@/lib/tracking/pending-attempt";
 
 type DashboardHeaderProps = {
   username: string;
@@ -16,6 +18,8 @@ export default function DashboardHeader({ username }: DashboardHeaderProps) {
     try {
       await logoutUser();
     } finally {
+      clearRegistrationSession();
+      clearPendingAttempt();
       router.push("/");
     }
   }

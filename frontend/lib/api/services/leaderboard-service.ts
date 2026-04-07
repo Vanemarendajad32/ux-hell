@@ -18,6 +18,7 @@ export type LeaderboardResponse = {
   gameType: LeaderboardGameType;
   bestTime: string;
   topScore: string;
+  currentUserRank: number | null;
   totalPlayers: number;
   page: number;
   size: number;

@@ -8,6 +8,7 @@ import com.uihell.backend.exception.ApiException;
 import com.uihell.backend.service.LeaderboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +25,8 @@ public class LeaderboardController {
     public LeaderboardResponse getLeaderboard(
         @RequestParam(name = "gameType", defaultValue = "registration") String gameType,
         @RequestParam(name = "page", defaultValue = "0") int page,
-        @RequestParam(name = "size", defaultValue = "20") int size
+        @RequestParam(name = "size", defaultValue = "20") int size,
+        Authentication authentication
     ) {
         LeaderboardGameType resolvedGameType = LeaderboardGameType
             .fromApiValue(gameType)
@@ -52,6 +54,7 @@ public class LeaderboardController {
             );
         }
 
-        return leaderboardService.getLeaderboardByGame(resolvedGameType, page, size);
+        String username = authentication == null ? null : authentication.getName();
+        return leaderboardService.getLeaderboardByGame(resolvedGameType, page, size, username);
     }
 }

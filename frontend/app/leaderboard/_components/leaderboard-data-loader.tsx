@@ -51,6 +51,7 @@ export default function LeaderboardDataLoader({
 
   return (
     <LeaderboardPageContent
+      currentUserRank={viewData.currentUserRank}
       currentPage={viewData.page}
       onPageChange={setPage}
       selectedGame={selectedGame}

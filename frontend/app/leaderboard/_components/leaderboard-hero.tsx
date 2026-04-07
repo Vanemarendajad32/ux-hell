@@ -3,10 +3,14 @@ import type { LeaderboardSource } from "../_lib/leaderboard-data";
 import LeaderboardBackButton from "./leaderboard-back-button";
 
 type LeaderboardHeroProps = {
+  currentUserRank: number | null;
   source: LeaderboardSource;
 };
 
-export default function LeaderboardHero({ source }: LeaderboardHeroProps) {
+export default function LeaderboardHero({
+  currentUserRank,
+  source,
+}: LeaderboardHeroProps) {
   return (
     <header className="mb-12 text-center">
       <LeaderboardBackButton source={source} />
@@ -23,6 +27,11 @@ export default function LeaderboardHero({ source }: LeaderboardHeroProps) {
       <p className="text-base text-slate-600 sm:text-lg">
         Masters who conquered UI Hell with minimal frustration
       </p>
+      {currentUserRank !== null ? (
+        <p className="mx-auto mt-4 inline-flex items-center rounded-full border border-rose-200 bg-white px-4 py-2 text-sm font-semibold text-rose-700 shadow-sm">
+          You are currently ranked #{currentUserRank}. Chaos respects you.
+        </p>
+      ) : null}
     </header>
   );
 }

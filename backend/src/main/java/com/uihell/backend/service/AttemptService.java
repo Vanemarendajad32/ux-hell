@@ -55,7 +55,19 @@ public class AttemptService {
         return attemptRepository.save(attempt);
     }
 
-    public List<Attempt> leaderboard() {
-        return attemptRepository.findLeaderboard();
+    public List<Attempt> myAttempts(String username) {
+        User user = userRepository
+            .findByUsername(username)
+            .orElseThrow(() ->
+                new ApiException(
+                    FORBIDDEN,
+                    "Invalid authentication context",
+                    HttpStatus.FORBIDDEN
+                )
+            );
+
+        return attemptRepository.findByUserIdAndCompletedTrueOrderByCreatedAtAsc(
+            user.getId()
+        );
     }
 }

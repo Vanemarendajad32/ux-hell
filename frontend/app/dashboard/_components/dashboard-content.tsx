@@ -2,18 +2,78 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { getLeaderboard } from "@/lib/api/services/attempt-service";
+import { getMyAttempts } from "@/lib/api/services/attempt-service";
 import { getSession } from "@/lib/api/services/auth-service";
+import {
+  getLeaderboard as getGlobalLeaderboard,
+  type LeaderboardGameType,
+} from "@/lib/api/services/leaderboard-service";
 import {
   createDashboardData,
   type DashboardData,
 } from "@/lib/dashboard/dashboard-view-model";
-import { readRegistrationSession } from "@/lib/dashboard/registration-session";
+import {
+  clearRegistrationSession,
+  readRegistrationSession,
+} from "@/lib/dashboard/registration-session";
+import type { GameType } from "@/lib/tracking/game-types";
+import { clearPendingAttempt } from "@/lib/tracking/pending-attempt";
 import { submitPendingAttempt } from "@/lib/tracking/submit-pending-attempt";
 import DashboardSurface from "./dashboard-surface";
 import RegistrationSuccessModal from "./registration-success-modal";
 
 const fallbackDashboardData: DashboardData = createDashboardData();
+const globalLeaderboardMappings: Array<{
+  dashboardGameType: GameType;
+  leaderboardGameType: LeaderboardGameType;
+}> = [
+  {
+    dashboardGameType: "registration",
+    leaderboardGameType: "registration",
+  },
+  {
+    dashboardGameType: "checkbox-hell",
+    leaderboardGameType: "robot-test",
+  },
+  {
+    dashboardGameType: "account-verification",
+    leaderboardGameType: "account-verification",
+  },
+];
+
+function createEmptyGlobalRanks(): Partial<Record<GameType, number | null>> {
+  return {
+    registration: null,
+    "checkbox-hell": null,
+    "account-verification": null,
+    unknown: null,
+  };
+}
+
+async function loadGlobalRanks(): Promise<
+  Partial<Record<GameType, number | null>>
+> {
+  const baseRanks = createEmptyGlobalRanks();
+  const responses = await Promise.allSettled(
+    globalLeaderboardMappings.map((mapping) =>
+      getGlobalLeaderboard(mapping.leaderboardGameType, 0, 1),
+    ),
+  );
+
+  responses.forEach((response, index) => {
+    const mapping = globalLeaderboardMappings[index];
+    if (!mapping) {
+      return;
+    }
+
+    baseRanks[mapping.dashboardGameType] =
+      response.status === "fulfilled"
+        ? (response.value.currentUserRank ?? null)
+        : null;
+  });
+
+  return baseRanks;
+}
 
 export default function DashboardContent() {
   const pathname = usePathname();
@@ -33,25 +93,35 @@ export default function DashboardContent() {
     }
 
     setDashboardData(createDashboardData());
-    const registration = readRegistrationSession();
-    const registrationUsername = registration?.username?.trim();
-    if (registrationUsername && isActiveRef.current) {
-      setUsername(registrationUsername);
-    } else {
-      try {
-        const session = await getSession();
-        if (isActiveRef.current && session.authenticated) {
-          setUsername(session.username);
-        }
-      } catch {
-        // ignore: dashboard should still render even if session check fails
+    let sessionUsername: string | null = null;
+    try {
+      const session = await getSession();
+      if (!session.authenticated) {
+        clearRegistrationSession();
+        clearPendingAttempt();
+        router.replace("/login");
+        return;
       }
+      sessionUsername = session.username;
+    } catch {
+      clearRegistrationSession();
+      clearPendingAttempt();
+      router.replace("/login");
+      return;
+    }
+
+    const registration = readRegistrationSession();
+    if (isActiveRef.current && sessionUsername) {
+      setUsername(sessionUsername);
     }
 
     await submitPendingAttempt();
 
     try {
-      const leaderboard = await getLeaderboard();
+      const [leaderboard, globalRanks] = await Promise.all([
+        getMyAttempts(),
+        loadGlobalRanks(),
+      ]);
 
       if (!isActiveRef.current) {
         return;
@@ -60,6 +130,7 @@ export default function DashboardContent() {
       setDashboardData(
         createDashboardData({
           leaderboard,
+          globalRanks,
           registration,
         }),
       );
@@ -71,11 +142,12 @@ export default function DashboardContent() {
       setDashboardData(
         createDashboardData({
           leaderboard: [],
+          globalRanks: createEmptyGlobalRanks(),
           registration,
         }),
       );
     }
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     setIsModalOpen(shouldShowSuccessModal);

@@ -1,4 +1,4 @@
-import type {TrackingPayload} from "@/lib/tracking/types";
+import type { TrackingPayload } from "@/lib/tracking/types";
 
 const MAX_FRUSTRATION_LEVEL = 10;
 

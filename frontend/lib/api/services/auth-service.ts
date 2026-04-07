@@ -1,4 +1,4 @@
-import {apiClient} from "../client";
+import { apiClient } from "../client";
 
 export type RegisterUserInput = {
   username: string;
@@ -24,13 +24,10 @@ export type SessionSnapshot =
   | { authenticated: false; username: null };
 
 export async function registerUser(input: RegisterUserInput) {
-  return await apiClient.post<RegisteredUserSnapshot>(
-    "/api/auth/register",
-    {
-      username: input.username,
-      password: input.password,
-    },
-  );
+  return await apiClient.post<RegisteredUserSnapshot>("/api/auth/register", {
+    username: input.username,
+    password: input.password,
+  });
 }
 
 export async function loginUser(input: LoginUserInput) {

@@ -13,6 +13,7 @@ import LeaderboardPagination from "./leaderboard-pagination";
 import LeaderboardStats from "./leaderboard-stats";
 
 type LeaderboardPageContentProps = {
+  currentUserRank: number | null;
   currentPage: number;
   onPageChange: (nextPage: number) => void;
   players: LeaderboardPlayer[];
@@ -23,6 +24,7 @@ type LeaderboardPageContentProps = {
 };
 
 export default function LeaderboardPageContent({
+  currentUserRank,
   currentPage,
   onPageChange,
   players,
@@ -34,7 +36,7 @@ export default function LeaderboardPageContent({
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-rose-50 via-orange-50 to-amber-50 px-4 py-12 sm:px-8">
       <div className="mx-auto max-w-5xl">
-        <LeaderboardHero source={source} />
+        <LeaderboardHero source={source} currentUserRank={currentUserRank} />
         <LeaderboardGameTabs selectedGame={selectedGame} source={source} />
         <LeaderboardStats stats={stats} />
         <LeaderboardList players={players} />
