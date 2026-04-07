@@ -1,10 +1,24 @@
+"use client";
+
 import { ChevronDown, UserRound } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { logoutUser } from "@/lib/api/services/auth-service";
 
 type DashboardHeaderProps = {
   username: string;
 };
 
 export default function DashboardHeader({ username }: DashboardHeaderProps) {
+  const router = useRouter();
+
+  async function handleLogout() {
+    try {
+      await logoutUser();
+    } finally {
+      router.push("/");
+    }
+  }
+
   return (
     <header className="px-2.5 py-2 sm:px-5 sm:py-3">
       <div className="flex items-center justify-between gap-4">
@@ -37,6 +51,7 @@ export default function DashboardHeader({ username }: DashboardHeaderProps) {
             <button
               className="w-full cursor-pointer px-4 py-2 text-left text-sm text-rose-600 transition-colors hover:bg-rose-50"
               type="button"
+              onClick={handleLogout}
             >
               Log out
             </button>

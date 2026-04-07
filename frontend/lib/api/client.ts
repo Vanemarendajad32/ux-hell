@@ -83,6 +83,7 @@ async function request<TResponse>(
       ...options,
       method,
       headers,
+      credentials: options.credentials ?? "include",
       body: hasBody ? JSON.stringify(options.body) : undefined,
     });
   } catch (error) {

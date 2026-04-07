@@ -1,9 +1,45 @@
+"use client";
+
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
+import { getApiErrorMessage } from "@/lib/api/error";
+import { loginUser } from "@/lib/api/services/auth-service";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [form, setForm] = useState({ username: "", password: "" });
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+
+    setForm((prev) => ({ ...prev, [name]: value }));
+    setSubmitError("");
+  }
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSubmitError("");
+    setIsSubmitting(true);
+
+    try {
+      await loginUser({
+        username: form.username,
+        password: form.password,
+      });
+      router.push("/dashboard");
+    } catch (error) {
+      setSubmitError(getApiErrorMessage(error));
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   return (
     <main className="mx-auto w-full max-w-md">
       <div className="mb-10 text-center">
@@ -25,13 +61,16 @@ export default function LoginPage() {
         </p>
       </div>
 
-      <form>
+      <form onSubmit={handleSubmit} aria-busy={isSubmitting}>
         <Input
           autoComplete="username"
           label="Username"
-          name="identifier"
+          name="username"
           required
           type="text"
+          value={form.username}
+          onChange={handleChange}
+          disabled={isSubmitting}
         />
         <Input
           autoComplete="current-password"
@@ -39,11 +78,16 @@ export default function LoginPage() {
           name="password"
           required
           type="password"
+          value={form.password}
+          onChange={handleChange}
+          disabled={isSubmitting}
         />
         <Button
           className="mt-3 w-full gap-3 text-base font-bold hover:scale-[1.02]"
           size="lg"
-          type="button"
+          type="submit"
+          disabled={isSubmitting}
+          aria-busy={isSubmitting}
         >
           <Image
             src="/ux-hell-logo.svg"
@@ -53,8 +97,13 @@ export default function LoginPage() {
             className="h-5 w-5"
             aria-hidden="true"
           />
-          Sign in
+          {isSubmitting ? "Signing in..." : "Sign in"}
         </Button>
+        {submitError ? (
+          <p className="mt-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {submitError}
+          </p>
+        ) : null}
       </form>
     </main>
   );

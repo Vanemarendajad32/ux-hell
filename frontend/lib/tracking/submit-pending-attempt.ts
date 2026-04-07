@@ -18,7 +18,7 @@ export async function submitPendingAttempt(
 ): Promise<PendingAttemptResult> {
   const registration = readRegistrationSession();
 
-  if (!registration?.token || !registration.id) {
+  if (!registration?.id) {
     return { ok: false, reason: "no-session" };
   }
 
@@ -34,19 +34,15 @@ export async function submitPendingAttempt(
         ? fallbackGameType
         : pendingAttempt.gameType;
 
-    await submitAttempt(
-      registration.id,
-      {
-        gameType,
-        completionTimeMs: pendingAttempt.payload.completionTimeMs,
-        clickCount: pendingAttempt.payload.clickCount,
-        frustrationLevel: computeFrustrationLevel(pendingAttempt.payload),
-        errorCount: pendingAttempt.payload.errorCount,
-        submitAttempts: pendingAttempt.payload.submitAttempts,
-        completed: pendingAttempt.payload.completed,
-      },
-      registration.token,
-    );
+    await submitAttempt(registration.id, {
+      gameType,
+      completionTimeMs: pendingAttempt.payload.completionTimeMs,
+      clickCount: pendingAttempt.payload.clickCount,
+      frustrationLevel: computeFrustrationLevel(pendingAttempt.payload),
+      errorCount: pendingAttempt.payload.errorCount,
+      submitAttempts: pendingAttempt.payload.submitAttempts,
+      completed: pendingAttempt.payload.completed,
+    });
     clearPendingAttempt();
     return { ok: true };
   } catch {

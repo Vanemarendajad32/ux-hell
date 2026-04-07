@@ -3,6 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getLeaderboard } from "@/lib/api/services/attempt-service";
+import { getSession } from "@/lib/api/services/auth-service";
 import {
   createDashboardData,
   type DashboardData,
@@ -36,12 +37,21 @@ export default function DashboardContent() {
     const registrationUsername = registration?.username?.trim();
     if (registrationUsername && isActiveRef.current) {
       setUsername(registrationUsername);
+    } else {
+      try {
+        const session = await getSession();
+        if (isActiveRef.current && session.authenticated) {
+          setUsername(session.username);
+        }
+      } catch {
+        // ignore: dashboard should still render even if session check fails
+      }
     }
 
     await submitPendingAttempt();
 
     try {
-      const leaderboard = await getLeaderboard(registration?.token);
+      const leaderboard = await getLeaderboard();
 
       if (!isActiveRef.current) {
         return;

@@ -13,17 +13,15 @@ export type RegisteredUserSnapshot = {
 export type AuthSession = {
   id: number;
   username: string;
-  token: string;
 };
-
 export type LoginUserInput = {
   username: string;
   password: string;
 };
 
-export type LoginResponse = {
-  token: string;
-};
+export type SessionSnapshot =
+  | { authenticated: true; username: string }
+  | { authenticated: false; username: null };
 
 export async function registerUser(input: RegisterUserInput) {
   const response = await apiClient.post<RegisteredUserSnapshot>(
@@ -38,10 +36,25 @@ export async function registerUser(input: RegisterUserInput) {
 }
 
 export async function loginUser(input: LoginUserInput) {
-  const response = await apiClient.post<LoginResponse>("/api/auth/login", {
+  await apiClient.post<void>("/api/auth/login", {
     username: input.username,
     password: input.password,
   });
+}
 
-  return response;
+export async function logoutUser() {
+  await apiClient.post<void>("/api/auth/logout");
+}
+
+export async function getSession(): Promise<SessionSnapshot> {
+  const session = await apiClient.get<{
+    authenticated: boolean;
+    username: string | null;
+  }>("/api/auth/session");
+
+  if (session.authenticated && session.username) {
+    return { authenticated: true, username: session.username };
+  }
+
+  return { authenticated: false, username: null };
 }

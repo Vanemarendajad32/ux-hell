@@ -26,22 +26,10 @@ export type LeaderboardAttempt = {
   };
 };
 
-export function submitAttempt(
-  userId: number,
-  payload: AttemptPayload,
-  token?: string,
-) {
-  const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
-
-  return apiClient.post<void>(`/api/attempts/${userId}`, payload, {
-    headers,
-  });
+export function submitAttempt(userId: number, payload: AttemptPayload) {
+  return apiClient.post<void>(`/api/attempts/${userId}`, payload);
 }
 
-export function getLeaderboard(token?: string) {
-  const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
-
-  return apiClient.get<LeaderboardAttempt[]>("/api/attempts/leaderboard", {
-    headers,
-  });
+export function getLeaderboard() {
+  return apiClient.get<LeaderboardAttempt[]>("/api/attempts/leaderboard");
 }

@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -19,6 +20,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
 
+    @Value("${app.auth.cookie-name:UIHELL_SESSION}")
+    private String authCookieName;
+
     @Override
     protected void doFilterInternal(
         HttpServletRequest request,
@@ -30,21 +34,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        final String authHeader = request.getHeader("Authorization");
+        String token = extractCookieToken(request);
 
         // No token → continue
-        if (authHeader == null) {
+        if (token == null || token.isBlank()) {
             filterChain.doFilter(request, response);
             return;
         }
-
-        String header = authHeader.trim();
-        if (header.length() < 7 || !header.regionMatches(true, 0, "Bearer ", 0, 7)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        String token = header.substring(7).trim();
 
         if (jwtService.isValid(token)) {
             String username = jwtService.extractUsername(token);
@@ -63,5 +59,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private String extractCookieToken(HttpServletRequest request) {
+        var cookies = request.getCookies();
+        if (cookies == null || authCookieName == null || authCookieName.isBlank()) {
+            return null;
+        }
+
+        for (var cookie : cookies) {
+            if (cookie != null && authCookieName.equals(cookie.getName())) {
+                String value = cookie.getValue();
+                return value == null ? null : value.trim();
+            }
+        }
+
+        return null;
     }
 }
