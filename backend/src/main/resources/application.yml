@@ -23,6 +23,16 @@ jwt:
 server:
   port: 8080
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
 app:
   cors:
     allowed-origins:

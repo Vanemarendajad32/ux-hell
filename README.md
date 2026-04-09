@@ -88,6 +88,11 @@ docker compose up --build
 
 The Maven clean/package step is included in the backend Dockerfile, so building the Docker image sets it up.
 
+#### Monitoring
+
+1. Specify new values for the PROMETHEUS_BASIC_AUTH_PASSWORD and GRAFANA_ADMIN_PASSWORD values within the `.env` file.
+2. Also create a file [monitoring/secrets/prometheus_basic_auth_password](monitoring/secrets/prometheus_basic_auth_password) and add a single line within that file containing the PROMETHEUS_BASIC_AUTH_PASSWORD value
+
 ## Common Commands
 
 ### Frontend (`frontend/`)

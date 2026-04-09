@@ -44,7 +44,7 @@ The goal is to make safe, focused changes in a split frontend/backend codebase.
   - Lint/check: `cd frontend && pnpm lint`
   - Format: `cd frontend && pnpm format`
 - Backend:
-  - Run backend + postgres with Docker: `cd backend && docker compose up --build` (or `cd backend && docker-compose up --build`)
+  - Run backend + postgres with Docker: `cd backend && docker compose up --build` (or `cd backend && docker-compose up --build`). The same compose file also starts **Prometheus** on port `9090` and **Grafana** on host port `3010` (container port 3000) for metrics; Grafana defaults to user/password `admin`/`admin` unless overridden with `GRAFANA_ADMIN_USER` and `GRAFANA_ADMIN_PASSWORD` in `backend/.env`.
   - Run tests locally: `cd backend && ./mvnw test`
   - Package locally: `cd backend && ./mvnw clean package`
 
@@ -73,6 +73,7 @@ The goal is to make safe, focused changes in a split frontend/backend codebase.
 ## API and Data Notes
 - Backend default URL: `http://localhost:8080`
 - Health endpoint: `/health`
+- Prometheus scrape endpoint (Actuator): `/actuator/prometheus` (exposed without auth for local Docker scraping; restrict or protect in production).
 - Swagger UI: `/swagger-ui.html`
 - Default local DB config points to PostgreSQL database `uihell` with `postgres/postgres`.
 
