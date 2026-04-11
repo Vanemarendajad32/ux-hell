@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { requestJson } from "@/lib/api/request";
 import {
   finishSession,
@@ -34,19 +34,7 @@ export function useNameInputCarouselGame(isOpen: boolean) {
   const [apiFeedback, setApiFeedback] = useState("");
   const [completionTimeMs, setCompletionTimeMs] = useState<number | null>(null);
 
-  useEffect(() => {
-    if (!isOpen) {
-      setStage("intro");
-      setLockedLetters(createEmptySlots());
-      setActiveIndex(0);
-      setActiveLetterIndex(0);
-      setFeedback("");
-      setFeedbackTone("neutral");
-      setApiFeedback("");
-      setCompletionTimeMs(null);
-      return;
-    }
-
+  const resetGame = useCallback(() => {
     setStage("intro");
     setLockedLetters(createEmptySlots());
     setActiveIndex(0);
@@ -55,7 +43,11 @@ export function useNameInputCarouselGame(isOpen: boolean) {
     setFeedbackTone("neutral");
     setApiFeedback("");
     setCompletionTimeMs(null);
-  }, [isOpen]);
+  }, []);
+
+  useEffect(() => {
+    resetGame();
+  }, [isOpen, resetGame]);
 
   const activeLetter = ALPHABET[activeLetterIndex];
   const previousLetter = ALPHABET[getWrappedLetterIndex(activeLetterIndex, -1)];

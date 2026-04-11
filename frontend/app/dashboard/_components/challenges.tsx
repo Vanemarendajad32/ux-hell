@@ -22,34 +22,8 @@ export default function Challenges({ onAttemptRecorded }: ChallengesProps) {
       <div className="mt-4 grid gap-3 md:grid-cols-2">
         <CheckboxHellMenu onAttemptRecorded={onAttemptRecorded} />
         <AccountVerificationMenu onAttemptRecorded={onAttemptRecorded} />
-
-        {extraChallenges.map((challenge) => {
-          const Icon = challenge.icon;
-
-          return (
-            <ChallengeCard
-              key={challenge.title}
-              action={
-                <Button
-                  className={cn(
-                    "ml-auto flex h-10 w-24 rounded-full text-lg font-bold sm:h-11 sm:w-28 sm:text-xl",
-                    challenge.buttonVariant === "secondary" &&
-                      "border border-slate-200 bg-slate-100 text-slate-500 shadow-none",
-                  )}
-                  type="button"
-                  variant={challenge.buttonVariant}
-                >
-                  {challenge.actionLabel}
-                </Button>
-              }
-              className={challenge.toneClassName}
-              description={challenge.description}
-              difficulty={challenge.difficulty}
-              icon={<Icon className={cn("size-7", challenge.iconClassName)} />}
-              title={challenge.title}
-            />
-          );
-        })}
+        <CursedVolumeSliderMenu />
+        <NameInputCarouselMenu />
       </div>
     </section>
   );

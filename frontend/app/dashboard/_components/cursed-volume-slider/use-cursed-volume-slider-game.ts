@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { requestJson } from "@/lib/api/request";
 import {
   finishSession,
@@ -19,22 +19,17 @@ export function useCursedVolumeSliderGame(isOpen: boolean) {
   const [apiFeedback, setApiFeedback] = useState("");
   const [completionTimeMs, setCompletionTimeMs] = useState<number | null>(null);
 
-  useEffect(() => {
-    if (!isOpen) {
-      setStage("intro");
-      setSliderValue(START_VOLUME);
-      setFeedback("");
-      setApiFeedback("");
-      setCompletionTimeMs(null);
-      return;
-    }
-
+  const resetGame = useCallback(() => {
     setStage("intro");
     setSliderValue(START_VOLUME);
     setFeedback("");
     setApiFeedback("");
     setCompletionTimeMs(null);
-  }, [isOpen]);
+  }, []);
+
+  useEffect(() => {
+    resetGame();
+  }, [isOpen, resetGame]);
 
   function handleStartGame() {
     startSession();
