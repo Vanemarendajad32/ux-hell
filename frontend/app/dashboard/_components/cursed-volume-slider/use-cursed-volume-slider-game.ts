@@ -28,6 +28,11 @@ export function useCursedVolumeSliderGame(isOpen: boolean) {
   }, []);
 
   useEffect(() => {
+    if (!isOpen) {
+      resetGame();
+      return;
+    }
+
     resetGame();
   }, [isOpen, resetGame]);
 

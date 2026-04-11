@@ -46,6 +46,11 @@ export function useNameInputCarouselGame(isOpen: boolean) {
   }, []);
 
   useEffect(() => {
+    if (!isOpen) {
+      resetGame();
+      return;
+    }
+
     resetGame();
   }, [isOpen, resetGame]);
 
