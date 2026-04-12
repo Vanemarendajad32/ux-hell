@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { requestJson } from "@/lib/api/request";
 import {
   finishSession,
   startSession,
@@ -9,6 +8,8 @@ import {
   trackError,
   trackSubmitAttempt,
 } from "@/lib/tracking";
+import { savePendingAttempt } from "@/lib/tracking/pending-attempt";
+import { submitPendingAttempt } from "@/lib/tracking/submit-pending-attempt";
 import { ALPHABET, TARGET_NAME } from "./constants";
 import {
   buildProgressLetters,
@@ -23,7 +24,10 @@ function createInitialFeedback() {
   return "Spell ALEX one character at a time. Keyboard access has been discontinued.";
 }
 
-export function useNameInputCarouselGame(isOpen: boolean) {
+export function useNameInputCarouselGame(
+  isOpen: boolean,
+  onAttemptRecorded?: () => void,
+) {
   const [stage, setStage] = useState<NameInputCarouselStage>("intro");
   const [lockedLetters, setLockedLetters] =
     useState<string[]>(createEmptySlots);
@@ -175,22 +179,18 @@ export function useNameInputCarouselGame(isOpen: boolean) {
       return;
     }
 
-    const result = await requestJson("/api/tracking", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
+    savePendingAttempt("name-input-carousel", payload);
+    const result = await submitPendingAttempt("name-input-carousel");
+    onAttemptRecorded?.();
 
     if (!result.ok) {
       setApiFeedback(
-        "Success saved locally, but sending tracking payload failed.",
+        "Success saved locally, but submitting the attempt failed.",
       );
       return;
     }
 
-    setApiFeedback("Run recorded. Tracking payload accepted by /api/tracking.");
+    setApiFeedback("Run recorded.");
   }
 
   return {

@@ -39,6 +39,14 @@ const globalLeaderboardMappings: Array<{
     dashboardGameType: "account-verification",
     leaderboardGameType: "account-verification",
   },
+  {
+    dashboardGameType: "cursed-volume-slider",
+    leaderboardGameType: "cursed-volume-slider",
+  },
+  {
+    dashboardGameType: "name-input-carousel",
+    leaderboardGameType: "name-input-carousel",
+  },
 ];
 
 function createEmptyGlobalRanks(): Partial<Record<GameType, number | null>> {
@@ -46,7 +54,8 @@ function createEmptyGlobalRanks(): Partial<Record<GameType, number | null>> {
     registration: null,
     "checkbox-hell": null,
     "account-verification": null,
-    unknown: null,
+    "cursed-volume-slider": null,
+    "name-input-carousel": null,
   };
 }
 

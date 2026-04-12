@@ -94,6 +94,63 @@ class AttemptServiceTest {
     }
 
     @Test
+    void submitForCurrentUser_savesForResolvedAuthenticatedUser() {
+        User user = User.builder()
+            .id(7L)
+            .username("current-user")
+            .passwordHash("hash")
+            .createdAt(Instant.parse("2024-01-01T00:00:00Z"))
+            .build();
+        AttemptRequest req = new AttemptRequest(
+            "cursed-volume-slider",
+            8_500L,
+            12,
+            3,
+            1,
+            2,
+            true
+        );
+        when(userRepository.findByUsername("current-user")).thenReturn(Optional.of(user));
+        when(attemptRepository.save(any(Attempt.class)))
+            .thenAnswer(invocation -> invocation.getArgument(0));
+
+        Attempt saved = attemptService.submitForCurrentUser("current-user", req);
+
+        assertThat(saved.getUser()).isSameAs(user);
+        assertThat(saved.getGameType()).isEqualTo("cursed-volume-slider");
+        assertThat(saved.getCompletionTimeMs()).isEqualTo(8_500L);
+        assertThat(saved.getClickCount()).isEqualTo(12);
+        assertThat(saved.getFrustrationLevel()).isEqualTo(3);
+        assertThat(saved.getErrorCount()).isEqualTo(1);
+        assertThat(saved.getSubmitAttempts()).isEqualTo(2);
+        assertThat(saved.getCompleted()).isTrue();
+        verify(attemptRepository).save(any(Attempt.class));
+    }
+
+    @Test
+    void submitForCurrentUser_throwsForbiddenWhenUserMissing() {
+        when(userRepository.findByUsername("missing-user")).thenReturn(Optional.empty());
+        AttemptRequest req = new AttemptRequest(
+            "name-input-carousel",
+            1L,
+            1,
+            0,
+            0,
+            1,
+            true
+        );
+
+        assertThatThrownBy(() ->
+            attemptService.submitForCurrentUser("missing-user", req)
+        )
+            .isInstanceOf(ApiException.class)
+            .satisfies(ex -> {
+                ApiException api = (ApiException) ex;
+                assertThat(api.getStatus()).isEqualTo(HttpStatus.FORBIDDEN);
+            });
+    }
+
+    @Test
     void myAttempts_returnsCompletedAttemptsForUser() {
         User user = User.builder()
             .id(2L)

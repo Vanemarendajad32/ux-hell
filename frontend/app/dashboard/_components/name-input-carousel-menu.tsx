@@ -10,9 +10,15 @@ import PlayingStage from "./name-input-carousel/playing-stage";
 import SuccessStage from "./name-input-carousel/success-stage";
 import { useNameInputCarouselGame } from "./name-input-carousel/use-name-input-carousel-game";
 
-export default function NameInputCarouselMenu() {
+type NameInputCarouselMenuProps = {
+  onAttemptRecorded?: () => void;
+};
+
+export default function NameInputCarouselMenu({
+  onAttemptRecorded,
+}: NameInputCarouselMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const game = useNameInputCarouselGame(isOpen);
+  const game = useNameInputCarouselGame(isOpen, onAttemptRecorded);
 
   return (
     <ChallengeCard

@@ -7,7 +7,9 @@ import java.util.Optional;
 public enum LeaderboardGameType {
     REGISTRATION("registration"),
     ROBOT_TEST("robot-test"),
-    ACCOUNT_VERIFICATION("account-verification");
+    ACCOUNT_VERIFICATION("account-verification"),
+    CURSED_VOLUME_SLIDER("cursed-volume-slider"),
+    NAME_INPUT_CAROUSEL("name-input-carousel");
 
     private final String apiValue;
 

@@ -1,18 +1,22 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { requestJson } from "@/lib/api/request";
 import {
   finishSession,
   startSession,
   trackClick,
   trackSubmitAttempt,
 } from "@/lib/tracking";
+import { savePendingAttempt } from "@/lib/tracking/pending-attempt";
+import { submitPendingAttempt } from "@/lib/tracking/submit-pending-attempt";
 import { START_VOLUME, TARGET_VOLUME } from "./constants";
 import { applyVolumeCurse, formatElapsedMs } from "./helpers";
 import type { GameStage } from "./types";
 
-export function useCursedVolumeSliderGame(isOpen: boolean) {
+export function useCursedVolumeSliderGame(
+  isOpen: boolean,
+  onAttemptRecorded?: () => void,
+) {
   const [stage, setStage] = useState<GameStage>("intro");
   const [sliderValue, setSliderValue] = useState(START_VOLUME);
   const [feedback, setFeedback] = useState("");
@@ -96,24 +100,18 @@ export function useCursedVolumeSliderGame(isOpen: boolean) {
         return;
       }
 
-      const result = await requestJson("/api/tracking", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      savePendingAttempt("cursed-volume-slider", payload);
+      const result = await submitPendingAttempt("cursed-volume-slider");
+      onAttemptRecorded?.();
 
       if (!result.ok) {
         setApiFeedback(
-          "Success saved locally, but sending tracking payload failed.",
+          "Success saved locally, but submitting the attempt failed.",
         );
         return;
       }
 
-      setApiFeedback(
-        "Run recorded. Tracking payload accepted by /api/tracking.",
-      );
+      setApiFeedback("Run recorded.");
       return;
     }
 

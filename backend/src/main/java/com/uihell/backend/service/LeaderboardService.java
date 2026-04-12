@@ -1,6 +1,8 @@
 package com.uihell.backend.service;
 
 import static com.uihell.backend.dto.LeaderboardGameType.ACCOUNT_VERIFICATION;
+import static com.uihell.backend.dto.LeaderboardGameType.CURSED_VOLUME_SLIDER;
+import static com.uihell.backend.dto.LeaderboardGameType.NAME_INPUT_CAROUSEL;
 import static com.uihell.backend.dto.LeaderboardGameType.REGISTRATION;
 import static com.uihell.backend.dto.LeaderboardGameType.ROBOT_TEST;
 
@@ -108,6 +110,8 @@ public class LeaderboardService {
             case REGISTRATION -> List.of(REGISTRATION.apiValue());
             case ROBOT_TEST -> List.of(ROBOT_TEST.apiValue(), "checkbox-hell");
             case ACCOUNT_VERIFICATION -> List.of(ACCOUNT_VERIFICATION.apiValue());
+            case CURSED_VOLUME_SLIDER -> List.of(CURSED_VOLUME_SLIDER.apiValue());
+            case NAME_INPUT_CAROUSEL -> List.of(NAME_INPUT_CAROUSEL.apiValue());
         };
     }
 

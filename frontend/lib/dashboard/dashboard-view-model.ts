@@ -129,11 +129,18 @@ function createEmptyGameStats(
   };
 }
 
-function normalizeGameType(value: string | null | undefined): GameType {
+function parseGameType(value: string | null | undefined): GameType | null {
   if (value === "registration") return "registration";
   if (value === "checkbox-hell") return "checkbox-hell";
   if (value === "account-verification") return "account-verification";
-  return "unknown";
+  if (value === "cursed-volume-slider") return "cursed-volume-slider";
+  if (value === "name-input-carousel") return "name-input-carousel";
+  return null;
+}
+
+function resolveGameLabel(value: string | null | undefined): string {
+  const parsedType = parseGameType(value);
+  return parsedType ? gameTypeLabels[parsedType] : "Unknown";
 }
 
 export function createDashboardData(
@@ -163,7 +170,10 @@ export function createDashboardData(
   const attemptsByGame = new Map<GameType, LeaderboardAttempt[]>();
 
   for (const attempt of userAttempts) {
-    const gameType = normalizeGameType(attempt.gameType);
+    const gameType = parseGameType(attempt.gameType);
+    if (!gameType) {
+      continue;
+    }
     const current = attemptsByGame.get(gameType) ?? [];
     current.push(attempt);
     attemptsByGame.set(gameType, current);
@@ -279,7 +289,7 @@ export function createDashboardData(
     },
     lastOverview: {
       gameLabel: lastOverallAttempt
-        ? gameTypeLabels[normalizeGameType(lastOverallAttempt.gameType)]
+        ? resolveGameLabel(lastOverallAttempt.gameType)
         : "No runs yet",
       lastRunTime: formatDuration(lastOverallAttempt?.completionTimeMs),
       lastClicks: lastOverallAttempt?.clickCount ?? 0,

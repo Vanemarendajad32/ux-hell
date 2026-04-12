@@ -1,10 +1,12 @@
-import type { GameType } from "@/lib/tracking/game-types";
+import { type GameType, gameTypeOrder } from "@/lib/tracking/game-types";
 import type { TrackingPayload } from "@/lib/tracking/types";
 
 const PENDING_ATTEMPT_KEY = "ux-hell.pending-attempt";
 
+export type PendingAttemptGameType = GameType | "unknown";
+
 export type PendingAttempt = {
-  gameType: GameType;
+  gameType: PendingAttemptGameType;
   payload: TrackingPayload;
 };
 
@@ -37,7 +39,16 @@ export function readPendingAttempt(): PendingAttempt | null {
     const parsed = JSON.parse(rawValue) as unknown;
     if (parsed && typeof parsed === "object") {
       if ("payload" in parsed && "gameType" in parsed) {
-        return parsed as PendingAttempt;
+        const gameType = normalizePendingAttemptGameType(parsed.gameType);
+        if (!gameType) {
+          window.sessionStorage.removeItem(PENDING_ATTEMPT_KEY);
+          return null;
+        }
+
+        return {
+          gameType,
+          payload: parsed.payload as TrackingPayload,
+        };
       }
       if ("completionTimeMs" in parsed) {
         return {
@@ -47,9 +58,11 @@ export function readPendingAttempt(): PendingAttempt | null {
       }
     }
   } catch {
+    window.sessionStorage.removeItem(PENDING_ATTEMPT_KEY);
     return null;
   }
 
+  window.sessionStorage.removeItem(PENDING_ATTEMPT_KEY);
   return null;
 }
 
@@ -59,4 +72,16 @@ export function clearPendingAttempt() {
   }
 
   window.sessionStorage.removeItem(PENDING_ATTEMPT_KEY);
+}
+
+function normalizePendingAttemptGameType(
+  value: unknown,
+): PendingAttemptGameType | null {
+  if (value === "unknown") {
+    return "unknown";
+  }
+
+  return gameTypeOrder.some((gameType) => gameType === value)
+    ? (value as GameType)
+    : null;
 }

@@ -22,15 +22,7 @@ public class AttemptService {
     private final UserRepository userRepository;
 
     public Attempt submit(Long userId, String username, AttemptRequest req) {
-        User user = userRepository
-            .findByUsername(username)
-            .orElseThrow(() ->
-                new ApiException(
-                    FORBIDDEN,
-                    "Invalid authentication context",
-                    HttpStatus.FORBIDDEN
-                )
-            );
+        User user = resolveUser(username);
 
         if (!user.getId().equals(userId)) {
             throw new ApiException(
@@ -40,6 +32,27 @@ public class AttemptService {
             );
         }
 
+        return saveAttempt(user, req);
+    }
+
+    public Attempt submitForCurrentUser(String username, AttemptRequest req) {
+        User user = resolveUser(username);
+        return saveAttempt(user, req);
+    }
+
+    private User resolveUser(String username) {
+        return userRepository
+            .findByUsername(username)
+            .orElseThrow(() ->
+                new ApiException(
+                    FORBIDDEN,
+                    "Invalid authentication context",
+                    HttpStatus.FORBIDDEN
+                )
+            );
+    }
+
+    private Attempt saveAttempt(User user, AttemptRequest req) {
         Attempt attempt = Attempt.builder()
             .user(user)
             .gameType(req.gameType())
@@ -56,15 +69,7 @@ public class AttemptService {
     }
 
     public List<Attempt> myAttempts(String username) {
-        User user = userRepository
-            .findByUsername(username)
-            .orElseThrow(() ->
-                new ApiException(
-                    FORBIDDEN,
-                    "Invalid authentication context",
-                    HttpStatus.FORBIDDEN
-                )
-            );
+        User user = resolveUser(username);
 
         return attemptRepository.findByUserIdAndCompletedTrueOrderByCreatedAtAsc(
             user.getId()
