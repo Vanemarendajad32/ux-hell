@@ -28,10 +28,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create .env.production
-        run: |
-          echo "NEXT_PUBLIC_API_URL=${{ secrets.PRODUCTION_API_URL }}" >> frontend/.env.production
       
       - name: Build and push frontend image
         uses: docker/build-push-action@v7
