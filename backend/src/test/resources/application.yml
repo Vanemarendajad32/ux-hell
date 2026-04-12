@@ -1,0 +1,14 @@
+# Test profile defaults so @SpringBootTest runs without Docker (main config uses host "postgres").
+spring:
+  datasource:
+    url: jdbc:h2:mem:uihell_test;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+jwt:
+  # >= 32 UTF-8 bytes for HS256; trailing "x" avoids valid Base64 decoding (JwtService tries Base64 first)
+  secret: 01234567890123456789012345678901x

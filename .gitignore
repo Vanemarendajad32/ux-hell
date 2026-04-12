@@ -27,6 +27,9 @@ backend/.mvn/wrapper/maven-wrapper.jar
 *.jar
 *.war
 
+# Monitoring secrets
+backend/monitoring/secrets/
+
 # Env / secrets
 .env
 .env.local
