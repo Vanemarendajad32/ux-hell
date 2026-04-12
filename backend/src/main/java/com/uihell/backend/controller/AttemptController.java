@@ -34,6 +34,22 @@ public class AttemptController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/me")
+    public ResponseEntity<?> submitForCurrentUser(
+        Authentication authentication,
+        @Valid @RequestBody AttemptRequest req
+    ) {
+        if (authentication == null) {
+            throw new ApiException(
+                "UNAUTHORIZED",
+                "Authentication required",
+                HttpStatus.UNAUTHORIZED
+            );
+        }
+        attemptService.submitForCurrentUser(authentication.getName(), req);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/me")
     public ResponseEntity<?> myAttempts(Authentication authentication) {
         if (authentication == null) {

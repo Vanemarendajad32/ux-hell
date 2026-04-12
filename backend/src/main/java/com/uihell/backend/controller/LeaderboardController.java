@@ -33,7 +33,7 @@ public class LeaderboardController {
             .orElseThrow(() ->
                 new ApiException(
                     VALIDATION_ERROR,
-                    "Invalid gameType. Allowed values: registration, robot-test, account-verification",
+                    "Invalid gameType. Allowed values: registration, robot-test, account-verification, cursed-volume-slider, name-input-carousel",
                     HttpStatus.BAD_REQUEST
                 )
             );

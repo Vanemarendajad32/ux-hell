@@ -5,7 +5,9 @@ import type { LeaderboardResponse } from "@/lib/api/services/leaderboard-service
 export type LeaderboardGame =
   | "registration"
   | "robot-test"
-  | "account-verification";
+  | "account-verification"
+  | "cursed-volume-slider"
+  | "name-input-carousel";
 
 export type LeaderboardSource = "home" | "dashboard";
 
@@ -44,6 +46,8 @@ export const leaderboardGames: LeaderboardGameOption[] = [
   { id: "registration", label: "Registration" },
   { id: "robot-test", label: "Robot Test" },
   { id: "account-verification", label: "Account Verification" },
+  { id: "cursed-volume-slider", label: "Cursed Volume Slider" },
+  { id: "name-input-carousel", label: "Name Input Carousel" },
 ];
 
 export const defaultLeaderboardGame: LeaderboardGame = "registration";

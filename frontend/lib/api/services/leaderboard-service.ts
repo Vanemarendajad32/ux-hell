@@ -3,7 +3,9 @@ import { apiClient } from "../client";
 export type LeaderboardGameType =
   | "registration"
   | "robot-test"
-  | "account-verification";
+  | "account-verification"
+  | "cursed-volume-slider"
+  | "name-input-carousel";
 
 export type LeaderboardEntryResponse = {
   rank: number;

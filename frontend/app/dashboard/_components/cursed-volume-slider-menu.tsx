@@ -10,9 +10,15 @@ import PlayingStage from "./cursed-volume-slider/playing-stage";
 import SuccessStage from "./cursed-volume-slider/success-stage";
 import { useCursedVolumeSliderGame } from "./cursed-volume-slider/use-cursed-volume-slider-game";
 
-export default function CursedVolumeSliderMenu() {
+type CursedVolumeSliderMenuProps = {
+  onAttemptRecorded?: () => void;
+};
+
+export default function CursedVolumeSliderMenu({
+  onAttemptRecorded,
+}: CursedVolumeSliderMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const game = useCursedVolumeSliderGame(isOpen);
+  const game = useCursedVolumeSliderGame(isOpen, onAttemptRecorded);
 
   return (
     <ChallengeCard
