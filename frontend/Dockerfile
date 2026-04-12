@@ -16,8 +16,7 @@ COPY --from=builder /app/package.json package.json
 COPY --from=builder /app/pnpm-lock.yaml pnpm-lock.yaml
 COPY --from=builder /app/next.config.ts next.config.ts
 COPY --from=builder /app/tsconfig.json tsconfig.json
-## .env is not required for all builds; skip if not present
-# COPY --from=builder /app/.env .env
+COPY --from=builder /app/.env.production .env.production
 RUN corepack enable && corepack prepare pnpm@10.32.1 --activate && pnpm install --prod --frozen-lockfile
 
 EXPOSE 3000
