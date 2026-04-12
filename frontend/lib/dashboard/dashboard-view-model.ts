@@ -129,15 +129,6 @@ function createEmptyGameStats(
   };
 }
 
-function normalizeGameType(value: string | null | undefined): GameType {
-  if (value === "registration") return "registration";
-  if (value === "checkbox-hell") return "checkbox-hell";
-  if (value === "account-verification") return "account-verification";
-  if (value === "cursed-volume-slider") return "cursed-volume-slider";
-  if (value === "name-input-carousel") return "name-input-carousel";
-  return "registration";
-}
-
 function parseGameType(value: string | null | undefined): GameType | null {
   if (value === "registration") return "registration";
   if (value === "checkbox-hell") return "checkbox-hell";
@@ -145,6 +136,11 @@ function parseGameType(value: string | null | undefined): GameType | null {
   if (value === "cursed-volume-slider") return "cursed-volume-slider";
   if (value === "name-input-carousel") return "name-input-carousel";
   return null;
+}
+
+function resolveGameLabel(value: string | null | undefined): string {
+  const parsedType = parseGameType(value);
+  return parsedType ? gameTypeLabels[parsedType] : "Unknown";
 }
 
 export function createDashboardData(
@@ -293,7 +289,7 @@ export function createDashboardData(
     },
     lastOverview: {
       gameLabel: lastOverallAttempt
-        ? gameTypeLabels[normalizeGameType(lastOverallAttempt.gameType)]
+        ? resolveGameLabel(lastOverallAttempt.gameType)
         : "No runs yet",
       lastRunTime: formatDuration(lastOverallAttempt?.completionTimeMs),
       lastClicks: lastOverallAttempt?.clickCount ?? 0,

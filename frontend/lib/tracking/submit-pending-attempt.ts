@@ -1,5 +1,6 @@
 import "client-only";
 
+import { ApiError } from "@/lib/api/client";
 import {
   submitAttempt,
   submitAttemptForCurrentUser,
@@ -44,7 +45,15 @@ export async function submitPendingAttempt(
     };
 
     if (registration?.id) {
-      await submitAttempt(registration.id, attemptPayload);
+      try {
+        await submitAttempt(registration.id, attemptPayload);
+      } catch (error) {
+        if (!(error instanceof ApiError) || error.status !== 403) {
+          throw error;
+        }
+
+        await submitAttemptForCurrentUser(attemptPayload);
+      }
     } else {
       await submitAttemptForCurrentUser(attemptPayload);
     }

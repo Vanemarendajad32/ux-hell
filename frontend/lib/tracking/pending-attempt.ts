@@ -1,14 +1,7 @@
-import type { GameType } from "@/lib/tracking/game-types";
+import { gameTypeOrder, type GameType } from "@/lib/tracking/game-types";
 import type { TrackingPayload } from "@/lib/tracking/types";
 
 const PENDING_ATTEMPT_KEY = "ux-hell.pending-attempt";
-const KNOWN_GAME_TYPES: readonly GameType[] = [
-  "registration",
-  "checkbox-hell",
-  "account-verification",
-  "cursed-volume-slider",
-  "name-input-carousel",
-];
 
 export type PendingAttemptGameType = GameType | "unknown";
 
@@ -48,6 +41,7 @@ export function readPendingAttempt(): PendingAttempt | null {
       if ("payload" in parsed && "gameType" in parsed) {
         const gameType = normalizePendingAttemptGameType(parsed.gameType);
         if (!gameType) {
+          window.sessionStorage.removeItem(PENDING_ATTEMPT_KEY);
           return null;
         }
 
@@ -64,9 +58,11 @@ export function readPendingAttempt(): PendingAttempt | null {
       }
     }
   } catch {
+    window.sessionStorage.removeItem(PENDING_ATTEMPT_KEY);
     return null;
   }
 
+  window.sessionStorage.removeItem(PENDING_ATTEMPT_KEY);
   return null;
 }
 
@@ -85,7 +81,7 @@ function normalizePendingAttemptGameType(
     return "unknown";
   }
 
-  return KNOWN_GAME_TYPES.some((gameType) => gameType === value)
+  return gameTypeOrder.some((gameType) => gameType === value)
     ? (value as GameType)
     : null;
 }

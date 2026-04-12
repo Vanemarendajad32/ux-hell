@@ -84,6 +84,54 @@ class AttemptControllerTest {
 
     @Test
     @WithMockUser(username = "player")
+    void submitForCurrentUser_returnsOkAndDelegatesToService() throws Exception {
+        AttemptRequest body = new AttemptRequest(
+            "cursed-volume-slider",
+            8_000L,
+            4,
+            2,
+            1,
+            1,
+            true
+        );
+
+        mockMvc
+            .perform(
+                post("/api/attempts/me")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(body))
+            )
+            .andExpect(status().isOk());
+
+        verify(attemptService).submitForCurrentUser(
+            eq("player"),
+            any(AttemptRequest.class)
+        );
+    }
+
+    @Test
+    void submitForCurrentUser_returns401WhenNotAuthenticated() throws Exception {
+        AttemptRequest body = new AttemptRequest(
+            "name-input-carousel",
+            8_000L,
+            4,
+            2,
+            1,
+            1,
+            true
+        );
+
+        mockMvc
+            .perform(
+                post("/api/attempts/me")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(body))
+            )
+            .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(username = "player")
     void myAttempts_returnsOk() throws Exception {
         when(attemptService.myAttempts("player")).thenReturn(java.util.Collections.emptyList());
 
