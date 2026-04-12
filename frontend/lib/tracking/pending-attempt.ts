@@ -1,4 +1,4 @@
-import { gameTypeOrder, type GameType } from "@/lib/tracking/game-types";
+import { type GameType, gameTypeOrder } from "@/lib/tracking/game-types";
 import type { TrackingPayload } from "@/lib/tracking/types";
 
 const PENDING_ATTEMPT_KEY = "ux-hell.pending-attempt";
