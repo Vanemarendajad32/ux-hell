@@ -177,7 +177,6 @@ export default function DashboardContent() {
       <RegistrationSuccessModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        username={username}
       />
     </div>
   );
