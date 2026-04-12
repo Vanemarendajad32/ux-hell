@@ -67,10 +67,6 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      
-      - name: Create .env.production
-        run: echo "NEXT_PUBLIC_API_URL=${{ secrets.PRODUCTION_API_URL }}" >> .env.production
-
       - name: Lint
         run: pnpm lint
 
