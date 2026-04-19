@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - uxhell-52-certbot
 
 env:
   REGISTRY: ghcr.io
