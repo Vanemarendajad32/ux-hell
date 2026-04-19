@@ -99,7 +99,7 @@ public class SecurityConfig {
                     )
                     .permitAll()
                     .anyRequest()
-                    .authenticated()
+                    .permitAll()
             )
             //  Handle unauthorized access (no/invalid token)
             .exceptionHandling(ex ->
