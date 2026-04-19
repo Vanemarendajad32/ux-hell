@@ -1,5 +1,4 @@
 package com.uihell.backend.config;
-
 import com.uihell.backend.security.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,32 +22,16 @@ import org.springframework.security.config.Customizer;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-
     private final JwtAuthenticationFilter jwtAuthFilter;
     @Value("${app.cors.allowed-origins:http://localhost:3000}")
     private List<String> allowedOrigins;
-
     @Value("${app.monitoring.prometheus.username:prometheus}")
     private String prometheusUsername;
-
     @Value("${app.monitoring.prometheus.password:prometheus}")
     private String prometheusPassword;
-
-    private static final String[] PUBLIC_ENDPOINTS = {
-        "/api/auth/**",
-        "/auth/**",
-        "/api/leaderboard/**",
-        "/swagger-ui/**",
-        "/swagger-ui.html",
-        "/v3/api-docs/**",
-        "/actuator/health",
-        "/actuator/health/**",
-        "/debug/**"
-    };
 
     @Bean
     @Order(1)
@@ -56,8 +39,8 @@ public class SecurityConfig {
         throws Exception {
         http
             .securityMatcher("/actuator/**")
-            .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.disable())
+            .csrf(csrf -> csrf.disable())
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
@@ -65,7 +48,7 @@ public class SecurityConfig {
                 auth
                     .requestMatchers(
                         "/actuator/health",
-                         "/actuator/health/**"
+                        "/actuator/health/**"
                     )
                     .permitAll()
                     .requestMatchers("/actuator/prometheus")
@@ -74,16 +57,13 @@ public class SecurityConfig {
                     .denyAll()
             )
             .httpBasic(Customizer.withDefaults());
-
         return http.build();
     }
-
     @Bean
     @Order(2)
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
         throws Exception {
         http
-            .securityMatcher("/**")
             .cors(Customizer.withDefaults())
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session ->
@@ -92,16 +72,29 @@ public class SecurityConfig {
             // Public vs protected routes
             .authorizeHttpRequests(auth ->
                 auth
-                    // allow preflight requests
-                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-
-                    // public endpoints
-                    .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
-
-                    // everything else requires auth
+                    .requestMatchers(
+                        HttpMethod.OPTIONS,
+                        "/**"
+                    )
+                    .permitAll()
+                    .requestMatchers(
+                        "/health",
+                        "/actuator/health",
+                        "/actuator/health/**",
+                        "/api/auth/**",
+                        "/api/leaderboard/**",
+                        "/auth/**",
+                        // "/api/attempts/**",
+                        "/debug/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/v3/api-docs/**"
+                    )
+                    .permitAll()
                     .anyRequest()
                     .authenticated()
             )
+            //  Handle unauthorized access (no/invalid token)
             .exceptionHandling(ex ->
                 ex.authenticationEntryPoint(
                     (request, response, authException) -> {
@@ -121,21 +114,13 @@ public class SecurityConfig {
                     }
                 )
             )
-            .addFilterBefore((request, response, chain) -> {
-
-    var httpRequest = (jakarta.servlet.http.HttpServletRequest) request;
-
-    System.out.println("Origin: " + httpRequest.getHeader("Origin"));
-    System.out.println("Path: " + httpRequest.getRequestURI());
-
-    chain.doFilter(request, response);
-
-}, UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(
+                jwtAuthFilter,
+                UsernamePasswordAuthenticationFilter.class
+            );
 
         return http.build();
     }
-
     @Bean
     public UserDetailsService userDetailsService(
         PasswordEncoder passwordEncoder
@@ -145,10 +130,8 @@ public class SecurityConfig {
             .password(passwordEncoder.encode(prometheusPassword))
             .roles("PROMETHEUS")
             .build();
-
         return new InMemoryUserDetailsManager(prometheusUser);
     }
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -156,14 +139,11 @@ public class SecurityConfig {
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
-
         UrlBasedCorsConfigurationSource source =
             new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
-
         return source;
     }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
