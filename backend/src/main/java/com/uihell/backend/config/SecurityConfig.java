@@ -122,10 +122,15 @@ public class SecurityConfig {
                 )
             )
             .addFilterBefore((request, response, chain) -> {
-                System.out.println("Request: " + request.getMethod() + " " + request.getRequestURI());
-                System.out.println("Origin: " + request.getHeader("Origin"));
-                chain.doFilter(request, response);
-            }, UsernamePasswordAuthenticationFilter.class)
+
+    var httpRequest = (jakarta.servlet.http.HttpServletRequest) request;
+
+    System.out.println("Origin: " + httpRequest.getHeader("Origin"));
+    System.out.println("Path: " + httpRequest.getRequestURI());
+
+    chain.doFilter(request, response);
+
+}, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
