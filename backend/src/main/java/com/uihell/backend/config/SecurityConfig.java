@@ -122,10 +122,17 @@ public class SecurityConfig {
                     }
                 )
             )
-            .addFilterBefore(
-                jwtAuthFilter,
-                UsernamePasswordAuthenticationFilter.class
-            );
+        .addFilterBefore(
+    (request, response, chain) -> {
+        System.out.println("Origin: " + request.getHeader("Origin"));
+        chain.doFilter(request, response);
+    },
+    UsernamePasswordAuthenticationFilter.class
+)
+.addFilterBefore(
+    jwtAuthFilter,
+    UsernamePasswordAuthenticationFilter.class
+);
 
         return http.build();
     }
