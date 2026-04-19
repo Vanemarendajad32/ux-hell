@@ -38,14 +38,26 @@ public class SecurityConfig {
     @Value("${app.monitoring.prometheus.password:prometheus}")
     private String prometheusPassword;
 
+    private static final String[] PUBLIC_ENDPOINTS = {
+        "/api/auth/**",
+        "/auth/**",
+        "/api/leaderboard/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html",
+        "/v3/api-docs/**",
+        "/actuator/health",
+        "/actuator/health/**",
+        "/debug/**"
+    };
+
     @Bean
     @Order(1)
     public SecurityFilterChain actuatorSecurityFilterChain(HttpSecurity http)
         throws Exception {
         http
             .securityMatcher("/actuator/**")
-            .cors(cors -> cors.disable())
             .csrf(csrf -> csrf.disable())
+            .cors(cors -> cors.disable())
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
@@ -53,7 +65,7 @@ public class SecurityConfig {
                 auth
                     .requestMatchers(
                         "/actuator/health",
-                        "/actuator/health/**"
+                         "/actuator/health/**"
                     )
                     .permitAll()
                     .requestMatchers("/actuator/prometheus")
@@ -71,7 +83,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
         throws Exception {
         http
-            .securityMatcher("/**") 
+            .securityMatcher("/**")
             .cors(Customizer.withDefaults())
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session ->
@@ -80,29 +92,16 @@ public class SecurityConfig {
             // Public vs protected routes
             .authorizeHttpRequests(auth ->
                 auth
-                    .requestMatchers(
-                        HttpMethod.OPTIONS,
-                        "/**"
-                    )
-                    .permitAll()
-                    .requestMatchers(
-                        "/health",
-                        "/actuator/health",
-                        "/actuator/health/**",
-                        "/api/auth/**",
-                        "/api/leaderboard/**",
-                        "/auth/**",
-                        // "/api/attempts/**",
-                        "/debug/**",
-                        "/swagger-ui/**",
-                        "/swagger-ui.html",
-                        "/v3/api-docs/**"
-                    )
-                    .permitAll()
+                    // allow preflight requests
+                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                    // public endpoints
+                    .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
+
+                    // everything else requires auth
                     .anyRequest()
                     .authenticated()
             )
-            //  Handle unauthorized access (no/invalid token)
             .exceptionHandling(ex ->
                 ex.authenticationEntryPoint(
                     (request, response, authException) -> {
@@ -122,17 +121,12 @@ public class SecurityConfig {
                     }
                 )
             )
-        .addFilterBefore(
-    (request, response, chain) -> {
-        System.out.println("Origin: " + request.getHeader("Origin"));
-        chain.doFilter(request, response);
-    },
-    UsernamePasswordAuthenticationFilter.class
-)
-.addFilterBefore(
-    jwtAuthFilter,
-    UsernamePasswordAuthenticationFilter.class
-);
+            .addFilterBefore((request, response, chain) -> {
+                System.out.println("Request: " + request.getMethod() + " " + request.getRequestURI());
+                System.out.println("Origin: " + request.getHeader("Origin"));
+                chain.doFilter(request, response);
+            }, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
