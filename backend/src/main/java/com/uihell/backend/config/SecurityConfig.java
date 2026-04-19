@@ -72,7 +72,11 @@ public class SecurityConfig {
         throws Exception {
         http
             .cors(Customizer.withDefaults())
-            .csrf(csrf -> csrf.disable())
+            //.csrf(csrf -> csrf.disable())
+            .csrf(csrf -> {
+                System.out.println("CSRF DISABLED");
+                csrf.disable();
+            })
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
@@ -99,7 +103,6 @@ public class SecurityConfig {
                     )
                     .permitAll()
                     .anyRequest()
-                    .permitAll()
             )
             //  Handle unauthorized access (no/invalid token)
             .exceptionHandling(ex ->
