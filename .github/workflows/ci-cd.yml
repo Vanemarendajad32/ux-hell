@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - uxhell-52-certbot
   pull_request:
     branches:
       - main
