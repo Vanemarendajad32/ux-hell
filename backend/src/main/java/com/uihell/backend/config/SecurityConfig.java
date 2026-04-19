@@ -103,6 +103,7 @@ public class SecurityConfig {
                     )
                     .permitAll()
                     .anyRequest()
+                    .authenticated()
             )
             //  Handle unauthorized access (no/invalid token)
             .exceptionHandling(ex ->
