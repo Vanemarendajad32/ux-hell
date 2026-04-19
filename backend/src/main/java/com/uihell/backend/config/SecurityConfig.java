@@ -71,12 +71,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
         throws Exception {
         http
+            .securityMatcher("/**") 
             .cors(Customizer.withDefaults())
-            //.csrf(csrf -> csrf.disable())
-            .csrf(csrf -> {
-                System.out.println("CSRF DISABLED");
-                csrf.disable();
-            })
+            .csrf(csrf -> csrf.disable())
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
