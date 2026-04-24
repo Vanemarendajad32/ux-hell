@@ -3,6 +3,7 @@
 import { useRouter } from "next/dist/client/components/navigation";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import BackButton from "@/components/ui/back-button";
 import Input from "@/components/ui/Input";
 import { getApiErrorMessage } from "@/lib/api/error";
 import { loginUser, registerUser } from "@/lib/api/services/auth-service";
@@ -209,7 +210,10 @@ export default function RegisterPage() {
   }
 
   return (
-    <main>
+    <main className="mx-auto w-full max-w-md">
+      <div className="mb-6">
+        <BackButton />
+      </div>
       <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 bg-clip-text text-transparent">
         Create Account
       </h1>
