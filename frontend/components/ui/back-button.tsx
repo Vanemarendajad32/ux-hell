@@ -10,7 +10,11 @@ type BackButtonProps = {
   label?: string;
 };
 
-export default function BackButton({ to = "/", className = "", label = "Back" }: BackButtonProps) {
+export default function BackButton({
+  to = "/",
+  className = "",
+  label = "Back",
+}: BackButtonProps) {
   const router = useRouter();
 
   function handleBack() {

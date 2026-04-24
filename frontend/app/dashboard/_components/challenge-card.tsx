@@ -1,7 +1,9 @@
-
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import { ChallengeDifficulty, CHALLENGE_DIFFICULTY_LABELS } from "@/lib/challenge-difficulty";
+import {
+  ChallengeDifficulty,
+  CHALLENGE_DIFFICULTY_LABELS,
+} from "@/lib/challenge-difficulty";
 
 type ChallengeCardProps = {
   action: ReactNode;

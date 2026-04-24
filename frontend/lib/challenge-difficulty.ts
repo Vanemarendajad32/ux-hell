@@ -5,8 +5,9 @@ export enum ChallengeDifficulty {
   Hard = "Hard",
 }
 
-export const CHALLENGE_DIFFICULTY_LABELS: Record<ChallengeDifficulty, string> = {
-  [ChallengeDifficulty.Easy]: "Easy 😅",
-  [ChallengeDifficulty.Medium]: "Medium 🤪",
-  [ChallengeDifficulty.Hard]: "Hard 😈",
-};
+export const CHALLENGE_DIFFICULTY_LABELS: Record<ChallengeDifficulty, string> =
+  {
+    [ChallengeDifficulty.Easy]: "Easy 😅",
+    [ChallengeDifficulty.Medium]: "Medium 🤪",
+    [ChallengeDifficulty.Hard]: "Hard 😈",
+  };
