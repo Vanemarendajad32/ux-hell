@@ -50,18 +50,6 @@ export default function DashboardHeader({ username }: DashboardHeaderProps) {
 
           <div className="absolute top-full right-0 z-20 mt-2 w-44 overflow-hidden rounded-2xl border border-rose-100 bg-white py-1 shadow-xl shadow-orange-100/70">
             <button
-              className="w-full cursor-pointer px-4 py-2 text-left text-sm text-slate-700 transition-colors hover:bg-rose-50"
-              type="button"
-            >
-              Profile
-            </button>
-            <button
-              className="w-full cursor-pointer px-4 py-2 text-left text-sm text-slate-700 transition-colors hover:bg-rose-50"
-              type="button"
-            >
-              Settings
-            </button>
-            <button
               className="w-full cursor-pointer px-4 py-2 text-left text-sm text-rose-600 transition-colors hover:bg-rose-50"
               type="button"
               onClick={handleLogout}
