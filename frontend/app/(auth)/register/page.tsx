@@ -1,7 +1,11 @@
 "use client";
 
-import { useRouter } from "next/dist/client/components/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
+
+import PlusIcon from "@/components/icons/plus-icon";
 import { Button } from "@/components/ui/button";
 import BackButton from "@/components/ui/back-button";
 import Input from "@/components/ui/Input";
@@ -42,7 +46,7 @@ export default function RegisterPage() {
   const hasSessionStartedRef = useRef(false);
 
   const notificationClassName =
-    "fixed top-4 right-4 z-50 max-w-sm bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-lg shadow-lg animate-in slide-in-from-top-2 duration-300 border-2 border-white/20";
+    "absolute inset-x-4 top-20 z-50 mx-auto max-w-sm rounded-lg border-2 border-white/20 bg-gradient-to-r from-purple-500 to-pink-500 p-4 text-white shadow-lg animate-in slide-in-from-top-2 duration-300 sm:inset-x-auto sm:right-4 sm:left-auto";
 
   function ensureSessionStarted() {
     if (hasSessionStartedRef.current) return;
@@ -214,12 +218,24 @@ export default function RegisterPage() {
       <div className="mb-6">
         <BackButton />
       </div>
-      <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 bg-clip-text text-transparent">
-        Create Account
-      </h1>
-      <p className="text-sm text-slate-500 mb-8">
-        Join thousands of users today
-      </p>
+      <div className="mb-10 text-center">
+        <div className="mx-auto mb-5 flex items-center justify-center">
+          <Image
+            src="/ux-hell-logo.svg"
+            alt=""
+            width={72}
+            height={72}
+            className="h-[4.5rem] w-[4.5rem]"
+            aria-hidden="true"
+          />
+        </div>
+        <h1 className="bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 bg-clip-text text-4xl font-bold text-transparent sm:text-5xl">
+          Create account
+        </h1>
+        <p className="mt-4 text-base text-slate-600">
+          Enter UX Hell properly equipped for the forms that fight back.
+        </p>
+      </div>
       <form onSubmit={handleSubmit} aria-busy={isSubmitting}>
         <Input
           label="Username"
@@ -271,6 +287,14 @@ export default function RegisterPage() {
           disabled={isSubmitting}
           aria-busy={isSubmitting}
         >
+          <Image
+            src="/ux-hell-logo.svg"
+            alt=""
+            width={20}
+            height={20}
+            className="h-5 w-5"
+            aria-hidden="true"
+          />
           {isSubmitting ? "Creating..." : "Sign up"}
         </Button>
         <Button
@@ -282,6 +306,17 @@ export default function RegisterPage() {
           disabled={isSubmitting}
         >
           Clear form
+        </Button>
+        <Button
+          asChild
+          variant="outline"
+          size="lg"
+          className="mt-2 w-full gap-3 text-base font-bold hover:scale-[1.02]"
+        >
+          <Link href="/login">
+            <PlusIcon />
+            Back to sign in
+          </Link>
         </Button>
         {submitError ? (
           <p className="mt-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
