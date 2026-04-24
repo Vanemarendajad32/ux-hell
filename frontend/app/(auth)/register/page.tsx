@@ -266,16 +266,18 @@ export default function RegisterPage() {
         <Button
           type="submit"
           variant="destructive"
-          className="w-full uppercase"
+          size="lg"
+          className="w-full gap-3 text-base font-bold hover:scale-[1.02]"
           disabled={isSubmitting}
           aria-busy={isSubmitting}
         >
-          {isSubmitting ? "Creating..." : "Create account"}
+          {isSubmitting ? "Creating..." : "Sign up"}
         </Button>
         <Button
           type="button"
           variant="default"
-          className="w-full uppercase mt-2"
+          size="lg"
+          className="w-full gap-3 text-base font-bold hover:scale-[1.02] mt-2"
           onClick={clearForm}
           disabled={isSubmitting}
         >
