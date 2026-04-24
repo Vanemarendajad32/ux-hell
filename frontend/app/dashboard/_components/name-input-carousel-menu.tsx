@@ -31,7 +31,7 @@ export default function NameInputCarouselMenu({
             </Button>
           </DialogTrigger>
 
-          <DialogContent className="max-w-[calc(100%-1rem)] gap-3 overflow-hidden p-4 sm:max-w-md sm:p-5">
+          <DialogContent className="max-w-[calc(100%-1rem)] gap-3 p-4 sm:max-w-md sm:p-5">
             {game.stage === "intro" && (
               <IntroStage onStart={game.handleStartGame} />
             )}
