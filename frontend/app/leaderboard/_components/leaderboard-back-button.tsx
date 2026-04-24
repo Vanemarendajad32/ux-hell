@@ -25,7 +25,7 @@ export default function LeaderboardBackButton({
       onClick={handleBack}
     >
       <ArrowLeft className="h-4 w-4" />
-      <span className="text-sm font-medium">Back to Game</span>
+      <span className="text-sm font-medium">Back</span>
     </Button>
   );
 }
