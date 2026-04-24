@@ -9,6 +9,7 @@ import IntroStage from "./name-input-carousel/intro-stage";
 import PlayingStage from "./name-input-carousel/playing-stage";
 import SuccessStage from "./name-input-carousel/success-stage";
 import { useNameInputCarouselGame } from "./name-input-carousel/use-name-input-carousel-game";
+import { ChallengeDifficulty } from "@/lib/challenge-difficulty";
 
 type NameInputCarouselMenuProps = {
   onAttemptRecorded?: () => void;
@@ -63,7 +64,7 @@ export default function NameInputCarouselMenu({
       }
       className="bg-gradient-to-br from-white via-orange-50/70 to-rose-50 shadow-rose-100/60"
       description="Enter ALEX with a premium character carousel that nobody should ever have approved"
-      difficulty="Difficulty: Easy 🤪"
+      difficulty={ChallengeDifficulty.Easy}
       icon={<Keyboard className="size-7 text-rose-600" />}
       title="Name Input Carousel"
     />
