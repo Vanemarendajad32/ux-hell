@@ -4,12 +4,12 @@ import { Bot } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { ChallengeDifficulty } from "@/lib/challenge-difficulty";
 import ChallengeCard from "./challenge-card";
 import IntroStage from "./checkbox-hell/intro-stage";
 import PlayingStage from "./checkbox-hell/playing-stage";
 import SuccessStage from "./checkbox-hell/success-stage";
 import { useCheckboxHellGame } from "./checkbox-hell/use-checkbox-hell-game";
-import { ChallengeDifficulty } from "@/lib/challenge-difficulty";
 
 type CheckboxHellMenuProps = {
   onAttemptRecorded?: () => void;

@@ -1,7 +1,7 @@
 "use client";
 
-import type { LeaderboardSource } from "../_lib/leaderboard-data";
 import BackButton from "@/components/ui/back-button";
+import type { LeaderboardSource } from "../_lib/leaderboard-data";
 
 type LeaderboardBackButtonProps = {
   source: LeaderboardSource;

@@ -4,11 +4,11 @@ import { Lock } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { ChallengeDifficulty } from "@/lib/challenge-difficulty";
 import { useAccountVerificationGame } from "./account-verification/use-account-verification-game";
 import VerificationPlayingStage from "./account-verification/verification-playing-stage";
 import VerificationSuccessStage from "./account-verification/verification-success-stage";
 import ChallengeCard from "./challenge-card";
-import { ChallengeDifficulty } from "@/lib/challenge-difficulty";
 
 type AccountVerificationMenuProps = {
   onAttemptRecorded?: () => void;

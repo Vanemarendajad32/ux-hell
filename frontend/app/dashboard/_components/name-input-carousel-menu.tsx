@@ -4,12 +4,12 @@ import { Keyboard } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { ChallengeDifficulty } from "@/lib/challenge-difficulty";
 import ChallengeCard from "./challenge-card";
 import IntroStage from "./name-input-carousel/intro-stage";
 import PlayingStage from "./name-input-carousel/playing-stage";
 import SuccessStage from "./name-input-carousel/success-stage";
 import { useNameInputCarouselGame } from "./name-input-carousel/use-name-input-carousel-game";
-import { ChallengeDifficulty } from "@/lib/challenge-difficulty";
 
 type NameInputCarouselMenuProps = {
   onAttemptRecorded?: () => void;

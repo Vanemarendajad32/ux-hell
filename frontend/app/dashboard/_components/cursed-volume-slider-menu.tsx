@@ -4,12 +4,12 @@ import { Volume2 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { ChallengeDifficulty } from "@/lib/challenge-difficulty";
 import ChallengeCard from "./challenge-card";
 import IntroStage from "./cursed-volume-slider/intro-stage";
 import PlayingStage from "./cursed-volume-slider/playing-stage";
 import SuccessStage from "./cursed-volume-slider/success-stage";
 import { useCursedVolumeSliderGame } from "./cursed-volume-slider/use-cursed-volume-slider-game";
-import { ChallengeDifficulty } from "@/lib/challenge-difficulty";
 
 type CursedVolumeSliderMenuProps = {
   onAttemptRecorded?: () => void;
