@@ -326,9 +326,17 @@ export default function RegisterPage() {
       </form>
       {notification && (
         <div className={notificationClassName}>
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-            <p className="text-sm font-medium">{notification}</p>
+          <div className="flex items-start gap-3">
+            <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-white animate-pulse"></div>
+            <p className="flex-1 text-sm font-medium">{notification}</p>
+            <button
+              type="button"
+              className="shrink-0 rounded-full px-2 py-1 text-sm font-bold leading-none text-white/90 transition hover:bg-white/15 hover:text-white"
+              aria-label="Close notification"
+              onClick={() => setNotification("")}
+            >
+              X
+            </button>
           </div>
         </div>
       )}
