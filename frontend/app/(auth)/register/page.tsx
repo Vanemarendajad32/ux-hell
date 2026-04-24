@@ -1,11 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
-import PlusIcon from "@/components/icons/plus-icon";
 import { Button } from "@/components/ui/button";
 import BackButton from "@/components/ui/back-button";
 import Input from "@/components/ui/Input";
@@ -306,17 +304,6 @@ export default function RegisterPage() {
           disabled={isSubmitting}
         >
           Clear form
-        </Button>
-        <Button
-          asChild
-          variant="outline"
-          size="lg"
-          className="mt-2 w-full gap-3 text-base font-bold hover:scale-[1.02]"
-        >
-          <Link href="/login">
-            <PlusIcon />
-            Back to sign in
-          </Link>
         </Button>
         {submitError ? (
           <p className="mt-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
