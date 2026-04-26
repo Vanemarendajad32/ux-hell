@@ -24,6 +24,7 @@ import {
   type RegisterFormData,
   registerSchema,
 } from "@/schemas/register-schema";
+import PlusIcon from "@/components/icons/plus-icon";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -284,15 +285,9 @@ export default function RegisterPage() {
           disabled={isSubmitting}
           aria-busy={isSubmitting}
         >
-          <Image
-            src="/ux-hell-logo.svg"
-            alt=""
-            width={20}
-            height={20}
-            className="h-5 w-5"
-            aria-hidden="true"
-          />
-          {isSubmitting ? "Creating..." : "Sign up"}
+      
+            <PlusIcon />
+          {isSubmitting ? "Creating..." : "Register"}
         </Button>
         <Button
           type="button"
@@ -310,6 +305,32 @@ export default function RegisterPage() {
           </p>
         ) : null}
       </form>
+      <div className="mt-8 flex flex-col items-center gap-4">
+        <div className="flex items-center w-full">
+          <hr className="flex-1 border-slate-200" />
+          <span className="mx-4 text-slate-500 text-sm">Already have an account?</span>
+          <hr className="flex-1 border-slate-200" />
+        </div>
+        <Button
+          type="button"
+          variant="outline"
+          size="lg"
+          className="w-full gap-3 text-base font-bold hover:scale-[1.02]"
+          onClick={() => router.push('/login')}
+        >
+          <span className="flex items-center gap-2">
+            <Image
+              src="/ux-hell-logo.svg"
+              alt=""
+              width={20}
+              height={20}
+              className="h-5 w-5"
+              aria-hidden="true"
+            />
+            Login
+          </span>
+        </Button>
+      </div>
       {notification && (
         <div className={notificationClassName}>
           <div className="flex items-start gap-3">
