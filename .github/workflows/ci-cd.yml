@@ -32,12 +32,11 @@ jobs:
         with:
           java-version: '21'
           distribution: temurin
-      
-      # TODO: Enable tests once proper test setup exists
-      - name: Build backend (skip tests for now)
+
+      - name: Test backend
         run: |
           chmod +x mvnw
-          ./mvnw clean package -DskipTests -B
+          ./mvnw test -B
 
       - name: Build Docker image
         run: |
