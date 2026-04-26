@@ -91,7 +91,6 @@ The Maven clean/package step is included in the backend Dockerfile, so building 
 #### Monitoring
 
 1. Specify new values for the PROMETHEUS_BASIC_AUTH_PASSWORD and GRAFANA_ADMIN_PASSWORD values within the `.env` file.
-2. Also create a file [monitoring/secrets/prometheus_basic_auth_password](monitoring/secrets/prometheus_basic_auth_password) and add a single line within that file containing the PROMETHEUS_BASIC_AUTH_PASSWORD value
 
 ## Common Commands
 
@@ -114,6 +113,8 @@ The Maven clean/package step is included in the backend Dockerfile, so building 
 - Backend base URL: `http://localhost:8080`
 - Health check: `http://localhost:8080/health`
 - Swagger UI: `http://localhost:8080/swagger-ui.html`
+- Prometheus UI: `http://localhost:9090`
+- Grafana UI: `http://localhost:3010`
 
 ## Frontend Tracking Foundation (Sprint 1)
 
