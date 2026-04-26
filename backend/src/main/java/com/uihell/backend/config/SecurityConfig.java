@@ -1,5 +1,4 @@
 package com.uihell.backend.config;
-
 import com.uihell.backend.security.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,18 +22,16 @@ import org.springframework.security.config.Customizer;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-
     private final JwtAuthenticationFilter jwtAuthFilter;
-    @Value("${app.cors.allowed-origins:http://localhost:3000}")
+    @Value(
+        "${app.cors.allowed-origins:http://localhost:3000,https://uxhell.ddns.net}"
+    )
     private List<String> allowedOrigins;
-
     @Value("${app.monitoring.prometheus.username:prometheus}")
     private String prometheusUsername;
-
     @Value("${app.monitoring.prometheus.password:prometheus}")
     private String prometheusPassword;
 
@@ -62,10 +59,8 @@ public class SecurityConfig {
                     .denyAll()
             )
             .httpBasic(Customizer.withDefaults());
-
         return http.build();
     }
-
     @Bean
     @Order(2)
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
@@ -128,7 +123,6 @@ public class SecurityConfig {
 
         return http.build();
     }
-
     @Bean
     public UserDetailsService userDetailsService(
         PasswordEncoder passwordEncoder
@@ -138,10 +132,8 @@ public class SecurityConfig {
             .password(passwordEncoder.encode(prometheusPassword))
             .roles("PROMETHEUS")
             .build();
-
         return new InMemoryUserDetailsManager(prometheusUser);
     }
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -149,14 +141,11 @@ public class SecurityConfig {
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
-
         UrlBasedCorsConfigurationSource source =
             new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
-
         return source;
     }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
