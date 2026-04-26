@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - uxhell-69-enable-backend-tests-in-cicd-pipeline
   pull_request:
     branches:
       - main
@@ -33,9 +32,8 @@ jobs:
         with:
           java-version: '21'
           distribution: temurin
-      
-      # TODO: Enable tests once proper test setup exists
-      - name: Build backend (skip tests for now)
+
+      - name: Build backend
         run: |
           chmod +x mvnw
           ./mvnw clean package -B
