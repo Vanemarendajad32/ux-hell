@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft } from "lucide-react";
+import HomeIcon from "../icons/home-icon";
 import { useRouter } from "next/navigation";
 import { Button } from "./button";
 
@@ -13,7 +13,6 @@ type BackButtonProps = {
 export default function BackButton({
   to = "/",
   className = "",
-  label = "Back",
 }: BackButtonProps) {
   const router = useRouter();
 
@@ -26,9 +25,9 @@ export default function BackButton({
       variant="ghost"
       className={`inline-flex gap-2 text-slate-600 hover:text-slate-900 ${className}`}
       onClick={handleBack}
+      aria-label="Home"
     >
-      <ArrowLeft className="h-4 w-4" />
-      <span className="text-sm font-medium">{label}</span>
+      <HomeIcon />
     </Button>
   );
 }
