@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
+import PlusIcon from "@/components/icons/plus-icon";
 import BackButton from "@/components/ui/back-button";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
@@ -24,7 +25,6 @@ import {
   type RegisterFormData,
   registerSchema,
 } from "@/schemas/register-schema";
-import PlusIcon from "@/components/icons/plus-icon";
 
 export default function RegisterPage() {
   const router = useRouter();

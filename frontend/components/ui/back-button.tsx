@@ -1,7 +1,7 @@
 "use client";
 
-import HomeIcon from "../icons/home-icon";
 import { useRouter } from "next/navigation";
+import HomeIcon from "../icons/home-icon";
 import { Button } from "./button";
 
 type BackButtonProps = {
