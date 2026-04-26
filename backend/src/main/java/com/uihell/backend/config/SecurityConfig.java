@@ -26,7 +26,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
-    @Value("${app.cors.allowed-origins:http://localhost:3000}")
+    @Value(
+        "${app.cors.allowed-origins:http://localhost:3000,https://uxhell.ddns.net}"
+    )
     private List<String> allowedOrigins;
     @Value("${app.monitoring.prometheus.username:prometheus}")
     private String prometheusUsername;
