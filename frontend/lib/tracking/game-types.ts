@@ -16,7 +16,7 @@ export const gameTypeLabels: Record<GameType, string> = {
 export const gameTypeOrder: GameType[] = [
   "registration",
   "checkbox-hell",
-  "account-verification",
   "cursed-volume-slider",
   "name-input-carousel",
+  "account-verification",
 ];

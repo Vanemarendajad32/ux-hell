@@ -4,6 +4,7 @@ import { Lock } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { ChallengeDifficulty } from "@/lib/challenge-difficulty";
 import { useAccountVerificationGame } from "./account-verification/use-account-verification-game";
 import VerificationPlayingStage from "./account-verification/verification-playing-stage";
 import VerificationSuccessStage from "./account-verification/verification-success-stage";
@@ -56,7 +57,7 @@ export default function AccountVerificationMenu({
       }
       className="bg-gradient-to-br from-white via-rose-50/60 to-slate-50 shadow-rose-100/60"
       description="Your account is safe. Maybe."
-      difficulty="Difficulty: Easy 🤪"
+      difficulty={ChallengeDifficulty.Medium}
       icon={<Lock className="size-7 text-orange-500" />}
       title="Account Verification"
     />

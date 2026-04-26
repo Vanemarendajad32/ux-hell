@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 const dialogOverlayClass =
   "fixed inset-0 isolate z-50 bg-black/20 duration-100 supports-backdrop-filter:backdrop-blur-sm data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0";
 const dialogContentClass =
-  "fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-3xl border border-rose-200 bg-white p-6 text-sm text-slate-900 shadow-2xl duration-100 outline-none sm:max-w-sm data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95";
+  "fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-3xl border border-rose-200 bg-white p-6 text-sm text-slate-900 shadow-2xl duration-100 outline-none sm:max-w-sm max-h-screen overflow-y-auto data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95";
 const dialogCloseButtonClass =
   "absolute top-2 right-2 rounded-xl text-slate-500 hover:text-slate-700";
 const dialogHeaderClass = "flex flex-col gap-2";

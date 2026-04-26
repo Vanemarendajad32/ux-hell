@@ -21,9 +21,9 @@ export default function Challenges({ onAttemptRecorded }: ChallengesProps) {
 
       <div className="mt-4 grid gap-3 md:grid-cols-2">
         <CheckboxHellMenu onAttemptRecorded={onAttemptRecorded} />
-        <AccountVerificationMenu onAttemptRecorded={onAttemptRecorded} />
         <CursedVolumeSliderMenu onAttemptRecorded={onAttemptRecorded} />
         <NameInputCarouselMenu onAttemptRecorded={onAttemptRecorded} />
+        <AccountVerificationMenu onAttemptRecorded={onAttemptRecorded} />
       </div>
     </section>
   );

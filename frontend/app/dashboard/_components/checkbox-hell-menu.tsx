@@ -4,6 +4,7 @@ import { Bot } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { ChallengeDifficulty } from "@/lib/challenge-difficulty";
 import ChallengeCard from "./challenge-card";
 import IntroStage from "./checkbox-hell/intro-stage";
 import PlayingStage from "./checkbox-hell/playing-stage";
@@ -55,7 +56,7 @@ export default function CheckboxHellMenu({
       }
       className="bg-gradient-to-br from-orange-50/80 via-rose-50/70 to-white shadow-orange-100/60"
       description="Find out if you're a robot"
-      difficulty="Difficulty: Easy 🤪"
+      difficulty={ChallengeDifficulty.Easy}
       icon={<Bot className="size-7 text-slate-400" />}
       title="Robot Test"
     />
