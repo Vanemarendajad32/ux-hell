@@ -1,7 +1,10 @@
 "use client";
 
-import { useRouter } from "next/dist/client/components/navigation";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
+import PlusIcon from "@/components/icons/plus-icon";
+import BackButton from "@/components/ui/back-button";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
 import { getApiErrorMessage } from "@/lib/api/error";
@@ -41,7 +44,7 @@ export default function RegisterPage() {
   const hasSessionStartedRef = useRef(false);
 
   const notificationClassName =
-    "fixed top-4 right-4 z-50 max-w-sm bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-lg shadow-lg animate-in slide-in-from-top-2 duration-300 border-2 border-white/20";
+    "absolute inset-x-4 top-20 z-50 mx-auto max-w-sm rounded-lg border-2 border-white/20 bg-gradient-to-r from-purple-500 to-pink-500 p-4 text-white shadow-lg animate-in slide-in-from-top-2 duration-300 sm:inset-x-auto sm:right-4 sm:left-auto";
 
   function ensureSessionStarted() {
     if (hasSessionStartedRef.current) return;
@@ -209,13 +212,28 @@ export default function RegisterPage() {
   }
 
   return (
-    <main>
-      <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 bg-clip-text text-transparent">
-        Create Account
-      </h1>
-      <p className="text-sm text-slate-500 mb-8">
-        Join thousands of users today
-      </p>
+    <main className="mx-auto w-full max-w-md">
+      <div className="mb-6">
+        <BackButton />
+      </div>
+      <div className="mb-10 text-center">
+        <div className="mx-auto mb-5 flex items-center justify-center">
+          <Image
+            src="/ux-hell-logo.svg"
+            alt=""
+            width={72}
+            height={72}
+            className="h-[4.5rem] w-[4.5rem]"
+            aria-hidden="true"
+          />
+        </div>
+        <h1 className="bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 bg-clip-text text-4xl font-bold text-transparent sm:text-5xl">
+          Create account
+        </h1>
+        <p className="mt-4 text-base text-slate-600">
+          Enter UX Hell properly equipped for the forms that fight back.
+        </p>
+      </div>
       <form onSubmit={handleSubmit} aria-busy={isSubmitting}>
         <Input
           label="Username"
@@ -262,16 +280,19 @@ export default function RegisterPage() {
         <Button
           type="submit"
           variant="destructive"
-          className="w-full uppercase"
+          size="lg"
+          className="w-full gap-3 text-base font-bold hover:scale-[1.02]"
           disabled={isSubmitting}
           aria-busy={isSubmitting}
         >
-          {isSubmitting ? "Creating..." : "Create account"}
+          <PlusIcon />
+          {isSubmitting ? "Creating..." : "Register"}
         </Button>
         <Button
           type="button"
           variant="default"
-          className="w-full uppercase mt-2"
+          size="lg"
+          className="w-full gap-3 text-base font-bold hover:scale-[1.02] mt-2"
           onClick={clearForm}
           disabled={isSubmitting}
         >
@@ -283,11 +304,47 @@ export default function RegisterPage() {
           </p>
         ) : null}
       </form>
+      <div className="mt-8 flex flex-col items-center gap-4">
+        <div className="flex items-center w-full">
+          <hr className="flex-1 border-slate-200" />
+          <span className="mx-4 text-slate-500 text-sm">
+            Already have an account?
+          </span>
+          <hr className="flex-1 border-slate-200" />
+        </div>
+        <Button
+          type="button"
+          variant="outline"
+          size="lg"
+          className="w-full gap-3 text-base font-bold hover:scale-[1.02]"
+          onClick={() => router.push("/login")}
+        >
+          <span className="flex items-center gap-2">
+            <Image
+              src="/ux-hell-logo.svg"
+              alt=""
+              width={20}
+              height={20}
+              className="h-5 w-5"
+              aria-hidden="true"
+            />
+            Login
+          </span>
+        </Button>
+      </div>
       {notification && (
         <div className={notificationClassName}>
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-            <p className="text-sm font-medium">{notification}</p>
+          <div className="flex items-start gap-3">
+            <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-white animate-pulse"></div>
+            <p className="flex-1 text-sm font-medium">{notification}</p>
+            <button
+              type="button"
+              className="shrink-0 rounded-full px-2 py-1 text-sm font-bold leading-none text-white/90 transition hover:bg-white/15 hover:text-white"
+              aria-label="Close notification"
+              onClick={() => setNotification("")}
+            >
+              X
+            </button>
           </div>
         </div>
       )}

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import PlusIcon from "@/components/icons/plus-icon";
+import BackButton from "@/components/ui/back-button";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
 import { getApiErrorMessage } from "@/lib/api/error";
@@ -53,6 +54,9 @@ export default function LoginPage() {
 
   return (
     <main className="mx-auto w-full max-w-md">
+      <div className="mb-6">
+        <BackButton />
+      </div>
       <div className="mb-10 text-center">
         <div className="mx-auto mb-5 flex items-center justify-center">
           <Image

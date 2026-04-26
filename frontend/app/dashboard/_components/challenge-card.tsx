@@ -1,11 +1,15 @@
 import type { ReactNode } from "react";
+import {
+  CHALLENGE_DIFFICULTY_LABELS,
+  type ChallengeDifficulty,
+} from "@/lib/challenge-difficulty";
 import { cn } from "@/lib/utils";
 
 type ChallengeCardProps = {
   action: ReactNode;
   className?: string;
   description: string;
-  difficulty?: string;
+  difficulty?: ChallengeDifficulty;
   icon: ReactNode;
   title: string;
 };
@@ -32,7 +36,9 @@ export default function ChallengeCard({
         </h3>
         <p className="text-base text-slate-700 sm:text-lg">{description}</p>
         {difficulty && (
-          <p className="text-base text-slate-600 sm:text-lg">{difficulty}</p>
+          <p className="text-base text-slate-600 sm:text-lg">
+            Difficulty: {CHALLENGE_DIFFICULTY_LABELS[difficulty]}
+          </p>
         )}
       </div>
 
