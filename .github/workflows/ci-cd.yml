@@ -33,10 +33,10 @@ jobs:
           java-version: '21'
           distribution: temurin
 
-      - name: Build backend
+      - name: Test backend
         run: |
           chmod +x mvnw
-          ./mvnw clean package -B
+          ./mvnw test -B
 
       - name: Build Docker image
         run: |
