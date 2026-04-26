@@ -285,8 +285,7 @@ export default function RegisterPage() {
           disabled={isSubmitting}
           aria-busy={isSubmitting}
         >
-      
-            <PlusIcon />
+          <PlusIcon />
           {isSubmitting ? "Creating..." : "Register"}
         </Button>
         <Button
@@ -308,7 +307,9 @@ export default function RegisterPage() {
       <div className="mt-8 flex flex-col items-center gap-4">
         <div className="flex items-center w-full">
           <hr className="flex-1 border-slate-200" />
-          <span className="mx-4 text-slate-500 text-sm">Already have an account?</span>
+          <span className="mx-4 text-slate-500 text-sm">
+            Already have an account?
+          </span>
           <hr className="flex-1 border-slate-200" />
         </div>
         <Button
@@ -316,7 +317,7 @@ export default function RegisterPage() {
           variant="outline"
           size="lg"
           className="w-full gap-3 text-base font-bold hover:scale-[1.02]"
-          onClick={() => router.push('/login')}
+          onClick={() => router.push("/login")}
         >
           <span className="flex items-center gap-2">
             <Image
