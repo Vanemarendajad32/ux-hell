@@ -6,10 +6,16 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  packages: write
+
 env:
   REGISTRY: ghcr.io
   IMAGE_FRONTEND: vanemarendajad32/ux-hell/frontend
   IMAGE_BACKEND: vanemarendajad32/ux-hell/backend
+  IMAGE_PROMETHEUS: vanemarendajad32/ux-hell/prometheus
+  IMAGE_GRAFANA: vanemarendajad32/ux-hell/grafana
 
 jobs:
   build-and-deploy:
@@ -47,6 +53,22 @@ jobs:
           file: ./backend/Dockerfile
           push: true
           tags: ghcr.io/vanemarendajad32/ux-hell/backend:latest
+
+      - name: Build and push prometheus image
+        uses: docker/build-push-action@v7
+        with:
+          context: ./backend/monitoring/prometheus
+          file: ./backend/monitoring/prometheus/Dockerfile
+          push: true
+          tags: ghcr.io/vanemarendajad32/ux-hell/prometheus:latest
+
+      - name: Build and push grafana image
+        uses: docker/build-push-action@v7
+        with:
+          context: ./backend/monitoring/grafana
+          file: ./backend/monitoring/grafana/Dockerfile
+          push: true
+          tags: ghcr.io/vanemarendajad32/ux-hell/grafana:latest
 
 
 ## SSH deployment steps (commented out for now because not working)
