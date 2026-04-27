@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - feature/ux-hell-63-monitoring-serveris
   pull_request:
     branches:
       - main
@@ -30,7 +31,7 @@ jobs:
       - name: Set up JDK 21
         uses: actions/setup-java@v5
         with:
-          java-version: '21'
+          java-version: "21"
           distribution: temurin
 
       - name: Test backend
@@ -61,7 +62,7 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: "pnpm"
           cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Install dependencies
