@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feature/ux-hell-63-monitoring-serveris
   pull_request:
     branches:
       - main
