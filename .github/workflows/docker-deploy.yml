@@ -6,10 +6,16 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  packages: write
+
 env:
   REGISTRY: ghcr.io
   IMAGE_FRONTEND: vanemarendajad32/ux-hell/frontend
   IMAGE_BACKEND: vanemarendajad32/ux-hell/backend
+  IMAGE_PROMETHEUS: vanemarendajad32/ux-hell/prometheus
+  IMAGE_GRAFANA: vanemarendajad32/ux-hell/grafana
 
 jobs:
   build-and-deploy:
@@ -31,7 +37,7 @@ jobs:
       - name: Create .env.production
         run: |
           echo "NEXT_PUBLIC_API_URL=${{ secrets.PRODUCTION_API_URL }}" >> frontend/.env.production
-      
+
       - name: Build and push frontend image
         uses: docker/build-push-action@v7
         with:
@@ -48,28 +54,43 @@ jobs:
           push: true
           tags: ghcr.io/vanemarendajad32/ux-hell/backend:latest
 
+      - name: Build and push prometheus image
+        uses: docker/build-push-action@v7
+        with:
+          context: ./backend/monitoring/prometheus
+          file: ./backend/monitoring/prometheus/Dockerfile
+          push: true
+          tags: ghcr.io/vanemarendajad32/ux-hell/prometheus:latest
+
+      - name: Build and push grafana image
+        uses: docker/build-push-action@v7
+        with:
+          context: ./backend/monitoring/grafana
+          file: ./backend/monitoring/grafana/Dockerfile
+          push: true
+          tags: ghcr.io/vanemarendajad32/ux-hell/grafana:latest
 
 ## SSH deployment steps (commented out for now because not working)
-      # - name: Test SSH connection
-      #   uses: appleboy/ssh-action@v1
-      #   with:
-      #     host: ${{ secrets.SERVER_HOST }}
-      #     username: ${{ secrets.SERVER_USER }}
-      #     key: ${{ secrets.SSH_KEY }}
-      #     port: ${{ secrets.SERVER_PORT }}
-      #     script: |
-      #       echo "SSH connection successful!"
+# - name: Test SSH connection
+#   uses: appleboy/ssh-action@v1
+#   with:
+#     host: ${{ secrets.SERVER_HOST }}
+#     username: ${{ secrets.SERVER_USER }}
+#     key: ${{ secrets.SSH_KEY }}
+#     port: ${{ secrets.SERVER_PORT }}
+#     script: |
+#       echo "SSH connection successful!"
 
-      # - name: Deploy to server via SSH
-      #   uses: appleboy/ssh-action@v1
-      #   with:
-      #     host: ${{ secrets.SERVER_HOST }}
-      #     username: ${{ secrets.SERVER_USER }}
-      #     key: ${{ secrets.SERVER_SSH_KEY }}
-      #     port: ${{ secrets.SERVER_PORT }}
-      #     envs: REGISTRY,IMAGE_FRONTEND,IMAGE_BACKEND
-      #     script: |
-      #       docker login $REGISTRY -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
-      #       cd /home/ubuntu/ux-hell
-      #       docker compose pull
-      #       docker compose up -d
+# - name: Deploy to server via SSH
+#   uses: appleboy/ssh-action@v1
+#   with:
+#     host: ${{ secrets.SERVER_HOST }}
+#     username: ${{ secrets.SERVER_USER }}
+#     key: ${{ secrets.SERVER_SSH_KEY }}
+#     port: ${{ secrets.SERVER_PORT }}
+#     envs: REGISTRY,IMAGE_FRONTEND,IMAGE_BACKEND
+#     script: |
+#       docker login $REGISTRY -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+#       cd /home/ubuntu/ux-hell
+#       docker compose pull
+#       docker compose up -d

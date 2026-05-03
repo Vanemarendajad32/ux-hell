@@ -30,17 +30,13 @@ services:
       SPRING_DATASOURCE_PASSWORD: postgres
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS:-3600000}
-      APP_MONITORING_PROMETHEUS_USERNAME: ${PROMETHEUS_BASIC_AUTH_USERNAME:-prometheus}
+      APP_MONITORING_PROMETHEUS_USERNAME: prometheus
       APP_MONITORING_PROMETHEUS_PASSWORD: ${PROMETHEUS_BASIC_AUTH_PASSWORD:-prometheus}
 
   prometheus:
-    image: prom/prometheus:v3.2.1
-    volumes:
-      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - ./monitoring/prometheus-entrypoint.sh:/prometheus-entrypoint.sh:ro
-    entrypoint:
-      - /bin/sh
-      - /prometheus-entrypoint.sh
+    build:
+      context: monitoring/prometheus
+      dockerfile: Dockerfile
     environment:
       PROMETHEUS_BASIC_AUTH_PASSWORD: ${PROMETHEUS_BASIC_AUTH_PASSWORD:-prometheus}
     ports:
@@ -49,15 +45,15 @@ services:
       - backend
 
   grafana:
-    image: grafana/grafana:11.5.2
+    build:
+      context: monitoring/grafana
+      dockerfile: Dockerfile
     ports:
       - "3010:3000"
     environment:
       GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
       GF_USERS_ALLOW_SIGN_UP: "false"
-    volumes:
-      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
     depends_on:
       - prometheus
 
