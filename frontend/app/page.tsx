@@ -3,6 +3,7 @@
 import { Trophy } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import AttentionIcon from "@/components/icons/attention-icon";
 import PlusIcon from "@/components/icons/plus-icon";
@@ -15,9 +16,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { getSession } from "@/lib/api/services/auth-service";
 import { startSession, trackClick } from "@/lib/tracking";
+import DashboardHeader from "@/app/dashboard/_components/dashboard-header";
 
 export default function Page() {
+  const router = useRouter();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [swapButtons, setSwapButtons] = useState(false);
 
@@ -34,7 +38,7 @@ export default function Page() {
     return () => window.clearInterval(intervalId);
   }, [dialogOpen]);
 
-  const handleStartGame = () => {
+  const handleStartGame = async () => {
     if (dialogOpen) {
       return;
     }
@@ -45,12 +49,27 @@ export default function Page() {
     } catch {
       // Tracking is best-effort on the landing page.
     }
+
+    try {
+      const session = await getSession();
+      if (session.authenticated) {
+        router.push("/dashboard");
+        return;
+      }
+    } catch {
+      // Treat session errors as unauthenticated on landing page.
+    }
+
     setDialogOpen(true);
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-6 py-12 text-slate-900">
-      <main className="w-full max-w-2xl">
+    <div className="min-h-screen px-3 py-5 text-slate-900 sm:px-6 sm:py-8">
+      <main className="mx-auto flex w-full max-w-6xl flex-col gap-4 sm:gap-6">
+        <DashboardHeader />
+
+        <div className="flex w-full items-center justify-center px-3 py-6 sm:px-6 sm:py-12">
+          <div className="w-full max-w-2xl">
         <div className="mb-12 text-center">
           <div className="mx-auto mb-6 flex items-center justify-center">
             <Image
@@ -63,14 +82,6 @@ export default function Page() {
             />
           </div>
           <h1 className="inline-flex items-center gap-3 bg-gradient-to-r from-rose-600 via-orange-600 to-amber-600 bg-clip-text text-5xl font-bold text-transparent sm:text-7xl">
-            <Image
-              src="/ux-hell-logo.svg"
-              alt=""
-              width={48}
-              height={48}
-              className="h-10 w-10 sm:h-12 sm:w-12"
-              aria-hidden="true"
-            />
             <span>UX HELL</span>
           </h1>
           <p className="mt-4 text-lg text-slate-600">
@@ -217,6 +228,8 @@ export default function Page() {
         <p className="mt-8 text-center text-xs text-slate-400">
           Educational game about dark patterns in UX design
         </p>
+          </div>
+        </div>
       </main>
     </div>
   );
