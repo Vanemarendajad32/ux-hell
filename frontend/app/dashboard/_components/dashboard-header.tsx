@@ -5,8 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { logoutUser } from "@/lib/api/services/auth-service";
-import { getSession } from "@/lib/api/services/auth-service";
+import { getSession, logoutUser } from "@/lib/api/services/auth-service";
 import { clearRegistrationSession } from "@/lib/dashboard/registration-session";
 import { clearPendingAttempt } from "@/lib/tracking/pending-attempt";
 

@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import DashboardHeader from "@/app/dashboard/_components/dashboard-header";
+import { Button } from "@/components/ui/button";
 import type {
   LeaderboardGame,
   LeaderboardPlayer,
